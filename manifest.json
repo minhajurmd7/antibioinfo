@@ -1,0 +1,20 @@
+{
+  "name": "AB|Info — Antibiotic Medicine Information & AMR Portal",
+  "short_name": "AB|Info",
+  "description": "Evidence-based clinical antibiotic guide, WHO AWaRe classification, Indian Schedule H1 safety, and AMR surveillance.",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#0f766e",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "48x48 72x72 96x96 128x128 192x192 256x256 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

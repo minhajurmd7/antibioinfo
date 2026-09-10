@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antibiotic &amp; AMR Clinical Glossary | AB|Info</title>
+  <meta name="description" content="Comprehensive A-Z glossary of antibiotic, microbiology, and antimicrobial resistance terms." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <aside class="top-disclaimer-banner" role="note" aria-label="Medical Disclaimer">
+    <div class="container">
+      <span data-i18n="disclaimerText">⚕️ Medical Disclaimer: AB|Info is strictly an educational project. Not medical advice. Always consult a registered medical practitioner.</span>
+    </div>
+  </aside>
+
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="AB|Info Homepage">💊 AB|<span>Info</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" data-i18n="navHome">Home</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (21)</a>
+        <a href="index.html#drugs" data-i18n="navDatabase">A–Z Catalog</a>
+        <a href="index.html#resistance" data-i18n="navResistance">Resistance</a>
+        <a href="index.html#flowchart" data-i18n="navFlowchart">Flowchart</a>
+        <a href="index.html#quiz" data-i18n="navQuiz">Quiz</a>
+        <a href="glossary.html" class="active-nav" data-i18n="navGlossary">Glossary</a>
+        <a href="references.html" data-i18n="navReferences">References</a>
+        <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
+      </nav>
+
+      <div class="nav-utils">
+        <div class="lang-selector" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="path-selector-bar">
+    <div class="container path-inner">
+      <span class="path-label" data-i18n="pathTitle">Choose Your Learning Path:</span>
+      <div class="path-buttons" role="group" aria-label="Learning Path Selector">
+        <button class="path-btn active" data-path="public" data-i18n="pathPublicBtn">👤 Common Person (Simple &amp; Visual)</button>
+        <button class="path-btn" data-path="academic" data-i18n="pathAcademicBtn">🔬 Student / Researcher (Clinical &amp; Deep)</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section id="glossary-section" style="margin-top: 30px;">
+      <h1>📖 Antibiotics &amp; AMR Glossary <span id="glossaryCount"></span></h1>
+      <p class="section-sub">A curated A–Z reference covering clinical pharmacology, microbiology, and healthcare policy concepts.</p>
+
+      <div class="search-box" style="margin-bottom: 20px;">
+        <input type="text" id="glossarySearch" placeholder="🔍 Search term, acronym (e.g. MRSA, NDM-1, ESBL, MIC)..." aria-label="Search glossary terms" />
+      </div>
+
+      <div class="filter-wrapper" style="justify-content: flex-start;">
+        <button class="filter-pill glossary-pill active" data-cat="ALL">All Categories</button>
+        <button class="filter-pill glossary-pill" data-cat="pharmacology">💊 Pharmacology</button>
+        <button class="filter-pill glossary-pill" data-cat="microbiology">🧬 Microbiology &amp; Bugs</button>
+        <button class="filter-pill glossary-pill" data-cat="policy">🏛️ Policy &amp; Regulation</button>
+      </div>
+
+      <div class="glossary-grid" id="glossaryGrid"></div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#drugs">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Documentation</h4>
+          <ul class="footer-links">
+            <li><a href="references.html">References</a></li>
+            <li><a href="about.html">About &amp; Docs</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="navbar.js"></script>
+  <script src="glossary.js"></script>
+</body>
+</html>

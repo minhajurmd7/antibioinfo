@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About &amp; Project Documentation | AB|Info</title>
+  <meta name="description" content="Academic project documentation: Abstract, Objectives, Architecture, Tech Stack, and Community Pharmacy QR Integration." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <aside class="top-disclaimer-banner" role="note" aria-label="Medical Disclaimer">
+    <div class="container">
+      <span data-i18n="disclaimerText">⚕️ Medical Disclaimer: AB|Info is strictly an educational project. Not medical advice. Always consult a registered medical practitioner.</span>
+    </div>
+  </aside>
+
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="AB|Info Homepage">💊 AB|<span>Info</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" data-i18n="navHome">Home</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (21)</a>
+        <a href="index.html#drugs" data-i18n="navDatabase">A–Z Catalog</a>
+        <a href="index.html#resistance" data-i18n="navResistance">Resistance</a>
+        <a href="index.html#flowchart" data-i18n="navFlowchart">Flowchart</a>
+        <a href="index.html#quiz" data-i18n="navQuiz">Quiz</a>
+        <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
+        <a href="references.html" data-i18n="navReferences">References</a>
+        <a href="about.html" class="active-nav" data-i18n="navAbout">About &amp; Docs</a>
+      </nav>
+
+      <div class="nav-utils">
+        <div class="lang-selector" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about-docs" style="margin-top: 30px;">
+      <h1>📖 Project Documentation &amp; Academic Overview</h1>
+      <p class="section-sub">Comprehensive technical specification, research background, and architectural documentation for the AB|Info digital health platform.</p>
+
+      <article class="detail-card">
+        <h2>📄 1. Project Title &amp; Abstract</h2>
+        <div style="background: #ffffff; padding: 18px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px;">
+          <h3 style="color: var(--primary-dark); font-size: 1.15rem; margin-bottom: 8px;">
+            EVALUATION OF QR CODE-BASED ANTIBIOTICS MEDICATION INFORMATION SYSTEM AND PATIENT ACCEPTANCE AT COMMUNITY PHARMACY
+          </h3>
+          <p style="color: var(--text); font-size: 0.95rem; line-height: 1.7;">
+            <strong>Abstract:</strong> Antimicrobial resistance (AMR) constitutes one of the foremost global public health emergencies. <strong>AB|Info</strong> is an evidence-based digital health intervention and open-access electronic Patient Information Leaflet (e-PIL) system designed to bridge the communication gap between pharmacists and patients in community retail settings. By leveraging quick response (QR) codes printed on dispensing strips, patients gain immediate access to localized, multilingual (English, Hindi, Kannada) dosage instructions, adverse effect warnings, and stewardship reminders.
+          </p>
+        </div>
+      </article>
+
+      <article class="detail-card">
+        <h2>💻 2. Technology Stack &amp; Architecture</h2>
+        <div class="spectrum-grid" style="margin-top: 14px;">
+          <div class="spectrum-item"><strong>Frontend Core:</strong> <span>HTML5 &amp; Semantic Web</span></div>
+          <div class="spectrum-item"><strong>Styling &amp; UX:</strong> <span>CSS3 Variables &amp; 3D Transforms</span></div>
+          <div class="spectrum-item"><strong>Client Engine:</strong> <span>Vanilla JavaScript (ES6+)</span></div>
+          <div class="spectrum-item"><strong>Data Visualization:</strong> <span>Chart.js &amp; Responsive Canvas</span></div>
+          <div class="spectrum-item"><strong>PWA &amp; Offline:</strong> <span>Service Worker Cache API</span></div>
+          <div class="spectrum-item"><strong>Form Handling:</strong> <span>Netlify Forms</span></div>
+        </div>
+      </article>
+
+      <!-- Feedback Form -->
+      <section id="contact" style="margin-top: 40px;">
+        <h2>📬 Contact &amp; Researcher Feedback</h2>
+        <div style="background: var(--bg-light); border: 1px solid #cbd5e1; border-radius: var(--radius); padding: 28px; max-width: 700px; margin: 20px auto 0;">
+          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="contactForm">
+            <input type="hidden" name="form-name" value="contact" />
+            <p style="display: none;"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+
+            <div style="margin-bottom: 16px;">
+              <label for="name" style="display: block; font-weight: 600; margin-bottom: 6px;">Your Full Name *</label>
+              <input type="text" id="name" name="name" required placeholder="e.g. Dr. Priya Sharma" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;" />
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label for="email" style="display: block; font-weight: 600; margin-bottom: 6px;">Email Address *</label>
+              <input type="email" id="email" name="email" required placeholder="e.g. priya@hospital.org" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;" />
+            </div>
+
+            <div style="margin-bottom: 20px;">
+              <label for="message" style="display: block; font-weight: 600; margin-bottom: 6px;">Message / Feedback *</label>
+              <textarea id="message" name="message" rows="4" required placeholder="Share your suggestions..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit;"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="border: none; cursor: pointer; width: 100%;">
+              ✉️ Send Message via Netlify
+            </button>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="navbar.js"></script>
+</body>
+</html>
