@@ -494,7 +494,7 @@ const antibiotics = [
     brands: ["Azithral", "Azee", "Zithromax", "Azimax"],
     drugClass: "Macrolides",
     aware: "Watch",
-    schedule: "Schedule H1",
+    schedule: "Schedule H",
     color: "#ca8a04",
     shortDesc: "A convenient once-daily macrolide with sustained intracellular tissue concentrations, ideal for atypical chest bugs.",
     works: "Reversibly binds the 50S ribosomal subunit, preventing bacterial transpeptidation and protein synthesis.",
@@ -514,7 +514,7 @@ const antibiotics = [
     ],
     warnings: [
       "CARDIAC WARNING: Can cause abnormal heart rhythms (prolonged QT interval, Torsades de Pointes) in susceptible patients.",
-      "Schedule H1 drug: must not be dispensed without a registered prescription."
+      "Schedule H drug: must not be dispensed without a registered prescription."
     ],
     tip: "Azithral (Alembic) became a household name across India during the COVID-19 pandemic."
   },
@@ -524,7 +524,7 @@ const antibiotics = [
     brands: ["Claribid", "Crixan", "Synclar", "Biaxin"],
     drugClass: "Macrolides",
     aware: "Watch",
-    schedule: "Schedule H1",
+    schedule: "Schedule H",
     color: "#a16207",
     shortDesc: "An acid-stable macrolide and core pillar of Helicobacter pylori peptic ulcer eradication regimens.",
     works: "Inhibits bacterial protein translation by binding to 23S rRNA in the 50S ribosomal subunit.",
@@ -617,7 +617,7 @@ const antibiotics = [
     brands: ["Ciplox", "Cifran", "Ciprolet", "Zoxan"],
     drugClass: "Fluoroquinolones",
     aware: "Watch",
-    schedule: "Schedule H1",
+    schedule: "Schedule H",
     color: "#dc2626",
     shortDesc: "A potent Gram-negative fluoroquinolone now heavily restricted due to widespread community antimicrobial resistance.",
     works: "Inhibits bacterial DNA gyrase (topoisomerase II) and topoisomerase IV, preventing DNA replication and repair.",
@@ -640,7 +640,7 @@ const antibiotics = [
     warnings: [
       "BLACK BOX WARNING: Increased risk of tendonitis and Achilles tendon rupture (higher risk in elderly and oral steroid users).",
       "Can cause peripheral neuropathy and central nervous system toxicity (anxiety, tremors, seizures).",
-      "Schedule H1 drug: sale records must be retained for 3 years."
+      "Schedule H drug: sale records must be retained for 3 years."
     ],
     tip: "Resistance in Indian E. coli and Salmonella isolates exceeds 70–80%, severely limiting empiric use."
   },
@@ -680,7 +680,7 @@ const antibiotics = [
     brands: ["Norflox", "Uriflox", "Bacigyl"],
     drugClass: "Fluoroquinolones",
     aware: "Watch",
-    schedule: "Schedule H1",
+    schedule: "Schedule H",
     color: "#991b1b",
     shortDesc: "A urinary fluoroquinolone with poor systemic absorption but high concentration in the urinary bladder and intestinal lumen.",
     works: "Inhibits bacterial DNA gyrase; concentrated primarily in urine and feces.",
@@ -710,7 +710,7 @@ const antibiotics = [
     brands: ["Septran", "Bactrim DS", "Ciplin"],
     drugClass: "Sulfonamides & Folate Blockers",
     aware: "Access",
-    schedule: "Schedule H",
+    schedule: "Schedule H1",
     color: "#0891b2",
     shortDesc: "A synergistic antifolate combination blocking two sequential steps in bacterial folic acid synthesis.",
     works: "Sulfamethoxazole inhibits dihydropteroate synthase; Trimethoprim inhibits dihydrofolate reductase.",
@@ -837,8 +837,8 @@ const antibiotics = [
     name: "Linezolid",
     brands: ["Linospan", "Lizomac", "Zyvoxid", "Lizoforce"],
     drugClass: "Oxazolidinones",
-    aware: "Watch",
-    schedule: "Schedule H1",
+    aware: "Reserve",
+    schedule: "Schedule H",
     color: "#be123c",
     shortDesc: "A synthetic oxazolidinone with 100% oral bioavailability, essential for MRSA, VRE, and drug-resistant tuberculosis.",
     works: "Binds the 23S ribosomal RNA of the 50S subunit, preventing formation of the 70S initiation complex.",

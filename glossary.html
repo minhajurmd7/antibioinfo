@@ -8,6 +8,15 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f766e" />
+
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -24,7 +33,7 @@
       <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
         <a href="index.html" data-i18n="navHome">Home</a>
-        <a href="classes.html" data-i18n="navClasses">Classes (21)</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
         <a href="index.html#drugs" data-i18n="navDatabase">A–Z Catalog</a>
         <a href="index.html#resistance" data-i18n="navResistance">Resistance</a>
         <a href="index.html#flowchart" data-i18n="navFlowchart">Flowchart</a>
@@ -34,14 +43,25 @@
         <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
       </nav>
 
-      <div class="nav-utils">
+     <div class="nav-utils">
+        <!-- PWA Install Button (Hidden until browser triggers install prompt) -->
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
+          📲 <span>Install</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          🌙
+        </button>
+
+        <!-- Language Selector -->
         <div class="lang-selector" aria-label="Language selector">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="hi">हिन्दी</button>
           <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
         </div>
       </div>
-    </div>
+     </div> 
   </header>
 
   <section class="path-selector-bar">

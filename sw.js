@@ -1,7 +1,7 @@
-// ===== SERVICE WORKER FOR AB|INFO (OFFLINE PWA CACHE) =====
+// ===== SERVICE WORKER: CACHE-FIRST / OFFLINE STRATEGY =====
 const CACHE_NAME = "abinfo-pwa-v3";
 
-const ASSETS_TO_CACHE = [
+const OFFLINE_URLS = [
   "./",
   "./index.html",
   "./classes.html",
@@ -18,61 +18,53 @@ const ASSETS_TO_CACHE = [
   "./i18n.js",
   "./glossary.js",
   "./manifest.json",
-  "./favicon.svg"
 ];
 
-// Install Event: Cache Core Assets
-self.addEventListener("install", event => {
+// Install: Cache all core assets
+self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(OFFLINE_URLS);
+    }).then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-// Activate Event: Cleanup Old Cache Versions
-self.addEventListener("activate", event => {
+// Activate: Clean up old cache versions
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(keys => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
+        keys.map((key) => {
+          if (key !== CACHE_NAME) return caches.delete(key);
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// Fetch Event: Cache-First with Network Fallback
-self.addEventListener("fetch", event => {
+// Fetch: Serve from cache, fall back to network
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
 
-      return fetch(event.request).then(networkResponse => {
-        if (
-          !networkResponse ||
-          networkResponse.status !== 200 ||
-          networkResponse.type !== "basic"
-        ) {
-          return networkResponse;
+      return fetch(event.request).then((networkResponse) => {
+        // Cache external requests if successful
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
-        });
-
         return networkResponse;
       }).catch(() => {
-        // Offline fallback to homepage if route is not cached
-        return caches.match("./index.html");
+        // Fallback for HTML navigations when offline
+        const accept = event.request.headers.get("accept");
+        if (accept && accept.includes("text/html")) {
+          return caches.match("index.html");
+        }
       });
     })
   );

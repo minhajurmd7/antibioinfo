@@ -4,10 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Classes of Antibiotics in India | AB|Info</title>
-  <meta name="description" content="Explore all 21 antibiotic classes in India: mechanisms of action, spectrum of activity, WHO AWaRe categories, and Indian brands." />
+  <meta name="description" content="Explore all 24 antibiotic classes in India: mechanisms of action, spectrum of activity, WHO AWaRe categories, and Indian brands." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f766e" />
+
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -26,7 +35,7 @@
       <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
         <a href="index.html" data-i18n="navHome">Home</a>
-        <a href="classes.html" class="active-nav">Classes (21)</a>
+        <a href="classes.html" class="active-nav">Classes (24)</a>
         <a href="index.html#drugs" data-i18n="navDatabase">A–Z Catalog</a>
         <a href="index.html#resistance" data-i18n="navResistance">Resistance</a>
         <a href="index.html#flowchart" data-i18n="navFlowchart">Flowchart</a>
@@ -36,14 +45,25 @@
         <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
       </nav>
 
-      <div class="nav-utils">
+     <div class="nav-utils">
+        <!-- PWA Install Button (Hidden until browser triggers install prompt) -->
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
+          📲 <span>Install</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          🌙
+        </button>
+
+        <!-- Language Selector -->
         <div class="lang-selector" aria-label="Language selector">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="hi">हिन्दी</button>
           <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
         </div>
       </div>
-    </div>
+     </div> 
   </header>
 
   <!-- Dual Learning Path Banner -->
@@ -84,7 +104,7 @@
           <h4>Navigation</h4>
           <ul class="footer-links">
             <li><a href="index.html#drugs">Antibiotic Database</a></li>
-            <li><a href="classes.html">Drug Classes (21)</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
             <li><a href="index.html#resistance">Resistance Tracker</a></li>
             <li><a href="index.html#quiz">Safety Quiz</a></li>
             <li><a href="glossary.html">Glossary</a></li>
@@ -95,7 +115,6 @@
           <ul class="footer-links">
             <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
             <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
-            <li><a href="about.html#contact">Contact Form</a></li>
           </ul>
         </div>
       </div>

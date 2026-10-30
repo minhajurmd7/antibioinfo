@@ -21,8 +21,8 @@ const translations = {
     searchPlaceholder: "🔍 Search drug name, brand (e.g. Novamox, Ciplox), or condition...",
     heroNote: "⚕️ Educational resource for pharmacy & healthcare education — not clinical medical advice.",
     browseClassesTitle: "Browse by Antibiotic Class",
-    browseClassesSubtitle: "Explore all 21 antibiotic families including Penicillins, Cephalosporins, Carbapenems, and Polymyxins with mechanisms, spectra, and Indian market brands.",
-    browseClassesBtn: "Open Classes of Antibiotics (21) →",
+    browseClassesSubtitle: "Explore all 24 antibiotic families including Penicillins, Cephalosporins, Carbapenems, and Polymyxins with mechanisms, spectra, and Indian market brands.",
+    browseClassesBtn: "Open Classes of Antibiotics (24) →",
     commonAntibioticsTitle: "Common Antibiotics",
     allCategories: "All Categories",
     whoAccess: "🟢 WHO Access",
@@ -37,7 +37,7 @@ const translations = {
     safetySuperbugsTitle: "🦠 Fight superbugs",
     safetySuperbugsDesc: "Misuse and over-the-counter dispensing without culture sensitivity are primary drivers of multi-drug resistance in India.",
     redLineTitle: "🔴 The 'Medicines with a Red Line' Campaign",
-    redLineDesc: "In India, antibiotics and potent prescription medicines feature a prominent vertical red line on their packaging strip. This indicates that the medicine falls under Schedule H or Schedule H1 of the Drugs and Cosmetics Rules and must NEVER be consumed without a registered doctor's prescription.",
+    redLineDesc: "In India, antibiotics and potent prescription medicines feature a prominent <strong>vertical red line</strong> on their packaging strip. This indicates that the medicine falls under <strong>Schedule H or Schedule H1</strong> of the Drugs and Cosmetics Rules and must NEVER be consumed without a doctor's prescription.",
     resistanceTitle: "🦠 Resistance Reality: Bengaluru & India",
     resistanceIntro: "Antibiotic resistance is an urgent public health reality in Karnataka. Surveillance data from tertiary hospital networks and city wastewater analysis demonstrate rising resistance across first- and second-line molecules.",
     quizTitle: "🧠 Test Your Antibiotic Safety IQ (10-MCQ Quiz)",
@@ -66,8 +66,8 @@ const translations = {
     searchPlaceholder: "🔍 दवा का नाम, ब्रांड (उदा. Novamox, Ciplox) या बीमारी खोजें...",
     heroNote: "⚕️ फार्मेसी एवं स्वास्थ्य शिक्षा हेतु शैक्षिक संसाधन — चिकित्सीय परामर्श नहीं।",
     browseClassesTitle: "एंटीबायोटिक वर्गों के आधार पर देखें",
-    browseClassesSubtitle: "पेनिसिलिन, सेफलोस्पोरिन, कार्बापेनेम सहित सभी 21 वर्गों की कार्यप्रणाली और भारतीय ब्रांड जानें।",
-    browseClassesBtn: "सभी 21 एंटीबायोटिक वर्ग देखें →",
+    browseClassesSubtitle: "पेनिसिलिन, सेफलोस्पोरिन, कार्बापेनेम सहित सभी 24 वर्गों की कार्यप्रणाली और भारतीय ब्रांड जानें।",
+    browseClassesBtn: "सभी 24 एंटीबायोटिक वर्ग देखें →",
     commonAntibioticsTitle: "प्रमुख एंटीबायोटिक्स",
     allCategories: "सभी श्रेणियां",
     whoAccess: "🟢 WHO एक्सेस (Access)",
@@ -82,7 +82,7 @@ const translations = {
     safetySuperbugsTitle: "🦠 सुपरबग्स से बचें",
     safetySuperbugsDesc: "बिना जांच और पर्चे के एंटीबायोटिक लेना भारत में दवा प्रतिरोध (Drug Resistance) का मुख्य कारण है।",
     redLineTitle: "🔴 'लाल लकीर वाली दवाएं' अभियान",
-    redLineDesc: "भारत में एंटीबायोटिक दवाओं के पैकेट पर एक लाल खड़ी लकीर (Red Line) होती है। यह दर्शाती है कि यह दवा शेड्यूल H/H1 के अंतर्गत आती है और इसे बिना डॉक्टर के पर्चे के नहीं खरीदा जा सकता।",
+    redLineDesc: "भारत में एंटीबायोटिक दवाओं के पैकेट पर एक <strong>लाल खड़ी लकीर (Red Line)</strong> होती है। यह दर्शाती है कि यह दवा <strong>शेड्यूल H या H1</strong> के अंतर्गत आती है और इसे बिना डॉक्टर के पर्चे के नहीं खरीदा जा सकता।",
     resistanceTitle: "🦠 एंटीबायोटिक प्रतिरोध की वास्तविकता: भारत और बेंगलुरु",
     resistanceIntro: "कर्नाटक और पूरे भारत में एंटीबायोटिक प्रतिरोध एक गंभीर समस्या बन चुका है। अस्पतालों और अपशिष्ट जल निगरानी के आंकड़े इसकी पुष्टि करते हैं।",
     quizTitle: "🧠 एंटीबायोटिक सुरक्षा क्विज (10 प्रश्न)",
@@ -111,8 +111,8 @@ const translations = {
     searchPlaceholder: "🔍 ಔಷಧದ ಹೆಸರು, ಬ್ರ್ಯಾಂಡ್ (ಉದಾ. Novamox, Ciplox) ಅಥವಾ ಕಾಯಿಲೆ ಹುಡುಕಿ...",
     heroNote: "⚕️ ಫಾರ್ಮಸಿ ಮತ್ತು ಆರೋಗ್ಯ ಶಿಕ್ಷಣಕ್ಕಾಗಿ ಶೈಕ್ಷಣಿಕ ಸಂಪನ್ಮೂಲ — ವೈದ್ಯಕೀಯ ಸಲಹೆಯಲ್ಲ.",
     browseClassesTitle: "ವರ್ಗಗಳ ಪ್ರಕಾರ ವೀಕ್ಷಿಸಿ",
-    browseClassesSubtitle: "ಪೆನಿಸಿಲಿನ್, ಸೆಫಲೋಸ್ಪೊರಿನ್, ಕಾರ್ಬಾಪೆನೆಮ್ ಸೇರಿದಂತೆ ಎಲ್ಲಾ 21 ವರ್ಗಗಳ ವಿವರಗಳನ್ನು ತಿಳಿಯಿರಿ.",
-    browseClassesBtn: "ಎಲ್ಲಾ 21 ವರ್ಗಗಳನ್ನು ನೋಡಿ →",
+    browseClassesSubtitle: "ಪೆನಿಸಿಲಿನ್, ಸೆಫಲೋಸ್ಪೊರಿನ್, ಕಾರ್ಬಾಪೆನೆಮ್ ಸೇರಿದಂತೆ ಎಲ್ಲಾ 24 ವರ್ಗಗಳ ವಿವರಗಳನ್ನು ತಿಳಿಯಿರಿ.",
+    browseClassesBtn: "ಎಲ್ಲಾ 24 ವರ್ಗಗಳನ್ನು ನೋಡಿ →",
     commonAntibioticsTitle: "ಪ್ರಮುಖ ಆಂಟಿಬಯೋಟಿಕ್ಸ್",
     allCategories: "ಎಲ್ಲಾ ವರ್ಗಗಳು",
     whoAccess: "🟢 WHO ಆಕ್ಸೆಸ್ (Access)",
@@ -127,7 +127,7 @@ const translations = {
     safetySuperbugsTitle: "🦠 ಸೂಪರ್‌ಬಗ್‌ಗಳ ವಿರುದ್ಧ ಜಾಗೃತಿ",
     safetySuperbugsDesc: "ಪರೀಕ್ಷೆ ಇಲ್ಲದೆ ಮತ್ತು ಚೀಟಿ ಇಲ್ಲದೆ ಆಂಟಿಬಯೋಟಿಕ್ ಸೇವಿಸುವುದು ಭಾರತದಲ್ಲಿ ಔಷಧ ಪ್ರತಿರೋಧಕ್ಕೆ ಮುಖ್ಯ ಕಾರಣವಾಗಿದೆ.",
     redLineTitle: "🔴 'ಕೆಂಪು ಗೆರೆಯ ಔಷಧಿಗಳು' ಅಭಿಯಾನ",
-    redLineDesc: "ಭಾರತದಲ್ಲಿ ಆಂಟಿಬಯೋಟಿಕ್ ಪ್ಯಾಕೆಟ್‌ಗಳ ಮೇಲೆ ಲಂಬವಾದ ಕೆಂಪು ಗೆರೆ (Red Line) ಇರುತ್ತದೆ. ಇದು ಷೆಡ್ಯೂಲ್ H ಅಥವಾ H1 ಅಡಿಯಲ್ಲಿ ಬರುವ ಔಷಧಿಯಾಗಿದ್ದು, ವೈದ್ಯರ ಚೀಟಿ ಇಲ್ಲದೆ ಖರೀದಿಸುವುದು ನಿಷಿದ್ಧ.",
+    redLineDesc: "ಭಾರತದಲ್ಲಿ ಆಂಟಿಬಯೋಟಿಕ್ ಪ್ಯಾಕೆಟ್‌ಗಳ ಮೇಲೆ <strong>ಲಂಬವಾದ ಕೆಂಪು ಗೆರೆ (Red Line)</strong> ಇರುತ್ತದೆ. ಇದು <strong>ಷೆಡ್ಯೂಲ್ H ಅಥವಾ H1</strong> ಅಡಿಯಲ್ಲಿ ಬರುವ ಔಷಧಿಯಾಗಿದ್ದು, ವೈದ್ಯರ ಚೀಟಿ ಇಲ್ಲದೆ ಖರೀದಿಸುವುದು ನಿಷಿದ್ಧ.",
     resistanceTitle: "🦠 ಔಷಧ ಪ್ರತಿರೋಧದ ವಾಸ್ತವ: ಬೆಂಗಳೂರು ಮತ್ತು ಭಾರತ",
     resistanceIntro: "ಕರ್ನಾಟಕದಲ್ಲಿ ಆಂಟಿಬಯೋಟಿಕ್ ಪ್ರತಿರೋಧ ಗಂಭೀರ ಸಮಸ್ಯೆಯಾಗಿದೆ. ಆಸ್ಪತ್ರೆಗಳು ಮತ್ತು ಬೆಂಗಳೂರಿನ ತ್ಯಾಜ್ಯನೀರಿನ ಮಾದರಿಗಳು ಇದನ್ನು ಸ್ಪಷ್ಟಪಡಿಸುತ್ತವೆ.",
     quizTitle: "🧠 ಆಂಟಿಬಯೋಟಿಕ್ ಸುರಕ್ಷತಾ ರಸಪ್ರಶ್ನೆ (10 ಪ್ರಶ್ನೆಗಳು)",
@@ -158,21 +158,80 @@ function setLanguage(lang) {
   document.querySelectorAll("[data-i18n]").forEach(elem => {
     const key = elem.getAttribute("data-i18n");
     if (translations[lang] && translations[lang][key]) {
-      elem.textContent = translations[lang][key];
+      if (key === "redLineDesc") {
+        elem.innerHTML = translations[lang][key];
+      } else {
+        elem.textContent = translations[lang][key];
+      }
     }
   });
 
-  // Translate placeholder attributes if present
+// Translate placeholder attributes if present across all pages
   const searchInput = document.getElementById("searchInput");
   if (searchInput && translations[lang].searchPlaceholder) {
     searchInput.setAttribute("placeholder", translations[lang].searchPlaceholder);
   }
+  const classSearchInput = document.getElementById("classSearchInput");
+  if (classSearchInput) {
+    classSearchInput.setAttribute("placeholder", lang === "hi" ? "🔍 दवा वर्ग, रोगाणु या कार्यप्रणाली खोजें..." : lang === "kn" ? "🔍 ಔಷಧ ವರ್ಗ, ರೋಗಾಣು ಹುಡುಕಿ..." : "🔍 Search class name, bug, mechanism (e.g. Penicillins, MRSA, Carbapenems)...");
+  }
+  const glossarySearch = document.getElementById("glossarySearch");
+  if (glossarySearch) {
+    glossarySearch.setAttribute("placeholder", lang === "hi" ? "🔍 शब्द या संक्षिप्त नाम खोजें (उदा. MRSA, NDM-1, ESBL)..." : lang === "kn" ? "🔍 ಪದಕೋಶದಲ್ಲಿ ಹುಡುಕಿ (ಉದಾ. MRSA, NDM-1, ESBL)..." : "🔍 Search term, acronym (e.g. MRSA, NDM-1, ESBL, MIC)...");
+  }
+// Dispatch custom event for dynamic components
+  window.dispatchEvent(new CustomEvent("abinfo:languageChanged", { detail: { lang } }));
+}
+
+// Global Learning Path Switcher
+function setLearningPath(path) {
+  const currentPath = (path === "academic") ? "academic" : "public";
+  localStorage.setItem("abinfo_learning_path", currentPath);
+
+  // 1. Sync top banner buttons
+  document.querySelectorAll(".path-btn").forEach(btn => {
+    const isTarget = btn.getAttribute("data-path") === currentPath;
+    btn.classList.toggle("active", isTarget);
+    btn.setAttribute("aria-pressed", isTarget);
+  });
+
+  // 2. Sync in-page toggle buttons on index.html
+  const simpleBtn = document.getElementById("viewSimpleBtn");
+  const detailedBtn = document.getElementById("viewDetailedBtn");
+  if (simpleBtn) simpleBtn.classList.toggle("active", currentPath === "public");
+  if (detailedBtn) detailedBtn.classList.toggle("active", currentPath === "academic");
+
+  // 3. Toggle layout classes on body
+  document.body.classList.toggle("path-academic", currentPath === "academic");
+  document.body.classList.toggle("path-public", currentPath === "public");
+
+  // 4. Notify script.js to re-render the homepage drug cards
+  window.dispatchEvent(new CustomEvent("abinfo:pathChanged", { detail: { path: currentPath } }));
+}
+
+// Global WhatsApp Share Helper
+function shareOnWhatsApp(customText) {
+  const text = customText || `💊 Check out AB|Info: Evidence-based Antibiotic Information & AMR Portal: ${window.location.href}`;
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
 }
 
 // Initialize on DOM ready
 document.addEventListener("DOMContentLoaded", () => {
   setLanguage(currentLang);
 
+  // Initialize saved learning path
+  const savedPath = localStorage.getItem("abinfo_learning_path") || "public";
+  setLearningPath(savedPath);
+
+  // Bind click events on path buttons
+  document.querySelectorAll(".path-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const selectedPath = btn.getAttribute("data-path");
+      setLearningPath(selectedPath);
+    });
+  });
+
+  // Bind click events on language buttons
   document.querySelectorAll(".lang-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const selectedLang = btn.getAttribute("data-lang");

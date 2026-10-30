@@ -1,4 +1,15 @@
-// ===== ALL 21 ANTIBIOTIC CLASSES AVAILABLE IN INDIA =====
+// Safe HTML escape helper
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// ===== ALL 24 ANTIBIOTIC CLASSES AVAILABLE IN INDIA =====
 const antibioticClasses = [
   {
     id: "natural-penicillins",
@@ -296,7 +307,7 @@ const antibioticClasses = [
     id: "oxazolidinones",
     icon: "🔺",
     name: "Oxazolidinones",
-    aware: "Watch",
+    aware: "Reserve",
     color: "#be123c",
     desc: "Modern synthetic Gram-positive specialists with 100% oral bioavailability against MRSA and Vancomycin-Resistant Enterococci (VRE).",
     mech: "Bind the 50S ribosomal subunit at the 23S rRNA interface, blocking formation of the 70S translation initiation complex.",
@@ -305,6 +316,50 @@ const antibioticClasses = [
     ],
     treats: ["Hospital MRSA pneumonia", "VRE bacteremia", "Complicated diabetic foot infections", "Drug-resistant TB regimens (XDR-TB)"],
     india: "Fully genericized in India; Linospan costs a fraction of Western prices, making oral MRSA therapy accessible."
+  },
+  {
+    id: "nitroimidazoles",
+    icon: "🧫",
+    name: "Nitroimidazoles",
+    aware: "Access",
+    color: "#ea580c",
+    desc: "Potent anti-anaerobic and antiprotozoal bactericidal agents famous for their strict alcohol contraindication.",
+    mech: "Reduced intracellularly in anaerobes to reactive nitro intermediates that cause DNA strand breaks.",
+    drugs: [
+      { n: "Metronidazole", id: "metronidazole", b: "Metrogyl, Flagyl, Aristogyl" },
+      { n: "Tinidazole", id: null, b: "Tiniba, Fasigyn" }
+    ],
+    treats: ["Amebic liver abscess", "Bacterial vaginosis", "Intra-abdominal anaerobic sepsis", "Dental abscesses"],
+    india: "Metrogyl (JB Chemicals) is among India's most ubiquitous low-cost essential medicines."
+  },
+  {
+    id: "lincosamides",
+    icon: "🦷",
+    name: "Lincosamides",
+    aware: "Access",
+    color: "#db2777",
+    desc: "Anaerobic specialists and bacterial toxin inhibitors used in dental surgery, bone infections, and CA-MRSA.",
+    mech: "Bind the 50S ribosomal subunit, halting peptide elongation and shutting down exotoxin synthesis.",
+    drugs: [
+      { n: "Clindamycin", id: "clindamycin", b: "Dalacin C, Clindac-A, Clincin" },
+      { n: "Lincomycin", id: null, b: "Lynx" }
+    ],
+    treats: ["Dental abscesses", "MRSA skin & wound infections", "Aspiration pneumonia", "Acne vulgaris (topical)"],
+    india: "Dalacin C (Pfizer) is standard empiric therapy in dental clinics across Bengaluru."
+  },
+  {
+    id: "nitrofurans",
+    icon: "🚽",
+    name: "Nitrofurans",
+    aware: "Access",
+    color: "#15803d",
+    desc: "Targeted urinary antiseptics maintaining high cure rates against resistant E. coli bladder infections.",
+    mech: "Activated by bacterial nitroreductases into reactive intermediates that attack ribosomes and DNA.",
+    drugs: [
+      { n: "Nitrofurantoin", id: "nitrofurantoin", b: "Martifur, Niftran, Urifast" }
+    ],
+    treats: ["Acute uncomplicated lower UTI (cystitis)", "Recurrent UTI prevention"],
+    india: "Martifur (Centaur) is prioritized in Indian urology guidelines due to low resistance in E. coli."
   },
   {
     id: "polymyxins",
@@ -340,7 +395,7 @@ function renderClasses(list) {
     classGrid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align:center; padding:50px 20px; color:var(--text-muted);">
         <p style="font-size:1.2rem;">😕 No antibiotic classes matched your search.</p>
-        <button class="btn-primary" onclick="resetClassSearch()" style="margin-top:14px;">Reset Search</button>
+        <button class="btn-primary" onclick="resetClassSearch()" style="margin-top:14px; border:none; cursor:pointer;">Reset Search</button>
       </div>`;
     return;
   }
@@ -358,48 +413,48 @@ function renderClasses(list) {
     card.innerHTML = `
       ${bannerHtml}
       <div class="class-body">
-        <h3>${cls.icon} ${cls.name}</h3>
+        <h3>${cls.icon} ${escapeHtml(cls.name)}</h3>
         <div style="display:flex; flex-wrap:wrap; gap:6px; margin: 8px 0 10px;">
-          <span class="badge" style="background:${cls.color}">${cls.name.split(" ")[0]}</span>
+          <span class="badge" style="background:${cls.color}">${escapeHtml(cls.name.split(" ")[0])}</span>
           <span class="badge aware-${cls.aware.toLowerCase()}">WHO ${cls.aware}</span>
         </div>
-        <p class="class-desc">${cls.desc}</p>
+        <p class="class-desc">${escapeHtml(cls.desc)}</p>
 
         <details class="class-details">
           <summary>View ${cls.drugs.length} drugs, mechanism &amp; India details ▾</summary>
 
           <div class="mech-box">
-            <strong>🧬 How they work:</strong> ${cls.mech}
+            <strong>🧬 How they work:</strong> ${escapeHtml(cls.mech)}
           </div>
 
-          <div style="margin: 12px 0;">
+           <div style="margin: 12px 0;">
             <strong style="font-size:0.88rem; color:var(--primary-dark);">🎯 Common Clinical Uses:</strong>
             <ul class="chip-list" style="margin-top:6px;">
-              ${cls.treats.map(t => `<li>${t}</li>`).join("")}
+              ${cls.treats.map(t => `<li>${escapeHtml(t)}</li>`).join("")}
             </ul>
           </div>
 
-          <h4>💊 Key Drugs in India:</h4>
+          <h4 style="margin:10px 0 6px;">💊 Key Drugs in India:</h4>
           <ul class="drug-rows">
             ${cls.drugs.map(d => {
               if (d.id) {
                 return `<li>
-                  <a href="drug.html?drug=${d.id}" style="text-decoration:none; color:var(--primary); font-weight:700;">
-                    ${d.n} ↗
+                  <a href="drug.html?drug=${encodeURIComponent(d.id)}" style="text-decoration:none; color:var(--primary); font-weight:700;">
+                    ${escapeHtml(d.n)} ↗
                   </a>
-                  <span class="brand-names">${d.b}</span>
+                  <span class="brand-names" style="color:var(--text-muted); font-size:0.85rem;"> (${escapeHtml(d.b)})</span>
                 </li>`;
               } else {
                 return `<li>
-                  <strong>${d.n}</strong>
-                  <span class="brand-names">${d.b}</span>
+                  <strong>${escapeHtml(d.n)}</strong>
+                  <span class="brand-names" style="color:var(--text-muted); font-size:0.85rem;"> (${escapeHtml(d.b)})</span>
                 </li>`;
               }
             }).join("")}
           </ul>
 
           <div class="class-india">
-            <strong>📍 Indian Market Insight:</strong> ${cls.india}
+            <strong>📍 Indian Market Insight:</strong> ${escapeHtml(cls.india)}
           </div>
         </details>
       </div>`;

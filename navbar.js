@@ -1,96 +1,124 @@
-// ===== NAVBAR, LEARNING PATH & PWA CONTROLLER =====
+// ===== NAVBAR, PWA CONTROLLER & DARK MODE =====
 
-// 1. Mobile Menu Toggle & Accessibility
-const menuBtn = document.getElementById("menuBtn");
-const navLinks = document.getElementById("navLinks");
+// 1. Theme Management (Light / Dark)
+const THEME_KEY = "abinfo_theme";
 
-if (menuBtn && navLinks) {
-  menuBtn.addEventListener("click", () => {
-    const isOpen = navLinks.classList.toggle("open");
-    menuBtn.setAttribute("aria-expanded", isOpen);
-    menuBtn.textContent = isOpen ? "✕" : "☰";
-  });
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem(THEME_KEY, theme);
 
-  // Close menu when clicking any nav link
-  document.querySelectorAll(".nav-links a").forEach(link => {
-    link.addEventListener("click", () => {
-      navLinks.classList.remove("open");
-      menuBtn.setAttribute("aria-expanded", "false");
-      menuBtn.textContent = "☰";
-    });
-  });
+  const themeBtn = document.getElementById("themeToggleBtn");
+  if (themeBtn) {
+    themeBtn.textContent = theme === "dark" ? "☀️" : "🌙";
+    themeBtn.setAttribute("title", theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode");
+  }
+
+  // Update mobile browser status bar theme color
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) {
+    metaTheme.setAttribute("content", theme === "dark" ? "#0f172a" : "#0f766e");
+  }
 }
 
-// 2. Dual Learning Path Mode ("public" vs "academic")
-let currentPath = localStorage.getItem("abinfo_learning_path") || "public";
-
-function setLearningPath(path) {
-  currentPath = path;
-  localStorage.setItem("abinfo_learning_path", path);
-
-  if (path === "academic") {
-    document.body.classList.add("path-academic");
-    document.body.classList.remove("path-public");
+function initTheme() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme) {
+    applyTheme(savedTheme);
   } else {
-    document.body.classList.add("path-public");
-    document.body.classList.remove("path-academic");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
   }
 
-  // Update active status on path buttons
-  document.querySelectorAll(".path-btn").forEach(btn => {
-    const isSelected = btn.getAttribute("data-path") === path;
-    btn.classList.toggle("active", isSelected);
-    btn.setAttribute("aria-pressed", isSelected);
-  });
-
-  // Sync index.html view toggle buttons if present
-  const viewSimpleBtn = document.getElementById("viewSimpleBtn");
-  const viewDetailedBtn = document.getElementById("viewDetailedBtn");
-  if (viewSimpleBtn && viewDetailedBtn) {
-    if (path === "academic") {
-      viewDetailedBtn.classList.add("active");
-      viewSimpleBtn.classList.remove("active");
-    } else {
-      viewSimpleBtn.classList.add("active");
-      viewDetailedBtn.classList.remove("active");
-    }
-  }
-
-  // Re-render drug cards if on catalog page
-  if (typeof renderDrugsFromCurrentState === "function") {
-    renderDrugsFromCurrentState();
-  }
-}
-
-// 3. WhatsApp Share Helper
-function shareOnWhatsApp(customText) {
-  const currentUrl = window.location.href;
-  const defaultText = `💊 Check out AB|Info — India's Antibiotic Medicine Information & AMR Awareness Portal: ${currentUrl}`;
-  const textToShare = customText || defaultText;
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
-  window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-}
-
-// 4. Initialization & Service Worker Registration
-document.addEventListener("DOMContentLoaded", () => {
-  // Apply saved learning path
-  setLearningPath(currentPath);
-
-  // Attach click listeners to path toggle buttons
-  document.querySelectorAll(".path-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const selected = btn.getAttribute("data-path");
-      setLearningPath(selected);
+  const themeBtn = document.getElementById("themeToggleBtn");
+  if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      applyTheme(current === "dark" ? "light" : "dark");
     });
-  });
+  }
+}
 
-  // Register PWA Service Worker for offline capability
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js").then(registration => {
-        console.log("AB|Info ServiceWorker registered with scope:", registration.scope);
-      }).catch(err => {
-        console.warn("ServiceWorker registration failed:", err);
+// 2. Service Worker Registration
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").then(
+      (reg) => console.log("AB|Info Service Worker Registered. Scope:", reg.scope),
+      (err) => console.log("Service Worker Registration Failed:", err)
+    );
+  });
+}
+
+// 3. Upgraded PWA Install Prompt Handler
+let deferredPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  const installBtn = document.getElementById("pwaInstallBtn");
+  if (installBtn) {
+    installBtn.hidden = false;
+  }
+});
+
+// Bind click listener directly so clicking always gives feedback
+document.addEventListener("DOMContentLoaded", () => {
+  const installBtn = document.getElementById("pwaInstallBtn");
+  if (installBtn) {
+    installBtn.addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          alert("🎉 AB|Info is installing! Look for the AB|Info icon on your phone's Home Screen.");
+          installBtn.hidden = true;
+        }
+        deferredPrompt = null;
+      } else {
+        // Helpful fallback for iPhone or unsupported browsers
+        alert("📲 To install this Web App:\n\n1. Open your browser menu (⋮ on Android/Chrome or 'Share' on iPhone Safari)\n2. Tap 'Add to Home Screen'\n\nThen launch AB|Info directly from your phone's home screen!");
+      }
+    });
+  }
+});
+
+window.addEventListener("appinstalled", () => {
+  const installBtn = document.getElementById("pwaInstallBtn");
+  if (installBtn) installBtn.hidden = true;
+  console.log("AB|Info PWA installed successfully.");
+});
+
+// 4. Mobile Drawer Navbar Controller
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+
+  const menuBtn = document.getElementById("menuBtn");
+  const navLinks = document.getElementById("navLinks");
+
+  if (menuBtn && navLinks) {
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = navLinks.classList.toggle("nav-active");
+      navLinks.classList.toggle("open", isOpen);
+      menuBtn.setAttribute("aria-expanded", isOpen);
+      menuBtn.textContent = isOpen ? "✕" : "☰";
+    });
+
+    // Close mobile menu when tapping anywhere outside
+    document.addEventListener("click", (e) => {
+      if (!menuBtn.contains(e.target) && !navLinks.contains(e.target) && navLinks.classList.contains("nav-active")) {
+        navLinks.classList.remove("nav-active", "open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.textContent = "☰";
+      }
+    });
+
+    // Close mobile menu when tapping any navigation link
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("nav-active", "open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.textContent = "☰";
       });
     });
   }

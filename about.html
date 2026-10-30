@@ -8,6 +8,15 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f766e" />
+
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -24,7 +33,7 @@
       <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
         <a href="index.html" data-i18n="navHome">Home</a>
-        <a href="classes.html" data-i18n="navClasses">Classes (21)</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
         <a href="index.html#drugs" data-i18n="navDatabase">A–Z Catalog</a>
         <a href="index.html#resistance" data-i18n="navResistance">Resistance</a>
         <a href="index.html#flowchart" data-i18n="navFlowchart">Flowchart</a>
@@ -35,13 +44,24 @@
       </nav>
 
       <div class="nav-utils">
+        <!-- PWA Install Button (Hidden until browser triggers install prompt) -->
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
+          📲 <span>Install</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          🌙
+        </button>
+
+        <!-- Language Selector -->
         <div class="lang-selector" aria-label="Language selector">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="hi">हिन्दी</button>
           <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
         </div>
       </div>
-    </div>
+     </div> 
   </header>
 
   <main class="container">
@@ -51,13 +71,13 @@
 
       <article class="detail-card">
         <h2>📄 1. Project Title &amp; Abstract</h2>
-        <div style="background: #ffffff; padding: 18px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 10px;">
-          <h3 style="color: var(--primary-dark); font-size: 1.15rem; margin-bottom: 8px;">
-            EVALUATION OF QR CODE-BASED ANTIBIOTICS MEDICATION INFORMATION SYSTEM AND PATIENT ACCEPTANCE AT COMMUNITY PHARMACY
-          </h3>
-          <p style="color: var(--text); font-size: 0.95rem; line-height: 1.7;">
-            <strong>Abstract:</strong> Antimicrobial resistance (AMR) constitutes one of the foremost global public health emergencies. <strong>AB|Info</strong> is an evidence-based digital health intervention and open-access electronic Patient Information Leaflet (e-PIL) system designed to bridge the communication gap between pharmacists and patients in community retail settings. By leveraging quick response (QR) codes printed on dispensing strips, patients gain immediate access to localized, multilingual (English, Hindi, Kannada) dosage instructions, adverse effect warnings, and stewardship reminders.
-          </p>
+        <div style="background: var(--bg-card, #ffffff); padding: 18px; border-radius: 8px; border: 1px solid var(--border-color, #e2e8f0); margin-top: 10px;">
+           <h3 style="color: var(--primary-dark); font-size: 1.15rem; margin-bottom: 8px;">
+              ASSESSMENT OF ANTIBIOTIC DISPENSING PRACTICES AND DECISION MAKING FACTORS...
+           </h3>
+           <p style="color: var(--text-main, var(--text)); font-size: 0.95rem; line-height: 1.7;">
+              <strong>Abstract:</strong> Antimicrobial resistance (AMR)...
+           </p>
         </div>
       </article>
 
@@ -73,40 +93,37 @@
         </div>
       </article>
 
-      <!-- Feedback Form -->
-      <section id="contact" style="margin-top: 40px;">
-        <h2>📬 Contact &amp; Researcher Feedback</h2>
-        <div style="background: var(--bg-light); border: 1px solid #cbd5e1; border-radius: var(--radius); padding: 28px; max-width: 700px; margin: 20px auto 0;">
-          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="contactForm">
-            <input type="hidden" name="form-name" value="contact" />
-            <p style="display: none;"><label>Don’t fill this out: <input name="bot-field" /></label></p>
-
-            <div style="margin-bottom: 16px;">
-              <label for="name" style="display: block; font-weight: 600; margin-bottom: 6px;">Your Full Name *</label>
-              <input type="text" id="name" name="name" required placeholder="e.g. Dr. Priya Sharma" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;" />
-            </div>
-
-            <div style="margin-bottom: 16px;">
-              <label for="email" style="display: block; font-weight: 600; margin-bottom: 6px;">Email Address *</label>
-              <input type="email" id="email" name="email" required placeholder="e.g. priya@hospital.org" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;" />
-            </div>
-
-            <div style="margin-bottom: 20px;">
-              <label for="message" style="display: block; font-weight: 600; margin-bottom: 6px;">Message / Feedback *</label>
-              <textarea id="message" name="message" rows="4" required placeholder="Share your suggestions..." style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit;"></textarea>
-            </div>
-
-            <button type="submit" class="btn-primary" style="border: none; cursor: pointer; width: 100%;">
-              ✉️ Send Message via Netlify
-            </button>
-          </form>
-        </div>
-      </section>
     </section>
   </main>
 
   <footer role="contentinfo">
     <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+          <div class="footer-share-btn">
+            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#drugs">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
+            <li><a href="index.html#resistance">Resistance Tracker</a></li>
+            <li><a href="index.html#quiz">Safety Quiz</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Trust &amp; Science</h4>
+          <ul class="footer-links">
+            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
+            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
+          </ul>
+        </div>
+      </div>
       <div class="footer-bottom">
         <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
       </div>
