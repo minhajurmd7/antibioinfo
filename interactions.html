@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinical Drug-Drug Interaction Checker | AB|Info</title>
+  <meta name="description" content="Interactive multi-drug interaction checker for antibiotics, common co-prescribed medications, and dietary chelators with pharmacological mechanisms." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+
+  <!-- Instant Theme Loader (Prevents Dark Mode Flash) -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .interaction-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    @media (max-width: 880px) {
+      .interaction-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .drug-checklist {
+      max-height: 480px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color, #cbd5e1);
+      border-radius: 8px;
+      padding: 12px;
+      background: var(--bg-card, #ffffff);
+    }
+
+    .drug-check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.15s;
+    }
+
+    .drug-check-item:hover {
+      background: var(--bg-light, #f1f5f9);
+    }
+
+    .drug-check-item input {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .alert-card {
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border-left: 6px solid #dc2626;
+      box-shadow: var(--shadow);
+    }
+
+    .alert-card.major {
+      background: #fef2f2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+
+    .alert-card.moderate {
+      background: #fffbeb;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    .alert-card.minor {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      color: #1e40af;
+    }
+
+    .severity-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      margin-bottom: 6px;
+    }
+
+    .severity-pill.major { background: #fee2e2; color: #b91c1c; border: 1px solid #f87171; }
+    .severity-pill.moderate { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+    .severity-pill.minor { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+  </style>
+</head>
+<body>
+
+  <!-- Medical Disclaimer Top Banner -->
+  <aside class="top-disclaimer-banner" role="note" aria-label="Medical Disclaimer">
+    <div class="container">
+      <span data-i18n="disclaimerText">⚕️ Medical Disclaimer: AB|Info is strictly an educational project. Not medical advice. Always consult a registered medical practitioner.</span>
+    </div>
+  </aside>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="AB|Info Homepage">💊 AB|<span>Info</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" data-i18n="navHome">Home</a>
+        <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
+        <a href="dispense.html">🏷️ QR Dispenser</a>
+        <a href="calculator.html">🧮 Calculator</a>
+        <a href="interactions.html" class="active-nav">⚠️ Drug Interactions</a>
+        <a href="flowchart.html" data-i18n="navFlowchart">Flowchart</a>
+        <a href="resistance.html" data-i18n="navResistance">Resistance</a>
+        <a href="quiz.html" data-i18n="navQuiz">Quiz</a>
+        <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
+      </nav>
+
+      <div class="nav-utils">
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>📲 <span>Install</span></button>
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">🌙</button>
+        <div class="lang-selector" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
+        </div>
+      </div>
+    </div> 
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    <section id="interactions-section" style="margin-top: 36px; margin-bottom: 50px;">
+      
+      <!-- Page Header -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h1 style="font-size:2.1rem; margin-bottom:6px; color:var(--primary-dark);">
+            ⚠️ Multi-Drug Interaction Checker
+          </h1>
+          <p class="section-sub">
+            Select two or more medications, common co-prescribed drugs, or dietary chelators to inspect pharmacokinetic and pharmacodynamic interactions.
+          </p>
+        </div>
+        <span class="badge" style="background:#dc2626; font-size:0.85rem; padding:6px 14px;">
+          🔬 Clinical Safety Engine
+        </span>
+      </div>
+
+      <!-- Checker Interface Grid -->
+      <div class="interaction-grid">
+        
+        <!-- Left Column: Drug Selector Checklist -->
+        <div class="detail-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h2 style="font-size:1.15rem; margin:0; color:var(--primary-dark);">
+              📋 1. Select Medications (Pick 2+)
+            </h2>
+            <button type="button" onclick="clearAllSelections()" style="background:none; border:none; color:#2563eb; font-size:0.82rem; font-weight:700; cursor:pointer;">
+              Clear All
+            </button>
+          </div>
+
+          <!-- Quick Search Filter -->
+          <input type="text" id="drugFilterInput" placeholder="🔍 Filter list (e.g. Statin, Antacid, Cipro)..." oninput="filterChecklist()" style="width:100%; padding:8px 12px; border:1px solid var(--border-color, #cbd5e1); border-radius:6px; margin-bottom:12px; font-size:0.88rem; background:var(--bg-body, #ffffff); color:var(--text-main);" />
+
+          <div class="drug-checklist" id="drugChecklist">
+            <!-- Populated dynamically by JavaScript -->
+          </div>
+
+          <div style="margin-top:14px; font-size:0.85rem; color:var(--text-muted);">
+            Selected: <strong id="selectedCount" style="color:var(--primary);">0</strong> medications
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Clinical Alerts -->
+        <div>
+          <div class="detail-card">
+            <h2 style="font-size:1.15rem; margin-bottom:14px; color:var(--primary-dark);">
+              🔍 2. Clinical Interaction Analysis
+            </h2>
+
+            <div id="noSelectionMessage" style="text-align:center; padding:50px 20px; color:var(--text-muted);">
+              <span style="font-size:2.8rem; display:block; margin-bottom:10px;">💊+💊</span>
+              <p style="font-size:1.05rem; font-weight:600;">No medications selected yet.</p>
+              <p style="font-size:0.88rem; margin-top:4px;">Check two or more items on the left to analyze synergistic toxicity, chelation, or metabolic inhibition.</p>
+            </div>
+
+            <div id="interactionResults" style="display:none;"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Standard 3-Column Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+          <div class="footer-share-btn">
+            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="drugs.html">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
+            <li><a href="dispense.html">QR Dispenser</a></li>
+            <li><a href="calculator.html">Dosage Calculator</a></li>
+            <li><a href="interactions.html">Drug Interactions</a></li>
+            <li><a href="flowchart.html">Flowchart</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Trust &amp; Science</h4>
+          <ul class="footer-links">
+            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
+            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="i18n.js"></script>
+  <script src="navbar.js"></script>
+
+  <!-- Comprehensive Interaction Matrix Engine -->
+  <script>
+    const interactionDrugList = [
+      { id: "metronidazole", name: "Metronidazole (Metrogyl)", group: "Antibiotic" },
+      { id: "linezolid", name: "Linezolid (Linospan)", group: "Antibiotic" },
+      { id: "clarithromycin", name: "Clarithromycin (Claribid)", group: "Antibiotic" },
+      { id: "azithromycin", name: "Azithromycin (Azithral)", group: "Antibiotic" },
+      { id: "ciprofloxacin", name: "Ciprofloxacin (Ciplox)", group: "Antibiotic" },
+      { id: "levofloxacin", name: "Levofloxacin (Glevo)", group: "Antibiotic" },
+      { id: "doxycycline", name: "Doxycycline (Doxt-SL)", group: "Antibiotic" },
+      { id: "cotrimoxazole", name: "Cotrimoxazole (Septran DS)", group: "Antibiotic" },
+      { id: "amoxicillin", name: "Amoxicillin (Novamox)", group: "Antibiotic" },
+      { id: "cefuroxime", name: "Cefuroxime Axetil (Ceftum)", group: "Antibiotic" },
+      { id: "ceftriaxone", name: "Ceftriaxone (Monocef)", group: "Antibiotic" },
+      { id: "meropenem", name: "Meropenem (Meronem)", group: "Antibiotic" },
+      { id: "piperacillin-tazo", name: "Piperacillin + Tazobactam (Tazact)", group: "Antibiotic" },
+      { id: "vancomycin", name: "Vancomycin (Vanlid)", group: "Antibiotic" },
+      { id: "amikacin", name: "Amikacin / Gentamicin", group: "Antibiotic" },
+      { id: "clindamycin", name: "Clindamycin (Dalacin C)", group: "Antibiotic" },
+      
+      { id: "alcohol", name: "Alcohol / Ethanol (Beverages & Tonics)", group: "Dietary / Substance" },
+      { id: "antacids", name: "Antacids / Calcium / Iron (Gelusil, Digene, Ferrous Sulfate)", group: "Chelator" },
+      { id: "dairy", name: "Milk, Curd & Dairy Products", group: "Dietary Chelator" },
+      { id: "statins", name: "Statins (Atorvastatin, Simvastatin)", group: "Cardiovascular" },
+      { id: "warfarin", name: "Warfarin (Oral Anticoagulant)", group: "Cardiovascular" },
+      { id: "valproate", name: "Valproic Acid / Sodium Valproate (Epilepsy)", group: "Neurological" },
+      { id: "ssri", name: "SSRIs / SNRIs (Fluoxetine, Sertraline, Tramadol)", group: "Psychiatric / Analgesic" },
+      { id: "furosemide", name: "Loop Diuretics (Furosemide / Lasix)", group: "Cardiovascular / Renal" },
+      { id: "ace-inhibitors", name: "ACE Inhibitors / ARBs (Enalapril, Telmisartan)", group: "Cardiovascular" },
+      { id: "allopurinol", name: "Allopurinol (Gout)", group: "Metabolic" },
+      { id: "tyramine", name: "Aged Cheese, Draft Beer, Soy Sauce (Tyramine)", group: "Dietary" }
+    ];
+
+    const clinicalInteractions = [
+      {
+        pair: ["metronidazole", "alcohol"],
+        severity: "major",
+        title: "Severe Disulfiram-Like Reaction (Violent Toxicity)",
+        mech: "Metronidazole inhibits hepatic aldehyde dehydrogenase. Consuming alcohol leads to immediate toxic systemic accumulation of acetaldehyde.",
+        effect: "Violent vomiting, severe chest pain, throbbing headache, facial flushing, palpitations, and hemodynamic collapse.",
+        action: "STRICT CONTRAINDICATION: Strictly forbid alcohol consumption during treatment and for at least 72 hours (3 days) after the final dose."
+      },
+      {
+        pair: ["linezolid", "ssri"],
+        severity: "major",
+        title: "Fatal Serotonin Syndrome",
+        mech: "Linezolid is a reversible, non-selective Monoamine Oxidase (MAO-A/B) inhibitor. Co-administration with serotonergic agents causes massive synaptic serotonin excess.",
+        effect: "Hyperpyrexia (severe fever), tremor, shivering, delirium, rigidity, autonomic instability, seizures, and death.",
+        action: "Avoid combination. Washout period of 2 weeks required for most SSRIs (5 weeks for Fluoxetine) prior to linezolid initiation."
+      },
+      {
+        pair: ["linezolid", "tyramine"],
+        severity: "major",
+        title: "Hypertensive Crisis (Tyramine Pressor Effect)",
+        mech: "Inhibition of gastrointestinal MAO allows dietary tyramine to enter systemic circulation and release norepinephrine.",
+        effect: "Sudden dangerous surge in blood pressure, occipital headache, cardiac arrhythmia, and risk of intracranial hemorrhage.",
+        action: "Counsel patients to avoid aged cheeses, tap beer, fermented soya, and unpasteurized yeast products during therapy."
+      },
+      {
+        pair: ["clarithromycin", "statins"],
+        severity: "major",
+        title: "Severe Rhabdomyolysis & Acute Renal Failure",
+        mech: "Clarithromycin is a potent mechanism-based inhibitor of Cytochrome P450 3A4 (CYP3A4), shutting down the primary elimination pathway of Atorvastatin/Simvastatin.",
+        effect: "Extreme 5- to 10-fold surge in systemic statin levels, triggering acute skeletal muscle necrosis (rhabdomyolysis), dark tea-colored urine, and kidney shutdown.",
+        action: "CONTRAINDICATED: Suspend statin therapy entirely for the duration of the macrolide course."
+      },
+      {
+        pair: ["meropenem", "valproate"],
+        severity: "major",
+        title: "Loss of Seizure Control & Status Epilepticus",
+        mech: "Carbapenems inhibit valproic acid glucuronide hydrolysis and promote acylpeptide clearance, dropping serum valproate by 60–90% within 24 hours.",
+        effect: "Catastrophic loss of seizure control, prolonged convulsions, and refractory status epilepticus in epileptic patients.",
+        action: "CONTRAINDICATED: Avoid concurrent use. Utilize alternative broad-spectrum beta-lactams or alternative anticonvulsants (Levetiracetam)."
+      },
+      {
+        pair: ["piperacillin-tazo", "vancomycin"],
+        severity: "major",
+        title: "Synergistic Acute Kidney Injury (AKI)",
+        mech: "Co-administration triggers synergistic renal proximal tubular oxidative stress and interstitial nephritis.",
+        effect: "Sharp 3-fold elevation in Acute Kidney Injury incidence compared to Vancomycin with Cefepime.",
+        action: "Monitor serum creatinine daily in ICU patients. Ensure adequate hydration and switch to Cefepime + Vancomycin if renal markers rise."
+      },
+      {
+        pair: ["cotrimoxazole", "warfarin"],
+        severity: "major",
+        title: "Profound INR Spike & Severe Hemorrhage",
+        mech: "Sulfamethoxazole inhibits CYP2C9, the primary enzyme metabolizing the potent S-enantiomer of warfarin.",
+        effect: "Massive spike in International Normalized Ratio (INR), spontaneous hematuria, GI bleeding, and hemorrhagic stroke.",
+        action: "Reduce warfarin dose by 50% upon co-prescription; monitor INR every 48 hours."
+      },
+      {
+        pair: ["ciprofloxacin", "antacids"],
+        severity: "moderate",
+        title: "Multivalent Cation Chelation (70–90% Bioavailability Drop)",
+        mech: "Fluoroquinolones form insoluble, unabsorbable ring complexes (chelates) with multivalent metal ions (Al3+, Mg2+, Ca2+, Fe2+).",
+        effect: "Up to 85% reduction in ciprofloxacin gastrointestinal absorption, resulting in severe clinical therapeutic failure.",
+        action: "Administer ciprofloxacin at least 2 hours BEFORE or 6 hours AFTER antacids or mineral supplements."
+      },
+      {
+        pair: ["ciprofloxacin", "dairy"],
+        severity: "moderate",
+        title: "Dairy Calcium Binding & Reduced Absorption",
+        mech: "Calcium in milk, yogurt, curd, or cheese binds ciprofloxacin into an unabsorbable chelate.",
+        effect: "Significant drop in peak serum levels (Cmax) and AUC below the Minimum Inhibitory Concentration (MIC).",
+        action: "Separate ciprofloxacin ingestion from milk or curd by at least 2 to 4 hours."
+      },
+      {
+        pair: ["doxycycline", "dairy"],
+        severity: "moderate",
+        title: "Tetracycline Chelation with Dairy Products",
+        mech: "Divalent calcium ions in dairy products tightly bind the tetracycline ring, blocking gastrointestinal transit.",
+        effect: "Marked decrease in antibiotic absorption and loss of antibacterial efficacy.",
+        action: "Avoid milk, curd, cheese, paneer, and calcium-fortified foods for 2 hours before and after your doxycycline dose."
+      },
+      {
+        pair: ["doxycycline", "antacids"],
+        severity: "moderate",
+        title: "Insoluble Chelation with Antacids & Iron",
+        mech: "Aluminum, magnesium, and iron bind doxycycline into non-diffusible precipitates.",
+        effect: "Severe drop in blood levels, leading to treatment failure in scrub typhus or acne.",
+        action: "Separate doses by at least 2 to 3 hours."
+      },
+      {
+        pair: ["amikacin", "furosemide"],
+        severity: "moderate",
+        title: "Additive Irreversible Ototoxicity",
+        mech: "Loop diuretics alter endolymph electrolyte balance in the stria vascularis, dramatically accelerating aminoglycoside hair-cell uptake.",
+        effect: "Rapid sensorineural hearing loss, irreversible cochlear deafness, and severe balance ataxia.",
+        action: "Avoid concomitant intravenous loop diuretics without intensive audiometric monitoring."
+      },
+      {
+        pair: ["cotrimoxazole", "ace-inhibitors"],
+        severity: "moderate",
+        title: "Synergistic Life-Threatening Hyperkalemia",
+        mech: "Trimethoprim structurally mimics the potassium-sparing diuretic amiloride, blocking epithelial sodium channels (ENaC) in the distal nephron.",
+        effect: "Sharp surge in serum potassium (>5.5 mEq/L), precipitating cardiac conduction arrhythmias and asystole.",
+        action: "Check baseline serum potassium and monitor electrolytes at Day 3 and Day 7 of cotrimoxazole therapy."
+      },
+      {
+        pair: ["amoxicillin", "allopurinol"],
+        severity: "moderate",
+        title: "High Incidence of Drug-Induced Rash",
+        mech: "Synergistic immune complex hypersensitivity interaction.",
+        effect: "60–70% increase in generalized pruritic maculopapular cutaneous eruptions.",
+        action: "Warn patients; discontinue amoxicillin at first sign of rash to exclude allergic reaction."
+      },
+      {
+        pair: ["cefuroxime", "antacids"],
+        severity: "minor",
+        title: "Reduced Bioavailability Due to Acid Suppression",
+        mech: "Cefuroxime axetil requires gastric acidity for optim

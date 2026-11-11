@@ -1059,6 +1059,105 @@ function applyDrugLearningPath(path) {
   });
 }
 
+// ===== AUDIO VOICE COUNSELING (TEXT-TO-SPEECH) =====
+let isSpeaking = false;
+
+function toggleAudioCounseling(drugName, howToTake, doPoint, emergency) {
+  if (!("speechSynthesis" in window)) {
+    alert("Audio speech synthesis is not supported on your browser.");
+    return;
+  }
+
+  const audioBtn = document.getElementById("audioListenBtn");
+
+  if (isSpeaking) {
+    window.speechSynthesis.cancel();
+    isSpeaking = false;
+    if (audioBtn) audioBtn.innerHTML = "🔊 Listen to Advice (ಕೇಳಿ / सुनिए)";
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const currentLang = localStorage.getItem("abinfo_language") || "en";
+
+  let speechText = "";
+  let voiceLang = "en-IN";
+
+  if (currentLang === "hi") {
+    voiceLang = "hi-IN";
+    speechText = `${drugName} की महत्वपूर्ण सलाह। दवा लेने का तरीका: ${howToTake}। याद रखें: दवा का पूरा कोर्स खत्म करें। किसी भी आपातकालीन स्थिति में तुरंत डॉक्टर से संपर्क करें।`;
+  } else if (currentLang === "kn") {
+    voiceLang = "kn-IN";
+    speechText = `${drugName} ಔಷಧಿ ಸೇವನೆಯ ಮುಖ್ಯ ಸೂಚನೆಗಳು. ತೆಗೆದುಕೊಳ್ಳುವ ವಿಧಾನ: ${howToTake}. ನೆನಪಿಡಿ: ವೈದ್ಯರು ಹೇಳಿದ ಸಂಪೂರ್ಣ ಕೋರ್ಸ್ ಮುಗಿಸಿ. ಯಾವುದೇ ತೊಂದರೆ ಕಂಡುಬಂದರೆ ತಕ್ಷಣ ವೈದ್ಯರನ್ನು ಭೇಟಿ ಮಾಡಿ.`;
+  } else {
+    voiceLang = "en-IN";
+    speechText = `Important patient counseling for ${drugName}. Instructions: ${howToTake}. Remember: Always complete the full prescribed course. Seek emergency help if you experience breathing difficulty or severe allergic rash.`;
+  }
+
+  const utterance = new SpeechSynthesisUtterance(speechText);
+  utterance.lang = voiceLang;
+  utterance.rate = 0.95;
+
+  utterance.onstart = () => {
+    isSpeaking = true;
+    if (audioBtn) audioBtn.innerHTML = "⏹️ Stop Audio (ನಿಲ್ಲಿಸಿ / रोकें)";
+  };
+
+  utterance.onend = utterance.onerror = () => {
+    isSpeaking = false;
+    if (audioBtn) audioBtn.innerHTML = "🔊 Listen to Advice (ಕೇಳಿ / सुनिए)";
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+// ===== UNIVERSAL VISUAL PICTOGRAM GENERATOR =====
+function getDrugPictograms(drug, foodAdvice) {
+  const badges = [];
+  const ht = (foodAdvice.howToTake || "").toLowerCase();
+  const af = (foodAdvice.avoidFoods || "").toLowerCase();
+
+  // 1. Food rule
+  if (ht.includes("with food") || ht.includes("after food") || ht.includes("with a meal") || ht.includes("start of a meal")) {
+    badges.push({ icon: "🍽️", title: "With Food", desc: "Take with or right after meals" });
+  } else if (ht.includes("empty stomach")) {
+    badges.push({ icon: "🚫🍽️", title: "Empty Stomach", desc: "1 hr before or 2 hrs after meals" });
+  } else {
+    badges.push({ icon: "🍽️🥛", title: "Food Flexible", desc: "Can take with or without meals" });
+  }
+
+  // 2. Upright / water rule (Esophagitis prevention)
+  if (ht.includes("upright") || ht.includes("lie down")) {
+    badges.push({ icon: "🧍🥛", title: "Stay Upright", desc: "Drink full glass of water; do not lie down" });
+  }
+
+  // 3. Alcohol rule
+  if (af.includes("alcohol") || af.includes("beer")) {
+    badges.push({ icon: "🚫🍺", title: "Zero Alcohol", desc: "Strictly avoid alcohol during & 72 hrs after" });
+  }
+
+  // 4. Dairy / Calcium chelation rule
+  if (af.includes("milk") || af.includes("dairy") || af.includes("calcium") || af.includes("curd")) {
+    badges.push({ icon: "🚫🥛", title: "Avoid Milk/Antacids", desc: "No dairy or antacids within 2 hours" });
+  }
+
+  // 5. Sun sensitivity
+  const allWarnings = (drug.warnings || []).join(" ").toLowerCase() + " " + (drug.commonSideEffects || []).join(" ").toLowerCase();
+  if (allWarnings.includes("photo") || allWarnings.includes("sun")) {
+    badges.push({ icon: "☀️🧢", title: "Sun Sensitive", desc: "Wear protective clothes outdoors" });
+  }
+
+  // 6. Pregnancy Safety Alert
+  const preg = (drug.pregnancySafety || "").toLowerCase();
+  if (preg.includes("category d") || preg.includes("contraindicated") || preg.includes("dangerous")) {
+    badges.push({ icon: "🚫🤰", title: "Pregnancy Alert", desc: "Avoid in pregnancy unless emergency" });
+  } else if (preg.includes("category b")) {
+    badges.push({ icon: "✅🤰", title: "Pregnancy Safe", desc: "Generally safe under doctor guidance" });
+  }
+
+  return badges;
+}
+
 // Main Monograph Renderer
 function renderDrugMonograph() {
   const params = new URLSearchParams(window.location.search);
@@ -1255,6 +1354,33 @@ function renderDrugMonograph() {
         <span style="background:#dcfce7; color:#166534; font-size:0.8rem; font-weight:700; padding:4px 12px; border-radius:var(--radius-full);">
           👤 Simple &amp; Visual Mode
         </span>
+      </div>
+      
+     <!-- 🔊 Voice Counseling Bar for Low-Literacy & Elderly Patients -->
+      <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:8px; padding:14px 18px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <div>
+          <strong style="color:#166534; font-size:0.98rem; display:block;">🔊 Audio Voice Guide (ಧ್ವನಿ ಮಾರ್ಗದರ್ಶಿ / ऑडियो गाइड):</strong>
+          <span style="color:#15803d; font-size:0.85rem;">Click to listen to dosage and food instructions out loud in your selected language.</span>
+        </div>
+        <button id="audioListenBtn" class="btn-primary" onclick="toggleAudioCounseling('${escapeHtml(drug.name)}', '${escapeHtml(foodAdvice.howToTake)}', '${escapeHtml(patientGuide.dos[0])}', '${escapeHtml(patientGuide.emergency[0])}')" style="background:#16a34a; border:none; padding:10px 18px; border-radius:var(--radius-full); cursor:pointer; font-weight:700;">
+          🔊 Listen to Advice (ಕೇಳಿ / सुनिए)
+        </button>
+      </div>
+
+      <!-- 🖼️ Visual Universal Dosage Pictograms (Icons for All Audiences) -->
+      <div style="margin-bottom:20px;">
+        <strong style="font-size:0.92rem; color:#334155; display:block; margin-bottom:8px;">
+          🏷️ Quick Visual Instructions (ಚಿತ್ರ ಸಂಕೇತಗಳು / चित्र निर्देश):
+        </strong>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">
+          ${getDrugPictograms(drug, foodAdvice).map(p => `
+            <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; text-align:center;">
+              <span style="font-size:1.8rem; display:block; margin-bottom:4px;">${p.icon}</span>
+              <strong style="font-size:0.82rem; color:#1e293b; display:block;">${escapeHtml(p.title)}</strong>
+              <span style="font-size:0.75rem; color:#64748b; line-height:1.2; display:block; margin-top:2px;">${escapeHtml(p.desc)}</span>
+            </div>
+          `).join("")}
+        </div>
       </div>
 
       <!-- 1. Words to Know Before You Start -->
