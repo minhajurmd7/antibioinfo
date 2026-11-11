@@ -422,43 +422,73 @@
   <script>
     let qrcodeInstance = null;
 
-    document.addEventListener("DOMContentLoaded", () => {
+    // Embedded Fallback List: Guarantees the dropdown is NEVER empty even if data.js loads late
+    const fallbackDrugs = [
+      { id: "amoxicillin-clavulanate", name: "Amoxicillin + Clavulanate", brands: ["Augmentin", "Clavam", "Moxikind-CV"], schedule: "Schedule H" },
+      { id: "amoxicillin", name: "Amoxicillin", brands: ["Novamox", "Mox", "Amoxil"], schedule: "Schedule H" },
+      { id: "cefuroxime", name: "Cefuroxime Axetil", brands: ["Ceftum", "Zeffu", "Altacef"], schedule: "Schedule H1" },
+      { id: "cefixime", name: "Cefixime", brands: ["Taxim-O", "Zifi", "Cefiget"], schedule: "Schedule H1" },
+      { id: "ceftriaxone", name: "Ceftriaxone", brands: ["Monocef", "Cefaxone", "Oframax"], schedule: "Schedule H1" },
+      { id: "azithromycin", name: "Azithromycin", brands: ["Azithral", "Azee", "Zithromax"], schedule: "Schedule H" },
+      { id: "clarithromycin", name: "Clarithromycin", brands: ["Claribid", "Crixan"], schedule: "Schedule H" },
+      { id: "ciprofloxacin", name: "Ciprofloxacin", brands: ["Ciplox", "Cifran", "Ciprolet"], schedule: "Schedule H" },
+      { id: "levofloxacin", name: "Levofloxacin", brands: ["Levoflox", "Glevo", "L-Cin"], schedule: "Schedule H1" },
+      { id: "doxycycline", name: "Doxycycline", brands: ["Doxt", "Microdox", "Doxy-1"], schedule: "Schedule H" },
+      { id: "metronidazole", name: "Metronidazole", brands: ["Metrogyl", "Flagyl", "Aristogyl"], schedule: "Schedule H" },
+      { id: "nitrofurantoin", name: "Nitrofurantoin", brands: ["Martifur", "Niftran", "Urifast"], schedule: "Schedule H" },
+      { id: "cephalexin", name: "Cephalexin", brands: ["Sporidex", "Phexin", "Keflex"], schedule: "Schedule H" },
+      { id: "cloxacillin", name: "Cloxacillin", brands: ["Klox", "Cloxapen"], schedule: "Schedule H" },
+      { id: "cotrimoxazole", name: "Trimethoprim / Sulfamethoxazole", brands: ["Septran", "Bactrim DS"], schedule: "Schedule H1" },
+      { id: "clindamycin", name: "Clindamycin", brands: ["Dalacin C", "Clindac-A"], schedule: "Schedule H" },
+      { id: "linezolid", name: "Linezolid", brands: ["Linospan", "Lizomac"], schedule: "Schedule H" },
+      { id: "meropenem", name: "Meropenem", brands: ["Meronem", "Meromac"], schedule: "Schedule H1" },
+      { id: "piperacillin-tazobactam", name: "Piperacillin + Tazobactam", brands: ["Tazact", "Pipzo"], schedule: "Schedule H1" },
+      { id: "vancomycin", name: "Vancomycin", brands: ["Vanlid", "Vancocin"], schedule: "Schedule H1" },
+      { id: "amikacin", name: "Amikacin", brands: ["Amicin", "Mikacin"], schedule: "Schedule H" },
+      { id: "gentamicin", name: "Gentamicin", brands: ["Genticyn", "Garamycin"], schedule: "Schedule H" },
+      { id: "colistin", name: "Colistin", brands: ["Xelistra", "Coly-Mycin"], schedule: "Schedule H1" }
+    ];
+
+    function initDispenser() {
       populateDrugDropdown();
-      setTimeout(() => {
-        const drugSelect = document.getElementById("drugSelect");
-        if (drugSelect && drugSelect.options.length > 1) {
-          drugSelect.selectedIndex = 2; // Amoxicillin-Clavulanate default
-          autoFillDrugGuidance();
-          generateSticker();
-        }
-      }, 100);
-    });
+      autoFillDrugGuidance();
+      generateSticker();
+    }
 
     function populateDrugDropdown() {
       const select = document.getElementById("drugSelect");
-      if (!select || typeof getAllDrugs !== "function") return;
+      if (!select) return;
 
-      const drugs = getAllDrugs();
+      const drugs = (typeof getAllDrugs === "function" && getAllDrugs().length > 0)
+        ? getAllDrugs()
+        : fallbackDrugs;
+
+      select.innerHTML = '<option value="">-- Choose an Antibiotic --</option>';
+
       drugs.forEach(d => {
         const opt = document.createElement("option");
         opt.value = d.id;
-        opt.textContent = `${d.name} (${d.brands.slice(0, 2).join(", ")}) — [${d.schedule}]`;
+        const brandStr = (d.brands && d.brands.length) ? d.brands.slice(0, 2).join(", ") : d.name;
+        opt.textContent = `${d.name} (${brandStr}) — [${d.schedule || "Schedule H"}]`;
         select.appendChild(opt);
       });
+
+      select.value = "amoxicillin-clavulanate";
     }
 
     function autoFillDrugGuidance() {
       const drugId = document.getElementById("drugSelect").value;
-      if (!drugId || typeof getDrugById !== "function") return;
+      if (!drugId) return;
 
-      const drug = getDrugById(drugId);
+      let drug = (typeof getDrugById === "function") ? getDrugById(drugId) : null;
+      if (!drug) {
+        drug = fallbackDrugs.find(d => d.id === drugId);
+      }
       if (!drug) return;
 
-      // Auto-suggest commercial brand
       const brandInput = document.getElementById("brandInput");
-      if (brandInput) brandInput.value = drug.brands[0] || drug.name;
+      if (brandInput) brandInput.value = (drug.brands && drug.brands[0]) ? drug.brands[0] : drug.name;
 
-      // Auto-suggest food timing
       const foodSelect = document.getElementById("foodTimingSelect");
       const name = drug.name.toLowerCase();
       if (name.includes("clavulanate")) {
@@ -469,7 +499,6 @@
         foodSelect.value = "after";
       }
 
-      // Auto-suggest caution
       const cautionInput = document.getElementById("cautionInput");
       if (name.includes("metronidazole")) {
         cautionInput.value = "STRICTLY NO ALCOHOL during & 72 hrs after therapy.";
@@ -480,15 +509,103 @@
       } else {
         cautionInput.value = "Complete the entire prescribed course without stopping.";
       }
+
+      generateSticker();
     }
 
     function generateSticker(e) {
-      if (e) e.preventDefault();
+      if (e && e.preventDefault) e.preventDefault();
 
-      const drugId = document.getElementById("drugSelect").value;
-      if (!drugId || typeof getDrugById !== "function") return;
+      const select = document.getElementById("drugSelect");
+      const drugId = select ? select.value : "amoxicillin-clavulanate";
+      if (!drugId) return;
 
-      const drug = getDrugById(drugId);
+      let drug = (typeof getDrugById === "function") ? getDrugById(drugId) : null;
+      if (!drug) {
+        drug = fallbackDrugs.find(d => d.id === drugId);
+      }
       if (!drug) return;
 
-      const brand = document.getE
+      const brand = document.getElementById("brandInput").value || (drug.brands ? drug.brands[0] : drug.name);
+      const freq = document.getElementById("frequencySelect").value;
+      const food = document.getElementById("foodTimingSelect").value;
+      const days = document.getElementById("durationDays").value;
+      const lang = document.getElementById("langSelect").value;
+      const caution = document.getElementById("cautionInput").value;
+
+      document.getElementById("labelDrugName").textContent = drug.name;
+      document.getElementById("labelBrandName").textContent = brand;
+      document.getElementById("labelScheduleTag").textContent = drug.schedule || "Schedule H";
+
+      let m = "0", n = "0", ng = "0";
+      if (freq === "1-0-1") { m = "1"; n = "0"; ng = "1"; }
+      else if (freq === "1-1-1") { m = "1"; n = "1"; ng = "1"; }
+      else if (freq === "1-0-0") { m = "1"; n = "0"; ng = "0"; }
+      else if (freq === "0-0-1") { m = "0"; n = "0"; ng = "1"; }
+      else if (freq === "q8h") { m = "1"; n = "1"; ng = "1"; }
+      else if (freq === "q6h") { m = "1"; n = "1"; ng = "2"; }
+
+      document.getElementById("timingMorning").textContent = m;
+      document.getElementById("timingNoon").textContent = n;
+      document.getElementById("timingNight").textContent = ng;
+
+      let foodText = `Take after food for ${days} days.`;
+      if (lang === "kn") {
+        if (food === "before") foodText = `ಊಟಕ್ಕೆ 1 ಗಂಟೆ ಮುಂಚೆ ಖಾಲಿ ಹೊಟ್ಟೆಯಲ್ಲಿ ಸೇವಿಸಿ (${days} ದಿನಗಳು).`;
+        else if (food === "with") foodText = `ಊಟದ ಆರಂಭದಲ್ಲಿ ಸೇವಿಸಿ (${days} ದಿನಗಳು).`;
+        else foodText = `ಊಟದ ನಂತರ ಸೇವಿಸಿ (${days} ದಿನಗಳು).`;
+      } else if (lang === "hi") {
+        if (food === "before") foodText = `भोजन से 1 घंटे पहले खाली पेट लें (${days} दिन).`;
+        else if (food === "with") foodText = `भोजन के साथ लें (${days} दिन).`;
+        else foodText = `भोजन के बाद लें (${days} दिन).`;
+      } else {
+        if (food === "before") foodText = `Take on empty stomach 1 hour before meals for ${days} days.`;
+        else if (food === "with") foodText = `Take right at the start of meals for ${days} days.`;
+        else foodText = `Take with or after food for ${days} days.`;
+      }
+      document.getElementById("labelFoodInstructions").textContent = foodText;
+
+      const cautionBox = document.getElementById("labelCautionBox");
+      const cautionText = document.getElementById("labelCautionText");
+      if (caution) {
+        cautionBox.style.display = "block";
+        cautionText.textContent = caution;
+      } else {
+        cautionBox.style.display = "none";
+      }
+
+      const baseUrl = window.location.origin + window.location.pathname.replace("dispense.html", "drug.html");
+      const qrTargetUrl = `${baseUrl}?drug=${encodeURIComponent(drug.id)}&lang=${lang}&days=${days}&freq=${encodeURIComponent(freq)}`;
+
+      document.getElementById("stickerTestLink").href = qrTargetUrl;
+
+      const qrBox = document.getElementById("qrcodeBox");
+      qrBox.innerHTML = "";
+
+      if (typeof QRCode !== "undefined") {
+        try {
+          qrcodeInstance = new QRCode(qrBox, {
+            text: qrTargetUrl,
+            width: 80,
+            height: 80,
+            colorDark: "#0f172a",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        } catch (err) {
+          qrBox.innerHTML = `<a href="${qrTargetUrl}" target="_blank" style="font-size:0.75rem; color:#0f766e; font-weight:700;">Open e-PIL ↗</a>`;
+        }
+      } else {
+        qrBox.innerHTML = `<a href="${qrTargetUrl}" target="_blank" style="font-size:0.75rem; color:#0f766e; font-weight:700;">Open e-PIL ↗</a>`;
+      }
+    }
+
+    // Runs immediately whether the page is loading fresh or retrieved from PWA cache
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initDispenser);
+    } else {
+      initDispenser();
+    }
+  </script>
+</body>
+</html>

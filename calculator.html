@@ -155,7 +155,7 @@
 
       <div class="calc-container-grid">
 
-        <!-- ================= CALCULATOR 1: PEDIATRIC SUSPENSION CALCULATOR ================= -->
+        <!-- ================= CALCULATOR 1: PEDIATRIC SUSPENSION ================= -->
         <article class="calc-card" style="border-top: 5px solid #0f766e;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
             <span style="font-size:1.8rem;">👶</span>
@@ -167,31 +167,28 @@
             Converts target mg/kg/day into exact syrup volume (mL per dose) based on commercial Indian strengths.
           </p>
 
-          <form id="pediatricForm" onsubmit="calculatePediatricDose(event)">
-            <!-- Drug Selection -->
+          <div>
             <div class="form-group">
               <label for="pedDrugSelect">Select Pediatric Antibiotic:</label>
-              <select id="pedDrugSelect" class="form-control" onchange="autoUpdatePediatricStrengths()" required>
+              <select id="pedDrugSelect" class="form-control" onchange="autoUpdatePediatricStrengths()">
                 <option value="amoxicillin">Amoxicillin (Novamox, Mox) — 25 to 45 mg/kg/day</option>
                 <option value="amox-clav">Amoxicillin + Clavulanate (Augmentin, Clavam) — 25 to 45 mg/kg/day</option>
                 <option value="cefixime">Cefixime (Taxim-O, Zifi) — 8 mg/kg/day</option>
                 <option value="cephalexin">Cephalexin (Sporidex) — 25 to 50 mg/kg/day</option>
                 <option value="cefuroxime">Cefuroxime Axetil (Ceftum) — 20 to 30 mg/kg/day</option>
-                <option value="azithromycin">Azithromycin (Azithral, Azee) — 10 mg/kg/day (Day 1)</option>
+                <option value="azithromycin">Azithromycin (Azithral, Azee) — 10 mg/kg/day</option>
               </select>
             </div>
 
-            <!-- Child Weight -->
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
               <div class="form-group">
                 <label for="childWeight">Child's Weight (kg):</label>
-                <input type="number" id="childWeight" class="form-control" placeholder="e.g. 12" min="2" max="60" step="0.5" value="12" required />
+                <input type="number" id="childWeight" class="form-control" min="2" max="60" step="0.5" value="12" oninput="calculatePediatricDose()" />
               </div>
               
-              <!-- Frequency -->
               <div class="form-group">
                 <label for="pedFrequency">Dosing Frequency:</label>
-                <select id="pedFrequency" class="form-control" required>
+                <select id="pedFrequency" class="form-control" onchange="calculatePediatricDose()">
                   <option value="2">Twice Daily (q12h / BD)</option>
                   <option value="3">Thrice Daily (q8h / TDS)</option>
                   <option value="1">Once Daily (OD)</option>
@@ -199,41 +196,39 @@
               </div>
             </div>
 
-            <!-- Commercial Suspension Strength Dropdown -->
             <div class="form-group">
               <label for="pedStrengthSelect">Commercial Bottle Strength in India:</label>
-              <select id="pedStrengthSelect" class="form-control" required>
+              <select id="pedStrengthSelect" class="form-control" onchange="calculatePediatricDose()">
                 <option value="125">125 mg / 5 mL (Standard Novamox / Clavam)</option>
                 <option value="250">250 mg / 5 mL (Forte Suspension)</option>
               </select>
             </div>
 
-            <!-- Target mg/kg/day -->
             <div class="form-group">
               <label for="pedDoseRate">Target Daily Dose Rate (mg / kg / day):</label>
-              <input type="number" id="pedDoseRate" class="form-control" value="30" min="5" max="100" step="1" required />
+              <input type="number" id="pedDoseRate" class="form-control" value="30" min="5" max="100" step="1" oninput="calculatePediatricDose()" />
             </div>
 
-            <button type="submit" class="btn-primary" style="width:100%; border:none; cursor:pointer; padding:12px;">
-              ⚡ Calculate Suspension Volume (mL)
+            <button type="button" class="btn-primary" onclick="calculatePediatricDose()" style="width:100%; border:none; cursor:pointer; padding:12px;">
+              ⚡ Recalculate Volume
             </button>
-          </form>
+          </div>
 
           <!-- Pediatric Result Box -->
           <div id="pediatricResult" class="result-box" style="display:block;">
             <span style="font-size:0.8rem; font-weight:700; color:#166534; text-transform:uppercase;">Prescription Dose Output:</span>
             <div class="result-metric" id="pedResultMl">7.2 mL per dose</div>
             <p style="font-size:0.9rem; color:#14532d; line-height:1.5; margin-bottom:8px;">
-              Give <strong><span id="pedResultMlText">7.2 mL</span></strong> <span id="pedFreqText">twice daily</span> with a measuring syringe.
+              Give <strong><span id="pedResultMlText">7.2 mL</span></strong> <span id="pedFreqText">twice daily (every 12 hours)</span> with a measuring syringe.
             </p>
             <div style="background:#ffffff; border:1px solid #bbf7d0; border-radius:6px; padding:10px; font-size:0.82rem; color:#166534; line-height:1.4;">
-              • Total Daily Dose: <strong><span id="pedTotalMg">360 mg/day</span></strong> (<span id="pedDoseMg">180 mg per dose</span>)<br />
+              • Total Daily Dose: <strong><span id="pedTotalMg">360 mg / day</span></strong> (<span id="pedDoseMg">180 mg per dose</span>)<br />
               • <strong>Reconstitution Counseling:</strong> Boil water, let cool to room temperature, add up to the ring mark on bottle, shake well. Discard after 7 days (room temperature) or 10 days (refrigerated).
             </div>
           </div>
         </article>
 
-        <!-- ================= CALCULATOR 2: COCKCROFT-GAULT RENAL DOSING CALCULATOR ================= -->
+        <!-- ================= CALCULATOR 2: COCKCROFT-GAULT RENAL CALCULATOR ================= -->
         <article class="calc-card" style="border-top: 5px solid #2563eb;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:14px;">
             <span style="font-size:1.8rem;">🫀</span>
@@ -245,16 +240,15 @@
             Estimates Creatinine Clearance (mL/min) to determine required renal dose and interval modifications.
           </p>
 
-          <form id="renalForm" onsubmit="calculateRenalCrCl(event)">
-            <!-- Patient Demographics -->
+          <div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
               <div class="form-group">
                 <label for="renalAge">Age (Years):</label>
-                <input type="number" id="renalAge" class="form-control" value="65" min="18" max="110" required />
+                <input type="number" id="renalAge" class="form-control" value="65" min="18" max="110" oninput="calculateRenalCrCl()" />
               </div>
               <div class="form-group">
                 <label for="renalGender">Biological Sex:</label>
-                <select id="renalGender" class="form-control" required>
+                <select id="renalGender" class="form-control" onchange="calculateRenalCrCl()">
                   <option value="male">Male (Standard)</option>
                   <option value="female">Female (Factor × 0.85)</option>
                 </select>
@@ -264,18 +258,17 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
               <div class="form-group">
                 <label for="renalWeight">Weight (kg):</label>
-                <input type="number" id="renalWeight" class="form-control" value="60" min="30" max="200" step="0.5" required />
+                <input type="number" id="renalWeight" class="form-control" value="60" min="30" max="200" step="0.5" oninput="calculateRenalCrCl()" />
               </div>
               <div class="form-group">
                 <label for="renalScr">Serum Creatinine (mg/dL):</label>
-                <input type="number" id="renalScr" class="form-control" value="1.8" min="0.2" max="15" step="0.1" required />
+                <input type="number" id="renalScr" class="form-control" value="1.8" min="0.2" max="15" step="0.1" oninput="calculateRenalCrCl()" />
               </div>
             </div>
 
-            <!-- Drug Selection for Specific Adjustment Advice -->
             <div class="form-group">
               <label for="renalDrugSelect">Select Antibiotic to Inspect Renal Adjustment:</label>
-              <select id="renalDrugSelect" class="form-control" required>
+              <select id="renalDrugSelect" class="form-control" onchange="calculateRenalCrCl()">
                 <option value="cefepime">Cefepime (Maxipime) — Risk of Encephalopathy</option>
                 <option value="meropenem">Meropenem (Meronem) — ICU Sepsis</option>
                 <option value="ciprofloxacin">Ciprofloxacin (Ciplox) — High Renal Clearance</option>
@@ -285,10 +278,10 @@
               </select>
             </div>
 
-            <button type="submit" class="btn-primary" style="width:100%; border:none; cursor:pointer; padding:12px; background:#2563eb;">
-              ⚡ Calculate CrCl &amp; Check Adjustment
+            <button type="button" class="btn-primary" onclick="calculateRenalCrCl()" style="width:100%; border:none; cursor:pointer; padding:12px; background:#2563eb;">
+              ⚡ Recalculate CrCl
             </button>
-          </form>
+          </div>
 
           <!-- Renal Result Box -->
           <div id="renalResult" class="result-box" style="display:block; background:#eff6ff; border-color:#93c5fd;">
@@ -297,11 +290,10 @@
               <span id="renalStageBadge" class="renal-stage-badge" style="background:#fef08a; color:#854d0e;">Moderate CKD (Stage 3)</span>
             </div>
             
-            <div class="result-metric" id="renalResultCrCl" style="color:#1e40af;">27.8 mL/min</div>
+            <div class="result-metric" id="renalResultCrCl" style="color:#1e40af;">27.8 mL / min</div>
             
             <div id="renalDrugAdviceBox" style="background:#ffffff; border:1px solid #bfdbfe; border-radius:6px; padding:12px; margin-top:10px; font-size:0.85rem; color:#1e3a8a; line-height:1.5;">
-              <strong>⚠️ Clinical Adjustment Required for Cefepime:</strong><br />
-              CrCl is 27.8 mL/min (&lt; 30 mL/min). Standard 2g q8h dosing will cause neurotoxic drug accumulation. <strong>Reduce dose to 1g IV every 24 hours</strong>. Failure to adjust risks nonconvulsive status epilepticus.
+              <!-- Populated dynamically -->
             </div>
           </div>
         </article>
@@ -354,12 +346,12 @@
   <!-- Calculations Controller -->
   <script>
     const pedDrugDefaults = {
-      "amoxicillin": { defaultDose: 30, strengths: [{ label: "125 mg / 5 mL", mg: 125 }, { label: "250 mg / 5 mL", mg: 250 }], freq: "2" },
-      "amox-clav": { defaultDose: 35, strengths: [{ label: "228.5 mg / 5 mL (Duo)", mg: 200 }, { label: "457 mg / 5 mL (Forte)", mg: 400 }], freq: "2" },
-      "cefixime": { defaultDose: 8, strengths: [{ label: "50 mg / 5 mL", mg: 50 }, { label: "100 mg / 5 mL", mg: 100 }], freq: "2" },
-      "cephalexin": { defaultDose: 35, strengths: [{ label: "125 mg / 5 mL", mg: 125 }, { label: "250 mg / 5 mL", mg: 250 }], freq: "3" },
-      "cefuroxime": { defaultDose: 25, strengths: [{ label: "125 mg / 5 mL", mg: 125 }], freq: "2" },
-      "azithromycin": { defaultDose: 10, strengths: [{ label: "100 mg / 5 mL", mg: 100 }, { label: "200 mg / 5 mL", mg: 200 }], freq: "1" }
+      "amoxicillin": { defaultDose: 30, strengths: [{ label: "125 mg / 5 mL", mg: 125 }, { label: "250 mg / 5 mL", mg: 250 }], freq: 2 },
+      "amox-clav": { defaultDose: 35, strengths: [{ label: "228.5 mg / 5 mL (Duo)", mg: 200 }, { label: "457 mg / 5 mL (Forte)", mg: 400 }], freq: 2 },
+      "cefixime": { defaultDose: 8, strengths: [{ label: "50 mg / 5 mL", mg: 50 }, { label: "100 mg / 5 mL", mg: 100 }], freq: 2 },
+      "cephalexin": { defaultDose: 35, strengths: [{ label: "125 mg / 5 mL", mg: 125 }, { label: "250 mg / 5 mL", mg: 250 }], freq: 3 },
+      "cefuroxime": { defaultDose: 25, strengths: [{ label: "125 mg / 5 mL", mg: 125 }], freq: 2 },
+      "azithromycin": { defaultDose: 10, strengths: [{ label: "100 mg / 5 mL", mg: 100 }, { label: "200 mg / 5 mL", mg: 200 }], freq: 1 }
     };
 
     function autoUpdatePediatricStrengths() {
@@ -382,17 +374,14 @@
       calculatePediatricDose();
     }
 
-    function calculatePediatricDose(e) {
-      if (e) e.preventDefault();
-
-      const weight = parseFloat(document.getElementById("childWeight").value) || 10;
+    function calculatePediatricDose() {
+      const weight = parseFloat(document.getElementById("childWeight").value) || 12;
       const rate = parseFloat(document.getElementById("pedDoseRate").value) || 30;
       const freq = parseInt(document.getElementById("pedFrequency").value, 10) || 2;
       const strengthMg = parseFloat(document.getElementById("pedStrengthSelect").value) || 125;
 
       const totalDailyMg = Math.round(weight * rate);
       const doseMg = Math.round(totalDailyMg / freq);
-      
       const volumeMl = parseFloat(((doseMg / strengthMg) * 5).toFixed(1));
 
       let freqLabel = freq === 2 ? "twice daily (every 12 hours)" : freq === 3 ? "thrice daily (every 8 hours)" : "once daily";
@@ -404,12 +393,10 @@
       document.getElementById("pedDoseMg").textContent = `${doseMg} mg per dose`;
     }
 
-    function calculateRenalCrCl(e) {
-      if (e) e.preventDefault();
-
-      const age = parseFloat(document.getElementById("renalAge").value) || 60;
-      const weight = parseFloat(document.getElementById("renalWeight").value) || 70;
-      const scr = parseFloat(document.getElementById("renalScr").value) || 1.0;
+    function calculateRenalCrCl() {
+      const age = parseFloat(document.getElementById("renalAge").value) || 65;
+      const weight = parseFloat(document.getElementById("renalWeight").value) || 60;
+      const scr = parseFloat(document.getElementById("renalScr").value) || 1.8;
       const isFemale = document.getElementById("renalGender").value === "female";
       const drug = document.getElementById("renalDrugSelect").value;
 
@@ -419,4 +406,91 @@
 
       document.getElementById("renalResultCrCl").textContent = `${crcl} mL / min`;
 
-      const badge = document.getElementById("ren
+      const badge = document.getElementById("renalStageBadge");
+      let stageText = "Normal Renal Function (>90 mL/min)";
+      let badgeBg = "#dcfce7";
+      let badgeColor = "#166534";
+
+      if (crcl < 15) {
+        stageText = "Kidney Failure / ESRD (< 15 mL/min)";
+        badgeBg = "#fee2e2"; badgeColor = "#991b1b";
+      } else if (crcl < 30) {
+        stageText = "Severe Impairment (15–29 mL/min)";
+        badgeBg = "#fecaca"; badgeColor = "#991b1b";
+      } else if (crcl < 60) {
+        stageText = "Moderate Impairment (30–59 mL/min)";
+        badgeBg = "#fef08a"; badgeColor = "#854d0e";
+      } else if (crcl < 90) {
+        stageText = "Mild Impairment (60–89 mL/min)";
+        badgeBg = "#e0f2fe"; badgeColor = "#0369a1";
+      }
+
+      badge.textContent = stageText;
+      badge.style.background = badgeBg;
+      badge.style.color = badgeColor;
+
+      const adviceBox = document.getElementById("renalDrugAdviceBox");
+      let adviceHtml = "";
+
+      if (drug === "cefepime") {
+        if (crcl > 60) {
+          adviceHtml = "<strong>✅ Standard Cefepime Dosing:</strong> 1g to 2g IV every 8 to 12 hours. Normal clearance.";
+        } else if (crcl >= 30) {
+          adviceHtml = "<strong>⚠️ Moderate Renal Adjustment Required:</strong> Reduce dose to <strong>1g to 2g IV every 12 to 24 hours</strong>.";
+        } else if (crcl >= 11) {
+          adviceHtml = "<strong>🚨 Severe Renal Adjustment:</strong> Reduce to <strong>1g IV every 24 hours</strong>. Monitor for myoclonus, confusion, and encephalopathy.";
+        } else {
+          adviceHtml = "<strong>🚨 Dialysis / ESRD:</strong> 500mg IV every 24 hours; administer dose after hemodialysis.";
+        }
+      } else if (drug === "meropenem") {
+        if (crcl > 50) {
+          adviceHtml = "<strong>✅ Standard Meropenem Dosing:</strong> 1g IV every 8 hours. No adjustment needed.";
+        } else if (crcl >= 26) {
+          adviceHtml = "<strong>⚠️ Moderate Adjustment:</strong> 1g IV every 12 hours.";
+        } else if (crcl >= 10) {
+          adviceHtml = "<strong>🚨 Severe Adjustment:</strong> 500mg IV every 12 hours.";
+        } else {
+          adviceHtml = "<strong>🚨 ESRD / Dialysis:</strong> 500mg IV every 24 hours (post-dialysis).";
+        }
+      } else if (drug === "nitrofurantoin") {
+        if (crcl >= 30) {
+          adviceHtml = "<strong>✅ Safe to Administer:</strong> 100mg twice daily with meals. Therapeutic bladder urine levels achieved.";
+        } else {
+          adviceHtml = "<strong>❌ CONTRAINDICATED (CrCl &lt; 30 mL/min):</strong> Nitrofurantoin fails to reach adequate concentrations in the bladder and accumulates systemically, posing severe risk of peripheral neuropathy and toxic pneumonitis. Select alternative agent (e.g. Fosfomycin).";
+        }
+      } else if (drug === "pip-tazo") {
+        if (crcl > 50) {
+          adviceHtml = "<strong>✅ Standard Dosing:</strong> 4.5g IV every 6 hours (or 3.375g q6h).";
+        } else if (crcl >= 20) {
+          adviceHtml = "<strong>⚠️ Renal Adjustment:</strong> 3.375g IV every 6 hours.";
+        } else {
+          adviceHtml = "<strong>🚨 Severe Adjustment:</strong> 2.25g IV every 6 hours. High risk of Acute Kidney Injury if co-administered with Vancomycin.";
+        }
+      } else if (drug === "ciprofloxacin") {
+        if (crcl > 50) {
+          adviceHtml = "<strong>✅ Standard Dosing:</strong> 500mg to 750mg orally every 12 hours.";
+        } else if (crcl >= 30) {
+          adviceHtml = "<strong>⚠️ Moderate Adjustment:</strong> 250mg to 500mg orally every 12 hours.";
+        } else {
+          adviceHtml = "<strong>🚨 Severe Adjustment:</strong> 250mg to 500mg orally every 18 to 24 hours.";
+        }
+      } else if (drug === "vancomycin") {
+        adviceHtml = `<strong>📊 Vancomycin Trough Monitoring:</strong> CrCl is ${crcl} mL/min. Vancomycin requires individualized area-under-the-curve (AUC) or serum trough level monitoring (target 15–20 mcg/mL for severe MRSA). Dosing interval must be extended from q12h to q24h or q48h as clearance falls.`;
+      }
+
+      adviceBox.innerHTML = adviceHtml;
+    }
+
+    function initCalculators() {
+      autoUpdatePediatricStrengths();
+      calculateRenalCrCl();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initCalculators);
+    } else {
+      initCalculators();
+    }
+  </script>
+</body>
+</html>

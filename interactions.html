@@ -401,4 +401,144 @@
         pair: ["cefuroxime", "antacids"],
         severity: "minor",
         title: "Reduced Bioavailability Due to Acid Suppression",
-        mech: "Cefuroxime axetil requires gastric acidity for optim
+        mech: "Cefuroxime axetil requires gastric acidity for optimal tablet dissolution and ester hydrolysis.",
+        effect: "PPIs (Pantoprazole) and H2-blockers decrease cefuroxime bioavailability by 40%.",
+        action: "Administer cefuroxime axetil with meals and separate from antacid ingestion by 2 hours."
+      }
+    ];
+
+    let selectedDrugs = new Set();
+
+    function renderDrugChecklist(filterText = "") {
+      const container = document.getElementById("drugChecklist");
+      if (!container) return;
+      container.innerHTML = "";
+
+      const q = filterText.toLowerCase().trim();
+      const filtered = interactionDrugList.filter(d => !q || d.name.toLowerCase().includes(q) || d.group.toLowerCase().includes(q));
+
+      filtered.forEach(d => {
+        const item = document.createElement("label");
+        item.className = "drug-check-item";
+        item.innerHTML = `
+          <input type="checkbox" value="${d.id}" ${selectedDrugs.has(d.id) ? "checked" : ""} />
+          <span>${d.name} <small style="color:#64748b;">(${d.group})</small></span>
+        `;
+
+        const input = item.querySelector("input");
+        input.addEventListener("change", (e) => {
+          if (e.target.checked) {
+            selectedDrugs.add(d.id);
+          } else {
+            selectedDrugs.delete(d.id);
+          }
+          document.getElementById("selectedCount").textContent = selectedDrugs.size;
+          analyzeInteractions();
+        });
+
+        container.appendChild(item);
+      });
+    }
+
+    function filterChecklist() {
+      const q = document.getElementById("drugFilterInput").value;
+      renderDrugChecklist(q);
+    }
+
+    function testScenario(d1, d2) {
+      selectedDrugs.clear();
+      selectedDrugs.add(d1);
+      selectedDrugs.add(d2);
+      document.getElementById("selectedCount").textContent = "2";
+      renderDrugChecklist();
+      analyzeInteractions();
+    }
+
+    function clearAllSelections() {
+      selectedDrugs.clear();
+      document.getElementById("selectedCount").textContent = "0";
+      renderDrugChecklist();
+      analyzeInteractions();
+    }
+
+    function analyzeInteractions() {
+      const resultsContainer = document.getElementById("interactionResults");
+      const noSelectMessage = document.getElementById("noSelectionMessage");
+
+      if (selectedDrugs.size < 2) {
+        noSelectMessage.style.display = "block";
+        resultsContainer.style.display = "none";
+        return;
+      }
+
+      noSelectMessage.style.display = "none";
+      resultsContainer.style.display = "block";
+
+      const activeArray = Array.from(selectedDrugs);
+      const matches = [];
+
+      clinicalInteractions.forEach(item => {
+        const [d1, d2] = item.pair;
+        if (selectedDrugs.has(d1) && selectedDrugs.has(d2)) {
+          matches.push(item);
+        }
+      });
+
+      if (matches.length === 0) {
+        resultsContainer.innerHTML = `
+          <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:8px; padding:24px; text-align:center;">
+            <span style="font-size:2.4rem; display:block; margin-bottom:8px;">✅</span>
+            <h3 style="color:#15803d; margin-bottom:6px;">No Major Documented Interactions Found</h3>
+            <p style="font-size:0.9rem; color:#166534; line-height:1.5;">
+              No severe pharmacokinetic or pharmacodynamic interactions were detected between the <strong>${activeArray.length}</strong> selected substances in this clinical matrix. Always monitor individual patient response.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = `
+        <div style="margin-bottom:14px; font-size:0.92rem; font-weight:700; color:#0f172a;">
+          ⚠️ Detected <span style="color:#dc2626;">${matches.length}</span> Clinical Interaction${matches.length > 1 ? "s" : ""}:
+        </div>
+      `;
+
+      matches.forEach(m => {
+        html += `
+          <div class="alert-card ${m.severity}">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span class="severity-pill ${m.severity}">${m.severity} Severity</span>
+            </div>
+
+            <h3 style="font-size:1.1rem; margin:6px 0;">${m.title}</h3>
+            
+            <p style="font-size:0.88rem; line-height:1.5; margin-bottom:8px;">
+              <strong>🧬 Mechanism:</strong> ${m.mech}
+            </p>
+            <p style="font-size:0.88rem; line-height:1.5; margin-bottom:8px;">
+              <strong>🩺 Clinical Effect:</strong> ${m.effect}
+            </p>
+            <div style="background:rgba(255,255,255,0.7); padding:8px 12px; border-radius:6px; font-size:0.86rem; font-weight:600;">
+              📋 Recommended Action: ${m.action}
+            </div>
+          </div>
+        `;
+      });
+
+      resultsContainer.innerHTML = html;
+    }
+
+    function initInteractions() {
+      renderDrugChecklist();
+      // Pre-select Metronidazole + Alcohol by default so the demo works on first load
+      testScenario("metronidazole", "alcohol");
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initInteractions);
+    } else {
+      initInteractions();
+    }
+  </script>
+</body>
+</html>
