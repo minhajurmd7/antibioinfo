@@ -4,7 +4,11 @@ const CACHE_NAME = "abinfo-pwa-v3";
 const OFFLINE_URLS = [
   "./",
   "./index.html",
+  "./drugs.html",
   "./classes.html",
+  "./flowchart.html",
+  "./resistance.html",
+  "./quiz.html",
   "./drug.html",
   "./glossary.html",
   "./references.html",
@@ -17,7 +21,7 @@ const OFFLINE_URLS = [
   "./script.js",
   "./i18n.js",
   "./glossary.js",
-  "./manifest.json",
+  "./manifest.json"
 ];
 
 // Install: Cache all core assets

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antibiotic Safety Quiz &amp; Myth Busters | AB|Info</title>
+  <meta name="description" content="Test your antibiotic knowledge with a 10-MCQ clinical safety quiz and explore 10 interactive 3D myth-busting flip cards." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+
+  <!-- Instant Theme Loader (Prevents Dark Mode Flash) -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Medical Disclaimer Top Banner -->
+  <aside class="top-disclaimer-banner" role="note" aria-label="Medical Disclaimer">
+    <div class="container">
+      <span data-i18n="disclaimerText">⚕️ Medical Disclaimer: AB|Info is strictly an educational project. Not medical advice. Always consult a registered medical practitioner.</span>
+    </div>
+  </aside>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="AB|Info Homepage">💊 AB|<span>Info</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" data-i18n="navHome">Home</a>
+        <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
+        <a href="flowchart.html" data-i18n="navFlowchart">Flowchart</a>
+        <a href="resistance.html" data-i18n="navResistance">Resistance</a>
+        <a href="quiz.html" class="active-nav" data-i18n="navQuiz">Quiz</a>
+        <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
+        <a href="references.html" data-i18n="navReferences">References</a>
+        <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
+      </nav>
+
+      <div class="nav-utils">
+        <!-- PWA Install Button -->
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
+          📲 <span>Install</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          🌙
+        </button>
+
+        <!-- Language Selector -->
+        <div class="lang-selector" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
+        </div>
+      </div>
+    </div> 
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    <section id="safety-quiz-page" style="margin-top: 36px; margin-bottom: 50px;">
+      
+      <!-- Page Header -->
+      <h1 style="font-size:2.2rem; margin-bottom:8px;">🧠 Antibiotic Safety &amp; IQ Hub</h1>
+      <p class="section-sub">
+        Explore 10 interactive 3D myth-busting flip cards and test your clinical stewardship understanding with our 10-MCQ challenge.
+      </p>
+
+      <!-- ===== 10-CARD MYTH-BUSTING 3D FLIP CARDS ===== -->
+      <section id="myths" style="margin: 40px 0;">
+        <h2 style="font-size:1.45rem; margin-bottom:6px; color:var(--primary-dark);">
+          💡 1. Myth vs. Fact: Antibiotic Truths
+        </h2>
+        <p class="section-sub" style="margin-bottom:20px;">
+          Hover or tap any card to flip it and reveal the pharmacological reality.
+        </p>
+
+        <div class="flip-cards-grid">
+          <!-- Card 1 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 1</h3>
+                <p>"Antibiotics cure common colds, flu, and viral sore throats."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 1</h3>
+                <p>Antibiotics only kill bacteria. Viruses cause colds, flu, and COVID-19. Antibiotics have zero effect on viruses and cause harmful side effects.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 2</h3>
+                <p>"I can stop taking my antibiotic as soon as my fever or pain goes away."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 2</h3>
+                <p>Stopping early allows partially resistant mutant bacteria to survive, multiply, and cause a more severe, harder-to-treat recurrence.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 3</h3>
+                <p>"My body becomes immune to antibiotics."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 3</h3>
+                <p>Your body does not become resistant — the <em>bacteria</em> mutate and become resistant. Resistant bacteria can then spread to family and the community.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 4</h3>
+                <p>"Leftover antibiotics can be saved and reused for my next fever."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 4</h3>
+                <p>Different bugs require completely different antibiotics. Taking an incorrect drug or partial course breeds resistance and delays proper care.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 5</h3>
+                <p>"Stronger, costlier antibiotics are always better for fast recovery."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 5</h3>
+                <p>Narrow-spectrum Access antibiotics are best for everyday infections. Using ultra-broad reserve antibiotics wipes out protective gut flora and triggers superbug selection.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 6</h3>
+                <p>"Antibiotics are harmless like vitamin pills."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 6</h3>
+                <p>Antibiotics carry risks of severe allergic reactions (anaphylaxis), kidney damage, tendon rupture, and life-threatening C. difficile colitis.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 7</h3>
+                <p>"Red line medicines can be bought over-the-counter without a prescription."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 7</h3>
+                <p>Under India's Drugs and Cosmetics Rules (Schedule H/H1), selling red-line medicines without a valid prescription is an illegal offense.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 8</h3>
+                <p>"If my family member has the same symptom, they can take my antibiotic."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 8</h3>
+                <p>Dosage depends on age, weight, renal function, allergies, and pregnancy status. Sharing prescription drugs is clinically hazardous.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 9 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 9</h3>
+                <p>"Scientists will always discover new antibiotics before old ones fail."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 9</h3>
+                <p>The global antibiotic discovery pipeline has slowed drastically for decades. Bacteria are developing resistance faster than new molecules are being approved.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 10 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <span class="flip-icon">❌</span>
+                <h3>Myth 10</h3>
+                <p>"Missing a dose doesn't matter as long as I remember later."</p>
+                <span class="flip-hint">Tap to flip ↻</span>
+              </div>
+              <div class="flip-card-back">
+                <span class="flip-icon">✅</span>
+                <h3>Fact 10</h3>
+                <p>Antibiotics require steady blood levels above the Minimum Inhibitory Concentration (MIC). Missing doses gives bacteria time to adapt and resist.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 10-MCQ ANTIBIOTIC SAFETY QUIZ ===== -->
+      <section id="quiz" style="margin: 50px 0;">
+        <h2 style="font-size:1.45rem; margin-bottom:6px; color:var(--primary-dark);" data-i18n="quizTitle">
+          🧠 2. Test Your Antibiotic Safety IQ (10-MCQ Quiz)
+        </h2>
+        <p class="section-sub" style="margin-bottom:24px;" data-i18n="quizSubtitle">
+          Test your understanding of antibiotic safety, WHO guidelines, and Indian red-line regulations.
+        </p>
+
+        <!-- Quiz Questions Rendered by script.js -->
+        <div id="quizContainer"></div>
+
+        <div style="text-align:center; margin-top:24px;">
+          <button id="quizSubmitBtn" class="btn-primary" style="font-size:1.05rem; padding:14px 32px; border:none; cursor:pointer;">
+            Submit Quiz &amp; Calculate Score
+          </button>
+        </div>
+
+        <div id="quizResultBox" style="display:none; margin-top:30px;"></div>
+      </section>
+
+    </section>
+  </main>
+
+  <!-- Standard 3-Column Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+          <div class="footer-share-btn">
+            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="drugs.html">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
+            <li><a href="resistance.html">Resistance Tracker</a></li>
+            <li><a href="quiz.html">Safety Quiz</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Trust &amp; Science</h4>
+          <ul class="footer-links">
+            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
+            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="i18n.js"></script>
+  <script src="navbar.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

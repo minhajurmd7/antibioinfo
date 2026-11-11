@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Do I Need an Antibiotic? Symptom Decision Guide | AB|Info</title>
+  <meta name="description" content="Interactive clinical decision guide: check whether cold, sore throat, fever, or UTI symptoms warrant antibiotics or supportive home care." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+
+  <!-- Instant Theme Loader (Prevents Dark Mode Flash) -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Medical Disclaimer Top Banner -->
+  <aside class="top-disclaimer-banner" role="note" aria-label="Medical Disclaimer">
+    <div class="container">
+      <span data-i18n="disclaimerText">⚕️ Medical Disclaimer: AB|Info is strictly an educational project. Not medical advice. Always consult a registered medical practitioner.</span>
+    </div>
+  </aside>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="AB|Info Homepage">💊 AB|<span>Info</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" data-i18n="navHome">Home</a>
+        <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
+        <a href="flowchart.html" class="active-nav" data-i18n="navFlowchart">Flowchart</a>
+        <a href="resistance.html" data-i18n="navResistance">Resistance</a>
+        <a href="quiz.html" data-i18n="navQuiz">Quiz</a>
+        <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
+        <a href="references.html" data-i18n="navReferences">References</a>
+        <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
+      </nav>
+
+      <div class="nav-utils">
+        <!-- PWA Install Button -->
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
+          📲 <span>Install</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          🌙
+        </button>
+
+        <!-- Language Selector -->
+        <div class="lang-selector" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
+        </div>
+      </div>
+    </div> 
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    <section id="flowchart-section" style="margin-top: 36px; margin-bottom: 50px;">
+      <h1 style="font-size:2rem; margin-bottom:8px;">🩺 Do I Really Need an Antibiotic?</h1>
+      <p class="section-sub">
+        Antibiotics kill bacteria, not viruses. Follow this interactive clinical decision guide to evaluate common symptoms and understand when an infection typically requires antibiotics or supportive home care.
+      </p>
+
+      <!-- Flowchart Interactive Box Rendered by script.js -->
+      <div id="flowchartContainer" class="flowchart-box" style="margin-top: 24px; margin-bottom: 40px;"></div>
+
+      <!-- Quick Clinical Guidance Cards -->
+      <div class="safety-banner" style="margin-top: 30px;">
+        <div class="safety-item">
+          <h3>🦠 Viral vs. Bacterial</h3>
+          <p>Common colds, influenza, COVID-19, and bronchitis are caused by viruses. Antibiotics have zero activity against viruses and will not relieve symptoms or shorten recovery.</p>
+        </div>
+        <div class="safety-item">
+          <h3>⏱️ The "Watchful Waiting" Principle</h3>
+          <p>Mild ear pain or sinus pressure often resolves on its own within 5 to 7 days with adequate rest, hydration, and fever relief without needing antibiotic exposure.</p>
+        </div>
+        <div class="safety-item">
+          <h3>🚨 When to See a Doctor Immediately</h3>
+          <p>Seek urgent medical attention if you experience difficulty breathing, high fever lasting more than 3 days, stiff neck, confusion, or spreading skin redness.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Standard 3-Column Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+          <div class="footer-share-btn">
+            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="drugs.html">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
+            <li><a href="resistance.html">Resistance Tracker</a></li>
+            <li><a href="quiz.html">Safety Quiz</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Trust &amp; Science</h4>
+          <ul class="footer-links">
+            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
+            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="i18n.js"></script>
+  <script src="navbar.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

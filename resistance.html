@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMR Surveillance Tracker &amp; Resistance Trends | AB|Info</title>
+  <meta name="description" content="Official ICMR AMRSN surveillance data, Bengaluru wastewater epidemiology, and longitudinal pathogen susceptibility trends in India (2017–2024)." />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f766e" />
+
+  <!-- Instant Theme Loader (Prevents Dark Mode Flash) -->
+  <script>
+    (function() {
+      var saved = localStorage.getItem("abinfo_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js CDN for Surveillance Visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Medical Disclaimer Top Banner -->
+  <aside class="top-disclaimer-banner" role="note" aria-label="Medical Disclaimer">
+    <div class="container">
+      <span data-i18n="disclaimerText">⚕️ Medical Disclaimer: AB|Info is strictly an educational project. Not medical advice. Always consult a registered medical practitioner.</span>
+    </div>
+  </aside>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar" role="banner">
+    <div class="container nav-inner">
+      <a href="index.html" class="logo" aria-label="AB|Info Homepage">💊 AB|<span>Info</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
+        <a href="index.html" data-i18n="navHome">Home</a>
+        <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
+        <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
+        <a href="flowchart.html" data-i18n="navFlowchart">Flowchart</a>
+        <a href="resistance.html" class="active-nav" data-i18n="navResistance">Resistance</a>
+        <a href="quiz.html" data-i18n="navQuiz">Quiz</a>
+        <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
+        <a href="references.html" data-i18n="navReferences">References</a>
+        <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
+      </nav>
+
+      <div class="nav-utils">
+        <!-- PWA Install Button -->
+        <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
+          📲 <span>Install</span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="themeToggleBtn" class="theme-toggle-btn" aria-label="Toggle dark/light theme" title="Toggle theme">
+          🌙
+        </button>
+
+        <!-- Language Selector -->
+        <div class="lang-selector" aria-label="Language selector">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="hi">हिन्दी</button>
+          <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
+        </div>
+      </div>
+    </div> 
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+    <section id="resistance-page" style="margin-top: 36px; margin-bottom: 50px;">
+      
+      <!-- Resistance Section Card -->
+      <div class="resistance-section" style="margin-top: 10px;">
+        <div class="container">
+          <h1 class="resistance-title" style="font-size:2.2rem; margin-bottom:12px;" data-i18n="resistanceTitle">
+            🦠 Resistance Reality: Bengaluru &amp; India
+          </h1>
+          <p class="resistance-intro" data-i18n="resistanceIntro">
+            Antibiotic resistance is an urgent public health reality in Karnataka. Surveillance data from tertiary hospital networks and city wastewater analysis demonstrate rising resistance across first- and second-line molecules.
+          </p>
+
+          <!-- Stat Cards with Animated Counters -->
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-number"><span class="counter" data-target="95">0</span>%+</div>
+              <p class="stat-label">of <strong>Salmonella Typhi</strong> (Typhoid) clinical isolates in India resist fluoroquinolones (Ciprofloxacin / Ofloxacin)</p>
+              <span class="stat-source">ICMR AMRSN Annual Report 2024</span>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-number">&lt;<span class="counter" data-target="20">0</span>%</div>
+              <p class="stat-label">of clinical <strong>E. coli</strong> isolates remain susceptible to standard 3rd-generation cephalosporins &amp; fluoroquinolones</p>
+              <span class="stat-source">ICMR AMRSN Annual Report 2024</span>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-number"><span class="counter" data-target="74">0</span>%</div>
+              <p class="stat-label">of ICU <strong>Acinetobacter baumannii</strong> infections resist Carbapenems (Meropenem / Imipenem)</p>
+              <span class="stat-source">ICMR AMRSN Annual Report 2024</span>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-number"><span class="counter" data-target="12">0</span>%</div>
+              <p class="stat-label">of bacterial isolates detected in <strong>Bengaluru urban wastewater</strong> were pan-drug resistant</p>
+              <span class="stat-source">Bengaluru Wastewater AMR Surveillance Study</span>
+            </div>
+          </div>
+
+          <!-- Interactive Chart.js Graph -->
+          <div class="chart-container-box" style="margin-top: 40px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 24px;">
+            <h3 style="color:#ffffff; margin-bottom: 12px; font-size:1.25rem;">
+              📈 Longitudinal Pathogen Susceptibility Trends in India (2017–2023)
+            </h3>
+            <p style="color:#94a3b8; font-size:0.9rem; margin-bottom: 20px;">
+              Percentage of clinical isolates remaining susceptible (treatable) to key reserve and first-line antibiotics based on ICMR national tertiary networks.
+            </p>
+            <div style="position: relative; height: 340px; width: 100%;">
+              <canvas id="amrChartCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Susceptibility Trend Comparison Bars -->
+          <div class="trend-box">
+            <h3 style="color:#ffffff; margin-bottom: 16px;">📉 Susceptibility Trends (Share of Isolates Still Treatable)</h3>
+
+            <div class="trend-row">
+              <span class="trend-label">E. coli vs Meropenem</span>
+              <div class="trend-bars">
+                <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="73.2"></span><span class="bar-val">73.2%</span></div>
+                <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="66"></span><span class="bar-val">66.0%</span></div>
+              </div>
+            </div>
+
+            <div class="trend-row">
+              <span class="trend-label">E. coli vs Imipenem</span>
+              <div class="trend-bars">
+                <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="81.4"></span><span class="bar-val">81.4%</span></div>
+                <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="62.7"></span><span class="bar-val">62.7%</span></div>
+              </div>
+            </div>
+
+            <div class="trend-row">
+              <span class="trend-label">Klebsiella vs Meropenem</span>
+              <div class="trend-bars">
+                <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="48"></span><span class="bar-val">48.0%</span></div>
+                <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="37.6"></span><span class="bar-val">37.6%</span></div>
+              </div>
+            </div>
+
+            <div class="trend-row">
+              <span class="trend-label">Klebsiella vs Pip-Tazo</span>
+              <div class="trend-bars">
+                <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="42.6"></span><span class="bar-val">42.6%</span></div>
+                <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="26.5"></span><span class="bar-val">26.5%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="stat-sources" style="margin-top: 24px;">
+            📚 Official Primary Sources: <strong>ICMR AMRSN Annual Report 2024 (8th Edition)</strong> · <strong>National Action Plan on AMR 2.0 (2025–2029)</strong> · Bengaluru Environmental Wastewater AMR Metagenomics.
+            <br />
+            <a href="references.html" style="color: #2dd4bf; text-decoration: underline; font-weight: 600; display: inline-block; margin-top: 8px;">
+              📑 Inspect Verified Citations &amp; Download PDFs on our References Page →
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Framework Cards -->
+      <div class="safety-banner" style="margin-top: 36px;">
+        <div class="safety-item">
+          <h3>🏛️ National Action Plan (NAP-AMR 2.0)</h3>
+          <p>India's multi-sectoral roadmap (2025–2029) emphasizing retail community pharmacy stewardship, banning non-therapeutic animal growth promoters, and expanding One Health surveillance.</p>
+        </div>
+        <div class="safety-item">
+          <h3>🧪 The One Health Dimension</h3>
+          <p>AMR connects humans, veterinary medicine, and urban water bodies. Metagenomic analysis in Bengaluru demonstrates that antibiotic runoff selects for resistant plasmids (NDM-1, OXA-48) in sewage.</p>
+        </div>
+        <div class="safety-item">
+          <h3>🛡️ What Pharmacists &amp; Patients Must Do</h3>
+          <p>Strictly enforce prescription-only dispensing under Schedule H/H1, never sell partial loose courses without a prescription, and educate patients to complete full treatment durations.</p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Standard 3-Column Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+          <div class="footer-share-btn">
+            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="drugs.html">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
+            <li><a href="resistance.html">Resistance Tracker</a></li>
+            <li><a href="quiz.html">Safety Quiz</a></li>
+            <li><a href="glossary.html">Glossary</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Trust &amp; Science</h4>
+          <ul class="footer-links">
+            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
+            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="i18n.js"></script>
+  <script src="navbar.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

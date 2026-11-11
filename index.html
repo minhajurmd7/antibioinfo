@@ -9,6 +9,7 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f766e" />
 
+  <!-- Instant Theme Loader (Prevents Dark Mode Flash) -->
   <script>
     (function() {
       var saved = localStorage.getItem("abinfo_theme");
@@ -18,8 +19,6 @@
   </script>
 
   <link rel="stylesheet" href="style.css" />
-  <!-- Chart.js CDN for Resistance Surveillance Visualization -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -37,18 +36,18 @@
       <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" role="navigation" aria-label="Main Navigation">
         <a href="index.html" class="active-nav" data-i18n="navHome">Home</a>
+        <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
         <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
-        <a href="#drugs" data-i18n="navDatabase">A–Z Catalog</a>
-        <a href="#resistance" data-i18n="navResistance">Resistance</a>
-        <a href="#flowchart" data-i18n="navFlowchart">Flowchart</a>
-        <a href="#quiz" data-i18n="navQuiz">Safety Quiz</a>
+        <a href="flowchart.html" data-i18n="navFlowchart">Flowchart</a>
+        <a href="resistance.html" data-i18n="navResistance">Resistance</a>
+        <a href="quiz.html" data-i18n="navQuiz">Quiz</a>
         <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
         <a href="references.html" data-i18n="navReferences">References</a>
         <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
       </nav>
 
       <div class="nav-utils">
-        <!-- PWA Install Button (Hidden until browser triggers install prompt) -->
+        <!-- PWA Install Button -->
         <button id="pwaInstallBtn" class="btn-install" title="Install AB|Info App" hidden>
           📲 <span>Install</span>
         </button>
@@ -65,80 +64,135 @@
           <button class="lang-btn" data-lang="kn">ಕನ್ನಡ</button>
         </div>
       </div>
-     </div> 
+    </div> 
   </header>
-
-  <!-- Dual Learning Path Mode Selector -->
-  <section class="path-selector-bar">
-    <div class="container path-inner">
-      <span class="path-label" data-i18n="pathTitle">Choose Your Learning Path:</span>
-      <div class="path-buttons" role="group" aria-label="Learning Path Selector">
-        <button class="path-btn active" data-path="public" data-i18n="pathPublicBtn">👤 Common Person (Simple &amp; Visual)</button>
-        <button class="path-btn" data-path="academic" data-i18n="pathAcademicBtn">🔬 Student / Researcher (Clinical &amp; Deep)</button>
-      </div>
-    </div>
-  </section>
 
   <!-- ===== HERO SECTION ===== -->
   <section class="hero" id="home">
     <div class="container">
       <h1 data-i18n="heroTitle">Understand Your Antibiotics</h1>
-      <p data-i18n="heroSubtitle">Evidence-based clinical guidance on antibiotic classes, mechanisms, Indian brand names, and antimicrobial resistance surveillance.</p>
+      <p data-i18n="heroSubtitle">
+        Evidence-based clinical guidance on antibiotic classes, mechanisms, Indian brand names, and antimicrobial resistance surveillance.
+      </p>
       
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Search drug name, brand (e.g. Novamox, Ciplox), or condition..." aria-label="Search antibiotics" />
-      </div>
+      <!-- Quick Portal Search Form -->
+      <form class="search-box" action="drugs.html" method="GET" style="display:flex; gap:8px; max-width:680px; margin:0 auto;">
+        <input type="text" name="search" id="heroSearchInput" placeholder="🔍 Search antibiotic name, brand (e.g. Novamox, Ciplox), disease, or bug..." aria-label="Search antibiotics" style="flex:1;" />
+        <button type="submit" class="btn-primary" style="padding:14px 24px; border:none; cursor:pointer; border-radius:var(--radius-full); font-size:1rem; white-space:nowrap;">
+          Search →
+        </button>
+      </form>
       <p class="hero-note" data-i18n="heroNote">⚕️ Educational resource for pharmacy &amp; healthcare education — not clinical medical advice.</p>
     </div>
   </section>
 
+  <!-- ===== MAIN PORTAL NAVIGATION GRID ===== -->
   <main class="container">
-
-    <!-- ===== EXPLORE CLASSES BANNER ===== -->
-    <section id="explore-classes" style="margin: 40px 0;">
-      <div class="class-card expanded-card" style="padding: 36px 24px; border-left: none; border-top: 5px solid var(--primary); text-align: center;">
-        <span style="font-size: 2.5rem; display: block; margin-bottom: 10px;">📚</span>
-        <h2 style="margin: 0 0 12px;" data-i18n="browseClassesTitle">Browse by Antibiotic Class</h2>
-        <p style="color: var(--text-muted); margin: 0 auto 24px; font-size: 1.02rem; max-width: 680px;" data-i18n="browseClassesSubtitle">
-          Explore all 24 antibiotic families including Penicillins, Cephalosporins, Carbapenems, and Polymyxins with mechanisms, spectra, and Indian market brands.
+    <section id="portal-features" style="margin-top: 45px; margin-bottom: 50px;">
+      <div style="text-align: center; margin-bottom: 35px;">
+        <h2 style="font-size: 2.1rem; color: var(--primary-dark); margin-bottom: 8px;">
+          🚀 Explore the AB|Info Platform
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 700px; margin: 0 auto;">
+          Select any section below to access dedicated clinical databases, decision tools, and stewardship guides.
         </p>
-        <a href="classes.html" class="btn-primary" data-i18n="browseClassesBtn">Open Classes of Antibiotics (24) →</a>
+      </div>
+
+      <!-- Feature Cards Grid (6 Clean Cards) -->
+      <div class="drug-grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+
+        <!-- Card 1: A-Z Catalog -->
+        <article class="detail-card" style="display:flex; flex-direction:column; justify-content:space-between; border-top: 5px solid #2563eb; padding: 26px;">
+          <div>
+            <span style="font-size: 2.4rem; display: block; margin-bottom: 12px;">💊</span>
+            <h3 style="font-size: 1.35rem; margin-bottom: 8px; color: var(--text);">A–Z Drug Directory (33)</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+              Access 33 clinical monographs with commercial Indian pharmacy brands (Novamox, Augmentin, Monocef), dosage forms, food interaction rules, and WHO AWaRe tiers.
+            </p>
+          </div>
+          <a href="drugs.html" class="btn-primary" style="text-align:center; text-decoration:none;">
+            Browse Drugs (33) →
+          </a>
+        </article>
+
+        <!-- Card 2: Classes of Antibiotics -->
+        <article class="detail-card" style="display:flex; flex-direction:column; justify-content:space-between; border-top: 5px solid #0f766e; padding: 26px;">
+          <div>
+            <span style="font-size: 2.4rem; display: block; margin-bottom: 12px;">🧪</span>
+            <h3 style="font-size: 1.35rem; margin-bottom: 8px; color: var(--text);">Antibiotic Classes (24)</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+              Explore all 24 antibiotic families available in India from Natural Penicillins to last-line Polymyxins with biochemical mechanisms and spectra of activity.
+            </p>
+          </div>
+          <a href="classes.html" class="btn-outline" style="text-align:center; text-decoration:none;">
+            Explore Classes (24) →
+          </a>
+        </article>
+
+        <!-- Card 3: Symptom Decision Guide -->
+        <article class="detail-card" style="display:flex; flex-direction:column; justify-content:space-between; border-top: 5px solid #0ea5e9; padding: 26px;">
+          <div>
+            <span style="font-size: 2.4rem; display: block; margin-bottom: 12px;">🩺</span>
+            <h3 style="font-size: 1.35rem; margin-bottom: 8px; color: var(--text);">Symptom Decision Guide</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+              Interactive clinical triage guide to evaluate symptoms (cold, sore throat, UTI, fever) and understand when infections are viral vs. bacterial.
+            </p>
+          </div>
+          <a href="flowchart.html" class="btn-outline" style="text-align:center; text-decoration:none;">
+            Open Flowchart →
+          </a>
+        </article>
+
+        <!-- Card 4: Resistance Tracker -->
+        <article class="detail-card" style="display:flex; flex-direction:column; justify-content:space-between; border-top: 5px solid #dc2626; padding: 26px;">
+          <div>
+            <span style="font-size: 2.4rem; display: block; margin-bottom: 12px;">📊</span>
+            <h3 style="font-size: 1.35rem; margin-bottom: 8px; color: var(--text);">AMR Resistance Reality</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+              Real-world ICMR surveillance statistics (2017–2024), longitudinal susceptibility curves with Chart.js, and Bengaluru urban wastewater metagenomics.
+            </p>
+          </div>
+          <a href="resistance.html" class="btn-outline" style="text-align:center; text-decoration:none;">
+            Track Resistance Trends →
+          </a>
+        </article>
+
+        <!-- Card 5: Safety Hub & Quiz -->
+        <article class="detail-card" style="display:flex; flex-direction:column; justify-content:space-between; border-top: 5px solid #d97706; padding: 26px;">
+          <div>
+            <span style="font-size: 2.4rem; display: block; margin-bottom: 12px;">🧠</span>
+            <h3 style="font-size: 1.35rem; margin-bottom: 8px; color: var(--text);">Safety Hub &amp; Quiz</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+              Flip 10 interactive 3D myth-busting cards and challenge your clinical stewardship knowledge with our 10-MCQ antibiotic safety quiz.
+            </p>
+          </div>
+          <a href="quiz.html" class="btn-outline" style="text-align:center; text-decoration:none;">
+            Take Safety Quiz →
+          </a>
+        </article>
+
+        <!-- Card 6: Clinical Glossary -->
+        <article class="detail-card" style="display:flex; flex-direction:column; justify-content:space-between; border-top: 5px solid #7c3aed; padding: 26px;">
+          <div>
+            <span style="font-size: 2.4rem; display: block; margin-bottom: 12px;">📖</span>
+            <h3 style="font-size: 1.35rem; margin-bottom: 8px; color: var(--text);">Clinical AMR Glossary</h3>
+            <p style="color: var(--text-muted); font-size: 0.94rem; line-height: 1.6; margin-bottom: 16px;">
+              Curated A–Z terminology with dual layman and clinical definitions for concepts like NDM-1, ESBL, MRSA, VRE, and Indian Schedule H1 rules.
+            </p>
+          </div>
+          <a href="glossary.html" class="btn-outline" style="text-align:center; text-decoration:none;">
+            Explore Glossary →
+          </a>
+        </article>
+
       </div>
     </section>
 
-    <!-- ===== INTERACTIVE SYMPTOM DECISION FLOWCHART ===== -->
-    <section id="flowchart" style="margin: 50px 0;">
-      <h2>🩺 Do I Really Need an Antibiotic? (Symptom Guide)</h2>
-      <p class="section-sub">Antibiotics kill bacteria, not viruses. Follow this interactive clinical decision guide to check if an infection typically warrants antibiotics.</p>
-      <div id="flowchartContainer" class="flowchart-box"></div>
-    </section>
-
-    <!-- ===== ANTIBIOTICS A-Z DATABASE ===== -->
-    <section id="drugs" style="margin: 50px 0;">
-      <div style="display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap;">
-        <h2><span data-i18n="commonAntibioticsTitle">Common Antibiotics</span> <span id="resultCount"></span></h2>
-        
-        <div class="view-toggle-btns" style="margin-bottom:12px;">
-          <button class="btn-outline active" id="viewSimpleBtn" onclick="setLearningPath('public')">Simple View</button>
-          <button class="btn-outline" id="viewDetailedBtn" onclick="setLearningPath('academic')">Clinical View</button>
-        </div>
-      </div>
-
-      <!-- WHO AWaRe Filter Pills -->
-      <div class="filter-wrapper">
-        <button class="filter-pill active" data-filter="ALL" data-i18n="allCategories">All Categories</button>
-        <button class="filter-pill" data-filter="Access" data-i18n="whoAccess">🟢 WHO Access</button>
-        <button class="filter-pill" data-filter="Watch" data-i18n="whoWatch">🟡 WHO Watch</button>
-        <button class="filter-pill" data-filter="Reserve" data-i18n="whoReserve">🔴 WHO Reserve</button>
-      </div>
-
-      <div class="drug-grid" id="drugGrid"></div>
-      <p class="no-results" id="noResults" hidden data-i18n="noMatches">😕 No antibiotics matched your search.</p>
-    </section>
-
-    <!-- ===== SAFETY & RED LINE CAMPAIGN ===== -->
-    <section id="safety" style="margin: 60px 0;">
-      <h2 data-i18n="safetyTitle">Safety &amp; Antibiotic Stewardship ⚠️</h2>
+    <!-- ===== SAFETY & RED LINE CAMPAIGN CALLOUT ===== -->
+    <section id="safety-summary" style="margin: 50px 0;">
+      <h2 style="margin-bottom: 20px; font-size: 1.6rem;" data-i18n="safetyTitle">
+        Safety &amp; Antibiotic Stewardship ⚠️
+      </h2>
       
       <div class="safety-banner">
         <div class="safety-item">
@@ -161,292 +215,6 @@
         <p data-i18n="redLineDesc">In India, antibiotics and potent prescription medicines feature a prominent <strong>vertical red line</strong> on their packaging strip. This indicates that the medicine falls under <strong>Schedule H or Schedule H1</strong> of the Drugs and Cosmetics Rules and must NEVER be consumed without a doctor's prescription.</p>
       </div>
     </section>
-
-    <!-- ===== RESISTANCE REALITY: BENGALURU & INDIA ===== -->
-    <section id="resistance" class="resistance-section">
-      <div class="container">
-        <h2 class="resistance-title" data-i18n="resistanceTitle">🦠 Resistance Reality: Bengaluru &amp; India</h2>
-        <p class="resistance-intro" data-i18n="resistanceIntro">
-          Antibiotic resistance is an urgent public health reality in Karnataka. Surveillance data from tertiary hospital networks and city wastewater analysis demonstrate rising resistance across first- and second-line molecules.
-        </p>
-
-        <div class="stat-grid">
-          <div class="stat-card">
-            <div class="stat-number"><span class="counter" data-target="95">0</span>%+</div>
-            <p class="stat-label">of <strong>Salmonella Typhi</strong> (Typhoid) clinical isolates in India resist fluoroquinolones (Ciprofloxacin / Ofloxacin)</p>
-            <span class="stat-source">ICMR AMRSN Annual Report 2024</span>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-number">&lt;<span class="counter" data-target="20">0</span>%</div>
-            <p class="stat-label">of clinical <strong>E. coli</strong> isolates remain susceptible to standard 3rd-generation cephalosporins &amp; fluoroquinolones</p>
-            <span class="stat-source">ICMR AMRSN Annual Report 2024</span>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-number"><span class="counter" data-target="74">0</span>%</div>
-            <p class="stat-label">of ICU <strong>Acinetobacter baumannii</strong> infections resist Carbapenems (Meropenem / Imipenem)</p>
-            <span class="stat-source">ICMR AMRSN Annual Report 2024</span>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-number"><span class="counter" data-target="12">0</span>%</div>
-            <p class="stat-label">of bacterial isolates detected in <strong>Bengaluru urban wastewater</strong> were pan-drug resistant</p>
-            <span class="stat-source">Bengaluru Wastewater AMR Surveillance Study</span>
-          </div>
-        </div>
-
-        <!-- Interactive Chart.js Graph -->
-        <div class="chart-container-box" style="margin-top: 40px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 24px;">
-          <h3 style="color:#ffffff; margin-bottom: 16px;">📈 Longitudinal Pathogen Susceptibility Trends in India (2017–2023)</h3>
-          <p style="color:#94a3b8; font-size:0.9rem; margin-bottom: 20px;">Percentage of clinical isolates remaining susceptible to key antibiotics based on ICMR national surveillance networks.</p>
-          <div style="position: relative; height: 320px; width: 100%;">
-            <canvas id="amrChartCanvas"></canvas>
-          </div>
-        </div>
-
-        <!-- Static Trend Bars -->
-        <div class="trend-box">
-          <h3>📉 Susceptibility Trends (Share of Isolates Still Treatable)</h3>
-
-          <div class="trend-row">
-            <span class="trend-label">E. coli vs Meropenem</span>
-            <div class="trend-bars">
-              <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="73.2"></span><span class="bar-val">73.2%</span></div>
-              <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="66"></span><span class="bar-val">66.0%</span></div>
-            </div>
-          </div>
-
-          <div class="trend-row">
-            <span class="trend-label">E. coli vs Imipenem</span>
-            <div class="trend-bars">
-              <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="81.4"></span><span class="bar-val">81.4%</span></div>
-              <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="62.7"></span><span class="bar-val">62.7%</span></div>
-            </div>
-          </div>
-
-          <div class="trend-row">
-            <span class="trend-label">Klebsiella vs Meropenem</span>
-            <div class="trend-bars">
-              <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="48"></span><span class="bar-val">48.0%</span></div>
-              <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="37.6"></span><span class="bar-val">37.6%</span></div>
-            </div>
-          </div>
-
-          <div class="trend-row">
-            <span class="trend-label">Klebsiella vs Pip-Tazo</span>
-            <div class="trend-bars">
-              <div class="bar-track"><span class="bar-year">2017</span><span class="bar-fill old" data-width="42.6"></span><span class="bar-val">42.6%</span></div>
-              <div class="bar-track"><span class="bar-year">2023</span><span class="bar-fill new" data-width="26.5"></span><span class="bar-val">26.5%</span></div>
-            </div>
-          </div>
-        </div>
-
-        <p class="stat-sources" style="margin-top: 20px;">
-          📚 Sources: <strong>ICMR AMRSN Annual Report 2024 (8th Edition)</strong> · <strong>National Action Plan on AMR 2.0 (2025–2029)</strong> · Bengaluru Wastewater AMR Study.
-          <br />
-          <a href="references.html" style="color: #2dd4bf; text-decoration: underline; font-weight: 600; display: inline-block; margin-top: 6px;">
-            📑 Explore Complete Evidence &amp; Government Documents on our References Page →
-          </a>
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== 10-CARD MYTH-BUSTING 3D FLIP CARDS ===== -->
-    <section id="myths" style="margin: 60px 0;">
-      <h2>🧠 Myth vs. Fact: Antibiotic Truths</h2>
-      <p class="section-sub">Hover or tap any card to flip it and reveal the clinical pharmacological fact.</p>
-
-      <div class="flip-cards-grid">
-        <!-- Card 1 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 1</h3>
-              <p>"Antibiotics cure common colds, flu, and viral sore throats."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 1</h3>
-              <p>Antibiotics only kill bacteria. Viruses cause colds, flu, and COVID-19. Antibiotics have zero effect on viruses and cause harmful side effects.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 2</h3>
-              <p>"I can stop taking my antibiotic as soon as my fever or pain goes away."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 2</h3>
-              <p>Stopping early allows partially resistant mutant bacteria to survive, multiply, and cause a more severe, harder-to-treat recurrence.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 3</h3>
-              <p>"My body becomes immune to antibiotics."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 3</h3>
-              <p>Your body does not become resistant — the <em>bacteria</em> mutate and become resistant. Resistant bacteria can then spread to family and the community.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 4</h3>
-              <p>"Leftover antibiotics can be saved and reused for my next fever."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 4</h3>
-              <p>Different bugs require completely different antibiotics. Taking an incorrect drug or partial course breeds resistance and delays proper care.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 5</h3>
-              <p>"Stronger, costlier antibiotics are always better for fast recovery."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 5</h3>
-              <p>Narrow-spectrum Access antibiotics are best for everyday infections. Using ultra-broad reserve antibiotics wipes out protective gut flora and triggers superbug selection.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 6</h3>
-              <p>"Antibiotics are harmless like vitamin pills."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 6</h3>
-              <p>Antibiotics carry risks of severe allergic reactions (anaphylaxis), kidney damage, tendon rupture, and life-threatening C. difficile colitis.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 7 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 7</h3>
-              <p>"Red line medicines can be bought over-the-counter without a prescription."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 7</h3>
-              <p>Under India's Drugs and Cosmetics Rules (Schedule H/H1), selling red-line medicines without a valid prescription is an illegal offense.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 8 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 8</h3>
-              <p>"If my family member has the same symptom, they can take my antibiotic."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 8</h3>
-              <p>Dosage depends on age, weight, renal function, allergies, and pregnancy status. Sharing prescription drugs is clinically hazardous.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 9 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 9</h3>
-              <p>"Scientists will always discover new antibiotics before old ones fail."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 9</h3>
-              <p>The global antibiotic discovery pipeline has slowed drastically for decades. Bacteria are developing resistance faster than new molecules are being approved.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 10 -->
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <span class="flip-icon">❌</span>
-              <h3>Myth 10</h3>
-              <p>"Missing a dose doesn't matter as long as I remember later."</p>
-              <span class="flip-hint">Tap to flip ↻</span>
-            </div>
-            <div class="flip-card-back">
-              <span class="flip-icon">✅</span>
-              <h3>Fact 10</h3>
-              <p>Antibiotics require steady blood levels above the Minimum Inhibitory Concentration (MIC). Missing doses gives bacteria time to adapt and resist.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== 10-MCQ ANTIBIOTIC SAFETY QUIZ ===== -->
-    <section id="quiz" style="margin: 60px 0;">
-      <h2 data-i18n="quizTitle">🧠 Test Your Antibiotic Safety IQ (10-MCQ Quiz)</h2>
-      <p class="section-sub" data-i18n="quizSubtitle">Test your understanding of antibiotic safety, WHO guidelines, and Indian red-line regulations.</p>
-
-      <div id="quizContainer"></div>
-
-      <div style="text-align:center; margin-top:24px;">
-        <button id="quizSubmitBtn" class="btn-primary" style="font-size:1.05rem; padding:14px 32px; border:none; cursor:pointer;">
-          Submit Quiz &amp; Calculate Score
-        </button>
-      </div>
-
-      <div id="quizResultBox" style="display:none; margin-top:30px;"></div>
-    </section>
-
-
   </main>
 
   <!-- ===== FOOTER ===== -->
@@ -463,10 +231,10 @@
         <div class="footer-col">
           <h4>Navigation</h4>
           <ul class="footer-links">
-            <li><a href="#drugs">Antibiotic Database</a></li>
+            <li><a href="drugs.html">Antibiotic Database</a></li>
             <li><a href="classes.html">Drug Classes (24)</a></li>
-            <li><a href="#resistance">Resistance Tracker</a></li>
-            <li><a href="#quiz">Safety Quiz</a></li>
+            <li><a href="resistance.html">Resistance Tracker</a></li>
+            <li><a href="quiz.html">Safety Quiz</a></li>
             <li><a href="glossary.html">Glossary</a></li>
           </ul>
         </div>
@@ -487,7 +255,23 @@
   <!-- Scripts -->
   <script src="i18n.js"></script>
   <script src="navbar.js"></script>
-  <script src="data.js"></script>
-  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Connect hero search input so typing and pressing Enter goes directly to drugs.html with the query
+      const heroForm = document.querySelector(".hero form");
+      const heroInput = document.getElementById("heroSearchInput");
+      if (heroForm && heroInput) {
+        heroForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const query = heroInput.value.trim();
+          if (query) {
+            window.location.href = `drugs.html?search=${encodeURIComponent(query)}`;
+          } else {
+            window.location.href = `drugs.html`;
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
