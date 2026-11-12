@@ -1,5 +1,5 @@
-// ===== SERVICE WORKER: CACHE-FIRST / OFFLINE STRATEGY =====
-const CACHE_NAME = "abinfo-pwa-v3";
+// ===== SERVICE WORKER: CACHE-FIRST / OFFLINE STRATEGY (V4) =====
+const CACHE_NAME = "abinfo-pwa-v4";
 
 const OFFLINE_URLS = [
   "./",
@@ -24,7 +24,8 @@ const OFFLINE_URLS = [
   "./script.js",
   "./i18n.js",
   "./glossary.js",
-  "./manifest.json"
+  "./manifest.json",
+  "./favicon.svg"
 ];
 
 // Install: Cache all core assets
@@ -36,7 +37,7 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Activate: Clean up old cache versions
+// Activate: Clean up old cache versions (v3 and earlier)
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -58,7 +59,6 @@ self.addEventListener("fetch", (event) => {
       if (cachedResponse) return cachedResponse;
 
       return fetch(event.request).then((networkResponse) => {
-        // Cache external requests if successful
         if (networkResponse && networkResponse.status === 200) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -67,10 +67,9 @@ self.addEventListener("fetch", (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        // Fallback for HTML navigations when offline
-        const accept = event.request.headers.get("accept");
-        if (accept && accept.includes("text/html")) {
-          return caches.match("index.html");
+        // Fallback for offline navigation
+        if (event.request.mode === "navigate") {
+          return caches.match("./index.html");
         }
       });
     })

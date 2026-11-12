@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0f766e" />
 
-  <!-- Instant Theme Loader (Prevents Dark Mode Flash) -->
+  <!-- Instant Theme Loader -->
   <script>
     (function() {
       var saved = localStorage.getItem("abinfo_theme");
@@ -29,17 +29,14 @@
       gap: 28px;
       margin-top: 24px;
     }
-
     @media (max-width: 860px) {
       .dispense-grid {
         grid-template-columns: 1fr;
       }
     }
-
     .form-group {
       margin-bottom: 16px;
     }
-
     .form-group label {
       display: block;
       font-size: 0.9rem;
@@ -47,102 +44,120 @@
       color: var(--text);
       margin-bottom: 6px;
     }
-
     .form-control {
       width: 100%;
       padding: 10px 14px;
-      border: 1px solid var(--border-color, #cbd5e1);
-      border-radius: 6px;
-      background: var(--bg-card, #ffffff);
-      color: var(--text-main, #0f172a);
       font-size: 0.95rem;
-      font-family: inherit;
+      border: 1.5px solid var(--border-color, #cbd5e1);
+      border-radius: 8px;
+      background: var(--bg-body, #ffffff);
+      color: var(--text-main, #0f172a);
+      transition: border-color 0.2s;
     }
-
     .form-control:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--primary, #0f766e);
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
     }
-
-    /* Pharmacy Dispensing Sticker Card */
     .sticker-container {
       background: #ffffff;
-      color: #0f172a;
       border: 2px dashed #0f766e;
       border-radius: 8px;
-      padding: 18px;
-      box-shadow: var(--shadow);
+      padding: 14px;
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #0f172a;
+      box-sizing: border-box;
       position: relative;
     }
-
+    .sticker-redline {
+      height: 4px;
+      background: #dc2626;
+      width: 100%;
+      margin-bottom: 8px;
+      border-radius: 2px;
+    }
+    .sticker-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
     .sticker-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #0f766e;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      align-items: flex-start;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 6px;
     }
-
-    .sticker-redline {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      width: 8px;
-      background: #dc2626;
-      border-radius: 6px 0 0 6px;
-    }
-
-    .sticker-body {
-      padding-left: 10px;
-    }
-
-    .timing-icons {
+    .sticker-middle {
       display: flex;
       gap: 12px;
-      margin: 10px 0;
-      padding: 8px 12px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
+      align-items: center;
     }
-
-    .timing-box {
-      text-align: center;
+    .sticker-details {
       flex: 1;
+      font-size: 0.82rem;
+      line-height: 1.4;
     }
-
-    .timing-box strong {
-      display: block;
-      font-size: 1.15rem;
+    .sticker-qr {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 2px;
+    }
+    .schedule-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #f87171;
+    }
+    .timing-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      text-align: center;
+      font-size: 0.78rem;
+    }
+    .timing-table th {
+      background: #f1f5f9;
+      padding: 3px;
+      border: 1px solid #cbd5e1;
+      font-weight: 700;
+    }
+    .timing-table td {
+      padding: 4px;
+      border: 1px solid #cbd5e1;
+      font-weight: 800;
+      font-size: 0.95rem;
       color: #0f766e;
     }
-
-    .timing-box span {
-      font-size: 0.72rem;
-      color: #64748b;
-    }
-
-    /* Print-Only Isolation: Prints only the sticker when clicking Print */
     @media print {
       body * {
-        visibility: hidden !important;
+        visibility: hidden;
       }
       #printableSticker, #printableSticker * {
-        visibility: visible !important;
+        visibility: visible;
       }
       #printableSticker {
         position: absolute;
         left: 0;
         top: 0;
-        width: 80mm !important;
-        border: 1px solid #000000 !important;
-        box-shadow: none !important;
-        background: #ffffff !important;
-        color: #000000 !important;
-        padding: 8mm !important;
+        width: 70mm;
+        height: 45mm;
+        border: 1px solid #000;
+        box-shadow: none;
       }
     }
   </style>
@@ -166,12 +181,12 @@
         <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
         <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
         <a href="dispense.html" class="active-nav">🏷️ QR Dispenser</a>
+        <a href="calculator.html">🧮 Dosage Calculator</a>
+        <a href="interactions.html">⚠️ Interaction Checker</a>
         <a href="flowchart.html" data-i18n="navFlowchart">Flowchart</a>
         <a href="resistance.html" data-i18n="navResistance">Resistance</a>
         <a href="quiz.html" data-i18n="navQuiz">Quiz</a>
         <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
-        <a href="references.html" data-i18n="navReferences">References</a>
-        <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
       </nav>
 
       <div class="nav-utils">
@@ -188,37 +203,37 @@
 
   <!-- Main Content Container -->
   <main class="container">
-    <section id="dispenser-section" style="margin-top: 36px; margin-bottom: 50px;">
+    <section id="dispense-section" style="margin-top: 36px; margin-bottom: 50px;">
       
       <!-- Page Header -->
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
         <div>
           <h1 style="font-size:2.1rem; margin-bottom:6px; color:var(--primary-dark);">
-            🏷️ Community Pharmacy QR Dispensing &amp; Label Generator
+            🏷️ Pharmacist QR Dispensing Label Generator
           </h1>
           <p class="section-sub">
-            Generate custom electronic Patient Information Leaflet (e-PIL) QR stickers for retail dispensing strips in English, Hindi, and Kannada.
+            Generate printable, high-contrast auxiliary dispensing stickers with embedded QR codes linking to multilingual electronic patient information leaflets (e-PIL).
           </p>
         </div>
-        <span class="badge" style="background:#059669; font-size:0.85rem; padding:6px 14px;">
-          👨‍⚕️ Retail Pharmacist Tool
+        <span class="badge" style="background:#0f766e; font-size:0.85rem; padding:6px 14px;">
+          👨‍⚕️ Community Pharmacy Tool
         </span>
       </div>
 
-      <!-- Two-Column Dispensing Interface -->
+      <!-- Two-Column Generator Grid -->
       <div class="dispense-grid">
         
-        <!-- Column 1: Pharmacist Input Form -->
+        <!-- Column 1: Dispensing Parameters Form -->
         <div class="detail-card">
           <h2 style="font-size:1.25rem; margin-bottom:16px; color:var(--primary-dark);">
-            📝 1. Enter Patient Prescription Details
+            📝 1. Enter Prescription &amp; Dispensing Details
           </h2>
 
-          <form id="dispenseForm" onsubmit="generateSticker(event)">
+          <form id="dispenseForm" onsubmit="generateSticker(event); return false;">
             <!-- Select Antibiotic -->
             <div class="form-group">
               <label for="drugSelect">💊 Select Antibiotic Molecule &amp; Indian Brand:</label>
-              <select id="drugSelect" class="form-control" onchange="autoFillDrugGuidance()" required>
+              <select id="drugSelect" class="form-control" onchange="autoFillDrugGuidance(); generateSticker();" required>
                 <option value="">-- Choose an Antibiotic --</option>
               </select>
             </div>
@@ -226,13 +241,13 @@
             <!-- Commercial Brand (Editable) -->
             <div class="form-group">
               <label for="brandInput">🏷️ Commercial Brand Name Dispensed (Optional):</label>
-              <input type="text" id="brandInput" class="form-control" placeholder="e.g. Augmentin 625, Novamox 500, Taxim-O 200" />
+              <input type="text" id="brandInput" class="form-control" oninput="generateSticker()" placeholder="e.g. Augmentin 625, Novamox 500, Taxim-O 200" />
             </div>
 
             <!-- Dosing Schedule Selection -->
             <div class="form-group">
               <label for="frequencySelect">⏰ Dosing Schedule (Frequency):</label>
-              <select id="frequencySelect" class="form-control" required>
+              <select id="frequencySelect" class="form-control" onchange="generateSticker()" required>
                 <option value="1-0-1">1 - 0 - 1 (Twice Daily / ದಿನಕ್ಕೆ 2 ಬಾರಿ / दिन में 2 बार)</option>
                 <option value="1-1-1">1 - 1 - 1 (Thrice Daily / ದಿನಕ್ಕೆ 3 ಬಾರಿ / दिन में 3 बार)</option>
                 <option value="1-0-0">1 - 0 - 0 (Once Daily Morning / ಬೆಳಿಗ್ಗೆ ಮಾತ್ರ / केवल सुबह)</option>
@@ -245,7 +260,7 @@
             <!-- Food Relationship -->
             <div class="form-group">
               <label for="foodTimingSelect">🍽️ Food Relationship:</label>
-              <select id="foodTimingSelect" class="form-control" required>
+              <select id="foodTimingSelect" class="form-control" onchange="generateSticker()" required>
                 <option value="after">After Food (ಊಟದ ನಂತರ / भोजन के बाद)</option>
                 <option value="before">Before Food / Empty Stomach (ಊಟಕ್ಕೆ 1 ಗಂಟೆ ಮುಂಚೆ / खाली पेट)</option>
                 <option value="with">With Meals / Start of Meal (ಊಟದೊಂದಿಗೆ / भोजन के साथ)</option>
@@ -256,7 +271,7 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
               <div class="form-group">
                 <label for="durationDays">📅 Duration (Days):</label>
-                <select id="durationDays" class="form-control" required>
+                <select id="durationDays" class="form-control" onchange="generateSticker()" required>
                   <option value="3">3 Days (3 ದಿನಗಳು / 3 दिन)</option>
                   <option value="5" selected>5 Days (5 ದಿನಗಳು / 5 दिन)</option>
                   <option value="7">7 Days (7 ದಿನಗಳು / 7 दिन)</option>
@@ -268,7 +283,7 @@
               <!-- Target Language for e-PIL QR -->
               <div class="form-group">
                 <label for="langSelect">🌐 Leaflet Language:</label>
-                <select id="langSelect" class="form-control" required>
+                <select id="langSelect" class="form-control" onchange="generateSticker()" required>
                   <option value="kn">ಕನ್ನಡ (Kannada)</option>
                   <option value="hi">हिन्दी (Hindi)</option>
                   <option value="en" selected>English</option>
@@ -279,11 +294,11 @@
             <!-- Special Caution Callout -->
             <div class="form-group">
               <label for="cautionInput">⚠️ Specific Warning for Label (Auto-detected):</label>
-              <input type="text" id="cautionInput" class="form-control" placeholder="e.g. Finish full course; Avoid alcohol" />
+              <input type="text" id="cautionInput" class="form-control" oninput="generateSticker()" placeholder="e.g. Finish full course; Avoid alcohol" />
             </div>
 
             <div style="margin-top:20px; display:flex; gap:10px;">
-              <button type="submit" class="btn-primary" style="flex:1; border:none; cursor:pointer; padding:12px;">
+              <button type="button" onclick="generateSticker()" class="btn-primary" style="flex:1; border:none; cursor:pointer; padding:12px;">
                 ⚡ Generate QR Dispensing Sticker
               </button>
             </div>
@@ -314,61 +329,62 @@
                     <strong style="color:#0f766e; font-size:1.05rem; display:block;">💊 AB|Info Pharmacy e-PIL</strong>
                     <span id="labelDrugName" style="font-weight:700; font-size:0.95rem; color:#0f172a;">Amoxicillin + Clavulanate</span>
                   </div>
-                  <div style="text-align:right;">
-                    <span id="labelScheduleTag" class="schedule-h1-tag" style="font-size:0.7rem;">Schedule H</span>
-                  </div>
+                  <span id="labelScheduleTag" class="schedule-badge">Schedule H</span>
                 </div>
 
-                <div style="font-size:0.88rem; color:#334155; margin-bottom:6px;">
-                  Brand: <strong id="labelBrandName" style="color:#0f172a;">Augmentin 625</strong>
-                </div>
-
-                <!-- Dosage Timing Boxes -->
-                <div class="timing-icons" id="timingIconsBox">
-                  <div class="timing-box">
-                    <span>☀️ Morning</span>
-                    <strong id="timingMorning">1</strong>
-                  </div>
-                  <div class="timing-box">
-                    <span>🌤️ Noon</span>
-                    <strong id="timingNoon">0</strong>
-                  </div>
-                  <div class="timing-box">
-                    <span>🌙 Night</span>
-                    <strong id="timingNight">1</strong>
-                  </div>
-                </div>
-
-                <div style="font-size:0.86rem; margin-bottom:8px; line-height:1.4;">
-                  <strong>Directions:</strong> <span id="labelFoodInstructions">Take after meals for 5 days.</span>
-                </div>
-
-                <div id="labelCautionBox" style="background:#fef2f2; border:1px solid #fecaca; border-radius:4px; padding:6px 10px; font-size:0.8rem; color:#991b1b; margin-bottom:10px;">
-                  ⚠️ <strong id="labelCautionText">Complete the full prescribed 5-day course.</strong>
-                </div>
-
-                <!-- Bottom Row: QR Code + Scan Instruction -->
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; border-top:1px dashed #cbd5e1; padding-top:10px;">
-                  <div style="font-size:0.78rem; color:#475569; line-height:1.4;">
-                    <strong style="color:#0f766e; display:block;">📱 Scan for Audio &amp; Leaflet:</strong>
-                    <span>(ಕನ್ನಡ / हिन्दी / English)</span>
-                    <br />
-                    <a id="stickerTestLink" href="drug.html?drug=amoxicillin-clavulanate" target="_blank" style="color:#2563eb; text-decoration:none; font-weight:700; font-size:0.75rem;">
-                      Test Open Monograph ↗
-                    </a>
+                <div class="sticker-middle">
+                  <div class="sticker-details">
+                    <div>Brand: <strong id="labelBrandName">Augmentin 625</strong></div>
+                    <div id="labelFoodInstructions" style="color:#0369a1; font-weight:600; margin-top:2px;">
+                      Take with or after meals for 5 days.
+                    </div>
+                    
+                    <!-- Timing Grid -->
+                    <table class="timing-table">
+                      <thead>
+                        <tr>
+                          <th>Morning</th>
+                          <th>Noon</th>
+                          <th>Night</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td id="timingMorning">1</td>
+                          <td id="timingNoon">0</td>
+                          <td id="timingNight">1</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
 
-                  <div id="qrcodeBox" style="background:#ffffff; padding:4px; border:1px solid #e2e8f0; border-radius:4px;"></div>
+                  <!-- QR Code Render Canvas -->
+                  <div class="sticker-qr" id="qrcodeBox" title="Scan with mobile phone to open voice e-PIL"></div>
+                </div>
+
+                <!-- Caution Warning -->
+                <div id="labelCautionBox" style="font-size:0.72rem; color:#991b1b; background:#fef2f2; border-left:3px solid #dc2626; padding:4px 6px; border-radius:3px; margin-top:2px;">
+                  ⚠️ <span id="labelCautionText">Complete the entire prescribed course without stopping.</span>
+                </div>
+
+                <!-- Footer Footnote -->
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:#64748b; margin-top:2px; border-top:1px dotted #cbd5e1; padding-top:4px;">
+                  <span>Scan QR for Audio in Kannada/Hindi</span>
+                  <span>Rx Antibiotic</span>
                 </div>
               </div>
             </div>
 
             <!-- Print Actions -->
-            <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
-              <button type="button" class="btn-primary" onclick="window.print()" style="flex:1; border:none; cursor:pointer; padding:12px; display:flex; align-items:center; justify-content:center; gap:8px;">
-                🖨️ Print Dispensing Sticker Label
+            <div style="margin-top:20px; display:flex; gap:12px; justify-content:center;">
+              <button type="button" onclick="window.print()" class="btn-primary" style="background:#0284c7; border:none; padding:10px 20px; cursor:pointer;">
+                🖨️ Print Dispensing Sticker (70x45mm)
               </button>
+              <a id="stickerTestLink" href="#" target="_blank" class="btn-secondary" style="display:inline-block; text-decoration:none; padding:10px 16px;">
+                🔗 Test QR Link in Browser
+              </a>
             </div>
+
           </div>
         </div>
 
@@ -377,39 +393,29 @@
     </section>
   </main>
 
-  <!-- Standard 3-Column Footer -->
-  <footer role="contentinfo">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
-          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
-          <div class="footer-share-btn">
-            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>Navigation</h4>
-          <ul class="footer-links">
-            <li><a href="drugs.html">Antibiotic Database</a></li>
-            <li><a href="classes.html">Drug Classes (24)</a></li>
-            <li><a href="dispense.html">QR Dispenser</a></li>
-            <li><a href="flowchart.html">Flowchart</a></li>
-            <li><a href="resistance.html">Resistance Tracker</a></li>
-            <li><a href="quiz.html">Safety Quiz</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Trust &amp; Science</h4>
-          <ul class="footer-links">
-            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
-            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
-          </ul>
-        </div>
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div class="footer-col">
+        <h3>AB|Info Academic Project</h3>
+        <p>A standardized digital stewardship &amp; dispensing advisory platform developed for Rajiv Gandhi University of Health Sciences (RGUHS) community pharmacy research.</p>
       </div>
-      <div class="footer-bottom">
-        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
+      <div class="footer-col">
+        <h3>Clinical Navigation</h3>
+        <ul class="footer-links">
+          <li><a href="drugs.html">A–Z Antibiotic Catalog</a></li>
+          <li><a href="dispense.html">QR Sticker Dispenser</a></li>
+          <li><a href="calculator.html">Dosage Calculators</a></li>
+          <li><a href="interactions.html">Multi-Drug Interaction Matrix</a></li>
+        </ul>
       </div>
+      <div class="footer-col">
+        <h3>Statutory Compliance</h3>
+        <p>Aligns with Drugs and Cosmetics Rules (Schedule H &amp; H1), MoHFW Red Line Campaign, ICMR AMRSN 2024 Guidelines, and WHO AWaRe 2023 Classification.</p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; 2026 AB|Info Project. Educational, Non-Commercial Stewardship Resource.</p>
     </div>
   </footer>
 
@@ -422,76 +428,81 @@
   <script>
     let qrcodeInstance = null;
 
-    // Embedded Fallback List: Guarantees the dropdown is NEVER empty even if data.js loads late
+    // Embedded Fallback Database (guarantees options populate 100% even if data.js delays)
     const fallbackDrugs = [
-      { id: "amoxicillin-clavulanate", name: "Amoxicillin + Clavulanate", brands: ["Augmentin", "Clavam", "Moxikind-CV"], schedule: "Schedule H" },
-      { id: "amoxicillin", name: "Amoxicillin", brands: ["Novamox", "Mox", "Amoxil"], schedule: "Schedule H" },
-      { id: "cefuroxime", name: "Cefuroxime Axetil", brands: ["Ceftum", "Zeffu", "Altacef"], schedule: "Schedule H1" },
-      { id: "cefixime", name: "Cefixime", brands: ["Taxim-O", "Zifi", "Cefiget"], schedule: "Schedule H1" },
-      { id: "ceftriaxone", name: "Ceftriaxone", brands: ["Monocef", "Cefaxone", "Oframax"], schedule: "Schedule H1" },
-      { id: "azithromycin", name: "Azithromycin", brands: ["Azithral", "Azee", "Zithromax"], schedule: "Schedule H" },
-      { id: "clarithromycin", name: "Clarithromycin", brands: ["Claribid", "Crixan"], schedule: "Schedule H" },
-      { id: "ciprofloxacin", name: "Ciprofloxacin", brands: ["Ciplox", "Cifran", "Ciprolet"], schedule: "Schedule H" },
-      { id: "levofloxacin", name: "Levofloxacin", brands: ["Levoflox", "Glevo", "L-Cin"], schedule: "Schedule H1" },
-      { id: "doxycycline", name: "Doxycycline", brands: ["Doxt", "Microdox", "Doxy-1"], schedule: "Schedule H" },
-      { id: "metronidazole", name: "Metronidazole", brands: ["Metrogyl", "Flagyl", "Aristogyl"], schedule: "Schedule H" },
-      { id: "nitrofurantoin", name: "Nitrofurantoin", brands: ["Martifur", "Niftran", "Urifast"], schedule: "Schedule H" },
-      { id: "cephalexin", name: "Cephalexin", brands: ["Sporidex", "Phexin", "Keflex"], schedule: "Schedule H" },
-      { id: "cloxacillin", name: "Cloxacillin", brands: ["Klox", "Cloxapen"], schedule: "Schedule H" },
-      { id: "cotrimoxazole", name: "Trimethoprim / Sulfamethoxazole", brands: ["Septran", "Bactrim DS"], schedule: "Schedule H1" },
-      { id: "clindamycin", name: "Clindamycin", brands: ["Dalacin C", "Clindac-A"], schedule: "Schedule H" },
-      { id: "linezolid", name: "Linezolid", brands: ["Linospan", "Lizomac"], schedule: "Schedule H" },
-      { id: "meropenem", name: "Meropenem", brands: ["Meronem", "Meromac"], schedule: "Schedule H1" },
-      { id: "piperacillin-tazobactam", name: "Piperacillin + Tazobactam", brands: ["Tazact", "Pipzo"], schedule: "Schedule H1" },
-      { id: "vancomycin", name: "Vancomycin", brands: ["Vanlid", "Vancocin"], schedule: "Schedule H1" },
-      { id: "amikacin", name: "Amikacin", brands: ["Amicin", "Mikacin"], schedule: "Schedule H" },
-      { id: "gentamicin", name: "Gentamicin", brands: ["Genticyn", "Garamycin"], schedule: "Schedule H" },
-      { id: "colistin", name: "Colistin", brands: ["Xelistra", "Coly-Mycin"], schedule: "Schedule H1" }
+      { id: "amox-clav", name: "Amoxicillin + Clavulanic Acid", brands: ["Augmentin 625", "Clavam 625"], schedule: "Schedule H" },
+      { id: "amoxicillin", name: "Amoxicillin", brands: ["Novamox 500", "Mox 500"], schedule: "Schedule H" },
+      { id: "azithromycin", name: "Azithromycin", brands: ["Azithral 500", "Azee 500"], schedule: "Schedule H1" },
+      { id: "cefixime", name: "Cefixime", brands: ["Taxim-O 200", "Zifi 200"], schedule: "Schedule H1" },
+      { id: "cefpodoxime", name: "Cefpodoxime Proxetil", brands: ["Monocef-O 200", "Doxcef 200"], schedule: "Schedule H1" },
+      { id: "cefuroxime", name: "Cefuroxime Axetil", brands: ["Ceftum 500", "Pulmocef 500"], schedule: "Schedule H1" },
+      { id: "cephalexin", name: "Cephalexin", brands: ["Sporidex 500", "Phexin 500"], schedule: "Schedule H" },
+      { id: "ciprofloxacin", name: "Ciprofloxacin", brands: ["Ciplox 500", "Cifran 500"], schedule: "Schedule H1" },
+      { id: "clarithromycin", name: "Clarithromycin", brands: ["Claribid 500", "Maclar 500"], schedule: "Schedule H1" },
+      { id: "cotrimoxazole", name: "Co-Trimoxazole (Trimethoprim + Sulfamethoxazole)", brands: ["Septran DS", "Bactrim DS"], schedule: "Schedule H" },
+      { id: "doxycycline", name: "Doxycycline", brands: ["Doxt-SL", "Doryx"], schedule: "Schedule H1" },
+      { id: "levofloxacin", name: "Levofloxacin", brands: ["Glevo 500", "Levaquin 500"], schedule: "Schedule H1" },
+      { id: "linezolid", name: "Linezolid", brands: ["Linospan 600", "Lizomac 600"], schedule: "Schedule H1" },
+      { id: "metronidazole", name: "Metronidazole", brands: ["Metrogyl 400", "Flagyl 400"], schedule: "Schedule H" },
+      { id: "nitrofurantoin", name: "Nitrofurantoin", brands: ["Martifur MR 100", "Furadantin 100"], schedule: "Schedule H" },
+      { id: "norfloxacin", name: "Norfloxacin", brands: ["Norflox 400", "Bacigyl 400"], schedule: "Schedule H1" },
+      { id: "ofloxacin", name: "Ofloxacin", brands: ["Zenflox 200", "Oflox 200"], schedule: "Schedule H1" }
     ];
 
-    function initDispenser() {
-      populateDrugDropdown();
-      autoFillDrugGuidance();
-      generateSticker();
+    function getDrugSource() {
+      if (typeof getAllDrugs === "function") {
+        try {
+          const list = getAllDrugs();
+          if (list && list.length > 0) return list;
+        } catch (e) {
+          console.warn("getAllDrugs error:", e);
+        }
+      }
+      return fallbackDrugs;
+    }
+
+    function findDrug(drugId) {
+      if (typeof getDrugById === "function") {
+        try {
+          const d = getDrugById(drugId);
+          if (d) return d;
+        } catch (e) {}
+      }
+      return fallbackDrugs.find(d => d.id === drugId) || fallbackDrugs[0];
     }
 
     function populateDrugDropdown() {
       const select = document.getElementById("drugSelect");
       if (!select) return;
 
-      const drugs = (typeof getAllDrugs === "function" && getAllDrugs().length > 0)
-        ? getAllDrugs()
-        : fallbackDrugs;
-
-      select.innerHTML = '<option value="">-- Choose an Antibiotic --</option>';
-
+      select.innerHTML = "<option value=\"\">-- Choose Antibiotic Molecule --</option>";
+      const drugs = getDrugSource();
       drugs.forEach(d => {
         const opt = document.createElement("option");
         opt.value = d.id;
-        const brandStr = (d.brands && d.brands.length) ? d.brands.slice(0, 2).join(", ") : d.name;
+        const brandStr = (d.brands && d.brands.length) ? d.brands.slice(0, 2).join(", ") : "Generic";
         opt.textContent = `${d.name} (${brandStr}) — [${d.schedule || "Schedule H"}]`;
         select.appendChild(opt);
       });
-
-      select.value = "amoxicillin-clavulanate";
     }
 
     function autoFillDrugGuidance() {
-      const drugId = document.getElementById("drugSelect").value;
+      const drugSelect = document.getElementById("drugSelect");
+      if (!drugSelect) return;
+      const drugId = drugSelect.value;
       if (!drugId) return;
 
-      let drug = (typeof getDrugById === "function") ? getDrugById(drugId) : null;
-      if (!drug) {
-        drug = fallbackDrugs.find(d => d.id === drugId);
-      }
+      const drug = findDrug(drugId);
       if (!drug) return;
 
+      // Auto-suggest commercial brand
       const brandInput = document.getElementById("brandInput");
       if (brandInput) brandInput.value = (drug.brands && drug.brands[0]) ? drug.brands[0] : drug.name;
 
+      // Auto-suggest food timing
       const foodSelect = document.getElementById("foodTimingSelect");
       const name = drug.name.toLowerCase();
-      if (name.includes("clavulanate")) {
+      if (name.includes("clavulan") || name.includes("amox-clav")) {
         foodSelect.value = "with";
       } else if (name.includes("cloxacillin") || name.includes("ampicillin") || name.includes("norfloxacin")) {
         foodSelect.value = "before";
@@ -499,44 +510,52 @@
         foodSelect.value = "after";
       }
 
+      // Auto-suggest caution
       const cautionInput = document.getElementById("cautionInput");
-      if (name.includes("metronidazole")) {
-        cautionInput.value = "STRICTLY NO ALCOHOL during & 72 hrs after therapy.";
-      } else if (name.includes("doxycycline")) {
-        cautionInput.value = "Take with full glass of water. Do NOT lie down for 30 mins.";
-      } else if (name.includes("ciprofloxacin")) {
-        cautionInput.value = "Avoid milk, dairy, or antacids within 2 hours of dose.";
-      } else {
-        cautionInput.value = "Complete the entire prescribed course without stopping.";
+      if (cautionInput) {
+        if (name.includes("metronidazole")) {
+          cautionInput.value = "STRICTLY NO ALCOHOL during & 72 hrs after therapy.";
+        } else if (name.includes("doxycycline")) {
+          cautionInput.value = "Take with full glass of water. Do NOT lie down for 30 mins.";
+        } else if (name.includes("ciprofloxacin") || name.includes("levofloxacin") || name.includes("norfloxacin") || name.includes("ofloxacin")) {
+          cautionInput.value = "Avoid milk, dairy, or antacids within 2 hours of dose.";
+        } else if (name.includes("nitrofurantoin")) {
+          cautionInput.value = "Take with food/milk. May cause harmless brownish urine discoloration.";
+        } else {
+          cautionInput.value = "Complete the entire prescribed course without stopping.";
+        }
       }
-
-      generateSticker();
     }
 
     function generateSticker(e) {
       if (e && e.preventDefault) e.preventDefault();
 
       const select = document.getElementById("drugSelect");
-      const drugId = select ? select.value : "amoxicillin-clavulanate";
+      if (!select) return;
+      const drugId = select.value;
       if (!drugId) return;
 
-      let drug = (typeof getDrugById === "function") ? getDrugById(drugId) : null;
-      if (!drug) {
-        drug = fallbackDrugs.find(d => d.id === drugId);
-      }
+      const drug = findDrug(drugId);
       if (!drug) return;
 
-      const brand = document.getElementById("brandInput").value || (drug.brands ? drug.brands[0] : drug.name);
+      const brandInput = document.getElementById("brandInput");
+      const brand = (brandInput && brandInput.value) ? brandInput.value : ((drug.brands && drug.brands[0]) ? drug.brands[0] : drug.name);
       const freq = document.getElementById("frequencySelect").value;
       const food = document.getElementById("foodTimingSelect").value;
       const days = document.getElementById("durationDays").value;
       const lang = document.getElementById("langSelect").value;
-      const caution = document.getElementById("cautionInput").value;
+      const cautionInput = document.getElementById("cautionInput");
+      const caution = cautionInput ? cautionInput.value : "";
 
-      document.getElementById("labelDrugName").textContent = drug.name;
-      document.getElementById("labelBrandName").textContent = brand;
-      document.getElementById("labelScheduleTag").textContent = drug.schedule || "Schedule H";
+      // Update sticker UI elements
+      const elDrugName = document.getElementById("labelDrugName");
+      const elBrandName = document.getElementById("labelBrandName");
+      const elSchedTag = document.getElementById("labelScheduleTag");
+      if (elDrugName) elDrugName.textContent = drug.name;
+      if (elBrandName) elBrandName.textContent = brand;
+      if (elSchedTag) elSchedTag.textContent = drug.schedule || "Schedule H";
 
+      // Parse Frequency for Visual Indicators (Morning - Noon - Night)
       let m = "0", n = "0", ng = "0";
       if (freq === "1-0-1") { m = "1"; n = "0"; ng = "1"; }
       else if (freq === "1-1-1") { m = "1"; n = "1"; ng = "1"; }
@@ -545,10 +564,14 @@
       else if (freq === "q8h") { m = "1"; n = "1"; ng = "1"; }
       else if (freq === "q6h") { m = "1"; n = "1"; ng = "2"; }
 
-      document.getElementById("timingMorning").textContent = m;
-      document.getElementById("timingNoon").textContent = n;
-      document.getElementById("timingNight").textContent = ng;
+      const tM = document.getElementById("timingMorning");
+      const tN = document.getElementById("timingNoon");
+      const tNg = document.getElementById("timingNight");
+      if (tM) tM.textContent = m;
+      if (tN) tN.textContent = n;
+      if (tNg) tNg.textContent = ng;
 
+      // Localized Directions Text
       let foodText = `Take after food for ${days} days.`;
       if (lang === "kn") {
         if (food === "before") foodText = `ಊಟಕ್ಕೆ 1 ಗಂಟೆ ಮುಂಚೆ ಖಾಲಿ ಹೊಟ್ಟೆಯಲ್ಲಿ ಸೇವಿಸಿ (${days} ದಿನಗಳು).`;
@@ -563,44 +586,62 @@
         else if (food === "with") foodText = `Take right at the start of meals for ${days} days.`;
         else foodText = `Take with or after food for ${days} days.`;
       }
-      document.getElementById("labelFoodInstructions").textContent = foodText;
+      const elFood = document.getElementById("labelFoodInstructions");
+      if (elFood) elFood.textContent = foodText;
 
+      // Caution text
       const cautionBox = document.getElementById("labelCautionBox");
       const cautionText = document.getElementById("labelCautionText");
-      if (caution) {
-        cautionBox.style.display = "block";
-        cautionText.textContent = caution;
-      } else {
-        cautionBox.style.display = "none";
+      if (cautionBox && cautionText) {
+        if (caution) {
+          cautionBox.style.display = "block";
+          cautionText.textContent = caution;
+        } else {
+          cautionBox.style.display = "none";
+        }
       }
 
+      // Generate Deep-Link URL for QR Code
       const baseUrl = window.location.origin + window.location.pathname.replace("dispense.html", "drug.html");
       const qrTargetUrl = `${baseUrl}?drug=${encodeURIComponent(drug.id)}&lang=${lang}&days=${days}&freq=${encodeURIComponent(freq)}`;
 
-      document.getElementById("stickerTestLink").href = qrTargetUrl;
+      const testLink = document.getElementById("stickerTestLink");
+      if (testLink) testLink.href = qrTargetUrl;
 
+      // Render QR Code using qrcodejs
       const qrBox = document.getElementById("qrcodeBox");
-      qrBox.innerHTML = "";
-
-      if (typeof QRCode !== "undefined") {
-        try {
-          qrcodeInstance = new QRCode(qrBox, {
-            text: qrTargetUrl,
-            width: 80,
-            height: 80,
-            colorDark: "#0f172a",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.M
-          });
-        } catch (err) {
-          qrBox.innerHTML = `<a href="${qrTargetUrl}" target="_blank" style="font-size:0.75rem; color:#0f766e; font-weight:700;">Open e-PIL ↗</a>`;
+      if (qrBox) {
+        qrBox.innerHTML = "";
+        if (typeof QRCode !== "undefined") {
+          try {
+            qrcodeInstance = new QRCode(qrBox, {
+              text: qrTargetUrl,
+              width: 80,
+              height: 80,
+              colorDark: "#0f172a",
+              colorLight: "#ffffff",
+              correctLevel: QRCode.CorrectLevel.M
+            });
+          } catch(err) {
+            qrBox.innerHTML = `<a href="${qrTargetUrl}" target="_blank" style="font-size:0.75rem; color:#0f766e; font-weight:700;">Open e-PIL</a>`;
+          }
+        } else {
+          qrBox.innerHTML = `<a href="${qrTargetUrl}" target="_blank" style="font-size:0.75rem; color:#0f766e; font-weight:700;">Open e-PIL</a>`;
         }
-      } else {
-        qrBox.innerHTML = `<a href="${qrTargetUrl}" target="_blank" style="font-size:0.75rem; color:#0f766e; font-weight:700;">Open e-PIL ↗</a>`;
       }
     }
 
-    // Runs immediately whether the page is loading fresh or retrieved from PWA cache
+    // Rock-Solid Auto-Init (Fires regardless of DOMContentLoaded state)
+    function initDispenser() {
+      populateDrugDropdown();
+      const drugSelect = document.getElementById("drugSelect");
+      if (drugSelect && drugSelect.options.length > 1) {
+        drugSelect.selectedIndex = 1; // Default to first available antibiotic (Amox-Clav)
+        autoFillDrugGuidance();
+        generateSticker();
+      }
+    }
+
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", initDispenser);
     } else {
