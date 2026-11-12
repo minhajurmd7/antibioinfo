@@ -23,20 +23,24 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <style>
+    /* Specific styling for pharmacy sticker preview and print */
     .dispense-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 28px;
       margin-top: 24px;
     }
+
     @media (max-width: 860px) {
       .dispense-grid {
         grid-template-columns: 1fr;
       }
     }
+
     .form-group {
       margin-bottom: 16px;
     }
+
     .form-group label {
       display: block;
       font-size: 0.9rem;
@@ -44,120 +48,102 @@
       color: var(--text);
       margin-bottom: 6px;
     }
+
     .form-control {
       width: 100%;
       padding: 10px 14px;
-      font-size: 0.95rem;
-      border: 1.5px solid var(--border-color, #cbd5e1);
-      border-radius: 8px;
-      background: var(--bg-body, #ffffff);
+      border: 1px solid var(--border-color, #cbd5e1);
+      border-radius: 6px;
+      background: var(--bg-card, #ffffff);
       color: var(--text-main, #0f172a);
-      transition: border-color 0.2s;
+      font-size: 0.95rem;
+      font-family: inherit;
     }
+
     .form-control:focus {
       outline: none;
-      border-color: var(--primary, #0f766e);
+      border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
     }
+
+    /* Pharmacy Dispensing Sticker Card */
     .sticker-container {
       background: #ffffff;
+      color: #0f172a;
       border: 2px dashed #0f766e;
       border-radius: 8px;
-      padding: 14px;
-      width: 100%;
-      max-width: 380px;
-      margin: 0 auto;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #0f172a;
-      box-sizing: border-box;
+      padding: 18px;
+      box-shadow: var(--shadow);
       position: relative;
     }
-    .sticker-redline {
-      height: 4px;
-      background: #dc2626;
-      width: 100%;
-      margin-bottom: 8px;
-      border-radius: 2px;
-    }
-    .sticker-body {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+
     .sticker-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      border-bottom: 1px solid #e2e8f0;
-      padding-bottom: 6px;
+      align-items: center;
+      border-bottom: 2px solid #0f766e;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
     }
-    .sticker-middle {
+
+    .sticker-redline {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 8px;
+      background: #dc2626;
+      border-radius: 6px 0 0 6px;
+    }
+
+    .sticker-body {
+      padding-left: 10px;
+    }
+
+    .timing-icons {
       display: flex;
       gap: 12px;
-      align-items: center;
-    }
-    .sticker-details {
-      flex: 1;
-      font-size: 0.82rem;
-      line-height: 1.4;
-    }
-    .sticker-qr {
-      width: 80px;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      margin: 10px 0;
+      padding: 8px 12px;
       background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-radius: 4px;
-      padding: 2px;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
     }
-    .schedule-badge {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #f87171;
-    }
-    .timing-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 4px;
+
+    .timing-box {
       text-align: center;
-      font-size: 0.78rem;
+      flex: 1;
     }
-    .timing-table th {
-      background: #f1f5f9;
-      padding: 3px;
-      border: 1px solid #cbd5e1;
-      font-weight: 700;
-    }
-    .timing-table td {
-      padding: 4px;
-      border: 1px solid #cbd5e1;
-      font-weight: 800;
-      font-size: 0.95rem;
+
+    .timing-box strong {
+      display: block;
+      font-size: 1.15rem;
       color: #0f766e;
     }
+
+    .timing-box span {
+      font-size: 0.72rem;
+      color: #64748b;
+    }
+
+    /* Print-Only Isolation: Prints only the sticker when clicking Print */
     @media print {
       body * {
-        visibility: hidden;
+        visibility: hidden !important;
       }
       #printableSticker, #printableSticker * {
-        visibility: visible;
+        visibility: visible !important;
       }
       #printableSticker {
         position: absolute;
         left: 0;
         top: 0;
-        width: 70mm;
-        height: 45mm;
-        border: 1px solid #000;
-        box-shadow: none;
+        width: 80mm !important;
+        border: 1px solid #000000 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        padding: 8mm !important;
       }
     }
   </style>
@@ -181,12 +167,14 @@
         <a href="drugs.html" data-i18n="navDatabase">A–Z Catalog</a>
         <a href="classes.html" data-i18n="navClasses">Classes (24)</a>
         <a href="dispense.html" class="active-nav">🏷️ QR Dispenser</a>
-        <a href="calculator.html">🧮 Dosage Calculator</a>
-        <a href="interactions.html">⚠️ Interaction Checker</a>
+        <a href="calculator.html">🧮 Calculator</a>
+        <a href="interactions.html">⚠️ Drug Interactions</a>
         <a href="flowchart.html" data-i18n="navFlowchart">Flowchart</a>
         <a href="resistance.html" data-i18n="navResistance">Resistance</a>
         <a href="quiz.html" data-i18n="navQuiz">Quiz</a>
         <a href="glossary.html" data-i18n="navGlossary">Glossary</a>
+        <a href="references.html" data-i18n="navReferences">References</a>
+        <a href="about.html" data-i18n="navAbout">About &amp; Docs</a>
       </nav>
 
       <div class="nav-utils">
@@ -203,30 +191,30 @@
 
   <!-- Main Content Container -->
   <main class="container">
-    <section id="dispense-section" style="margin-top: 36px; margin-bottom: 50px;">
+    <section id="dispenser-section" style="margin-top: 36px; margin-bottom: 50px;">
       
       <!-- Page Header -->
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
         <div>
           <h1 style="font-size:2.1rem; margin-bottom:6px; color:var(--primary-dark);">
-            🏷️ Pharmacist QR Dispensing Label Generator
+            🏷️ Community Pharmacy QR Dispensing &amp; Label Generator
           </h1>
           <p class="section-sub">
-            Generate printable, high-contrast auxiliary dispensing stickers with embedded QR codes linking to multilingual electronic patient information leaflets (e-PIL).
+            Generate custom electronic Patient Information Leaflet (e-PIL) QR stickers for retail dispensing strips in English, Hindi, and Kannada.
           </p>
         </div>
-        <span class="badge" style="background:#0f766e; font-size:0.85rem; padding:6px 14px;">
-          👨‍⚕️ Community Pharmacy Tool
+        <span class="badge" style="background:#059669; font-size:0.85rem; padding:6px 14px;">
+          👨‍⚕️ Retail Pharmacist Tool
         </span>
       </div>
 
-      <!-- Two-Column Generator Grid -->
+      <!-- Two-Column Dispensing Interface -->
       <div class="dispense-grid">
         
-        <!-- Column 1: Dispensing Parameters Form -->
+        <!-- Column 1: Pharmacist Input Form -->
         <div class="detail-card">
           <h2 style="font-size:1.25rem; margin-bottom:16px; color:var(--primary-dark);">
-            📝 1. Enter Prescription &amp; Dispensing Details
+            📝 1. Enter Patient Prescription Details
           </h2>
 
           <form id="dispenseForm" onsubmit="generateSticker(event); return false;">
@@ -234,7 +222,40 @@
             <div class="form-group">
               <label for="drugSelect">💊 Select Antibiotic Molecule &amp; Indian Brand:</label>
               <select id="drugSelect" class="form-control" onchange="autoFillDrugGuidance(); generateSticker();" required>
-                <option value="">-- Choose an Antibiotic --</option>
+                <option value="">-- Choose an Antibiotic (33 Molecules) --</option>
+                <option value="amoxicillin">Amoxicillin (Novamox, Mox) — [Schedule H]</option>
+                <option value="amoxicillin-clavulanate" selected>Amoxicillin + Clavulanate (Augmentin, Clavam) — [Schedule H]</option>
+                <option value="ampicillin">Ampicillin (Ampilife, Campicillin) — [Schedule H]</option>
+                <option value="benzylpenicillin">Benzylpenicillin (Penicillin G) (Benapen, Crystapen) — [Schedule H]</option>
+                <option value="benzathine-penicillin">Benzathine Penicillin G (Penidure LA, Extencilline) — [Schedule H]</option>
+                <option value="cloxacillin">Cloxacillin (Klox, Cloxapen) — [Schedule H]</option>
+                <option value="piperacillin-tazobactam">Piperacillin + Tazobactam (Tazact, Zosyn) — [Schedule H1]</option>
+                <option value="cephalexin">Cephalexin (Sporidex, Keflex) — [Schedule H]</option>
+                <option value="cefazolin">Cefazolin (Cezolin, Orizolin) — [Schedule H]</option>
+                <option value="cefuroxime">Cefuroxime Axetil (Ceftum, Zeffu) — [Schedule H1]</option>
+                <option value="cefixime">Cefixime (Taxim-O, Zifi) — [Schedule H1]</option>
+                <option value="ceftriaxone">Ceftriaxone (Monocef, Cefaxone) — [Schedule H1]</option>
+                <option value="cefotaxime">Cefotaxime (Claforan, Omnatax) — [Schedule H1]</option>
+                <option value="cefepime">Cefepime (Maxipime, Kefage) — [Schedule H1]</option>
+                <option value="ceftaroline">Ceftaroline Fosamil (Zinforo, Teflaro) — [Schedule H1]</option>
+                <option value="meropenem">Meropenem (Meronem, Meromac) — [Schedule H1]</option>
+                <option value="imipenem-cilastatin">Imipenem + Cilastatin (Tienam, Cilanem) — [Schedule H1]</option>
+                <option value="azithromycin">Azithromycin (Azithral, Azee) — [Schedule H]</option>
+                <option value="clarithromycin">Clarithromycin (Claribid, Crixan) — [Schedule H]</option>
+                <option value="doxycycline">Doxycycline (Doxt, Microdox) — [Schedule H]</option>
+                <option value="minocycline">Minocycline (Cynomycin, Minocin) — [Schedule H]</option>
+                <option value="ciprofloxacin">Ciprofloxacin (Ciplox, Cifran) — [Schedule H]</option>
+                <option value="levofloxacin">Levofloxacin (Levoflox, Glevo) — [Schedule H1]</option>
+                <option value="norfloxacin">Norfloxacin (Norflox, Uriflox) — [Schedule H]</option>
+                <option value="cotrimoxazole">Trimethoprim / Sulfamethoxazole (Septran, Bactrim DS) — [Schedule H1]</option>
+                <option value="clindamycin">Clindamycin (Dalacin C, Clindac-A) — [Schedule H]</option>
+                <option value="metronidazole">Metronidazole (Metrogyl, Flagyl) — [Schedule H]</option>
+                <option value="nitrofurantoin">Nitrofurantoin (Martifur, Niftran) — [Schedule H]</option>
+                <option value="linezolid">Linezolid (Linospan, Lizomac) — [Schedule H]</option>
+                <option value="vancomycin">Vancomycin (Vancocin, Vanlid) — [Schedule H1]</option>
+                <option value="amikacin">Amikacin (Amicin, Mikacin) — [Schedule H]</option>
+                <option value="gentamicin">Gentamicin (Garamycin, Genticyn) — [Schedule H]</option>
+                <option value="colistin">Colistin (Colistimethate Sodium) (Xelistra, Coly-Mycin) — [Schedule H1]</option>
               </select>
             </div>
 
@@ -329,62 +350,61 @@
                     <strong style="color:#0f766e; font-size:1.05rem; display:block;">💊 AB|Info Pharmacy e-PIL</strong>
                     <span id="labelDrugName" style="font-weight:700; font-size:0.95rem; color:#0f172a;">Amoxicillin + Clavulanate</span>
                   </div>
-                  <span id="labelScheduleTag" class="schedule-badge">Schedule H</span>
+                  <div style="text-align:right;">
+                    <span id="labelScheduleTag" class="schedule-h1-tag" style="font-size:0.7rem;">Schedule H</span>
+                  </div>
                 </div>
 
-                <div class="sticker-middle">
-                  <div class="sticker-details">
-                    <div>Brand: <strong id="labelBrandName">Augmentin 625</strong></div>
-                    <div id="labelFoodInstructions" style="color:#0369a1; font-weight:600; margin-top:2px;">
-                      Take with or after meals for 5 days.
-                    </div>
-                    
-                    <!-- Timing Grid -->
-                    <table class="timing-table">
-                      <thead>
-                        <tr>
-                          <th>Morning</th>
-                          <th>Noon</th>
-                          <th>Night</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td id="timingMorning">1</td>
-                          <td id="timingNoon">0</td>
-                          <td id="timingNight">1</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                <div style="font-size:0.88rem; color:#334155; margin-bottom:6px;">
+                  Brand: <strong id="labelBrandName" style="color:#0f172a;">Augmentin 625</strong>
+                </div>
+
+                <!-- Dosage Timing Boxes -->
+                <div class="timing-icons" id="timingIconsBox">
+                  <div class="timing-box">
+                    <span>☀️ Morning</span>
+                    <strong id="timingMorning">1</strong>
+                  </div>
+                  <div class="timing-box">
+                    <span>🌤️ Noon</span>
+                    <strong id="timingNoon">0</strong>
+                  </div>
+                  <div class="timing-box">
+                    <span>🌙 Night</span>
+                    <strong id="timingNight">1</strong>
+                  </div>
+                </div>
+
+                <div style="font-size:0.86rem; margin-bottom:8px; line-height:1.4;">
+                  <strong>Directions:</strong> <span id="labelFoodInstructions">Take after meals for 5 days.</span>
+                </div>
+
+                <div id="labelCautionBox" style="background:#fef2f2; border:1px solid #fecaca; border-radius:4px; padding:6px 10px; font-size:0.8rem; color:#991b1b; margin-bottom:10px;">
+                  ⚠️ <strong id="labelCautionText">Complete the full prescribed 5-day course.</strong>
+                </div>
+
+                <!-- Bottom Row: QR Code + Scan Instruction -->
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; border-top:1px dashed #cbd5e1; padding-top:10px;">
+                  <div style="font-size:0.78rem; color:#475569; line-height:1.4;">
+                    <strong style="color:#0f766e; display:block;">📱 Scan for Audio &amp; Leaflet:</strong>
+                    <span>(ಕನ್ನಡ / हिन्दी / English)</span>
+                    <br />
+                    <a id="stickerTestLink" href="drug.html?drug=amoxicillin-clavulanate" target="_blank" style="color:#2563eb; text-decoration:none; font-weight:700; font-size:0.75rem;">
+                      Test Open Monograph ↗
+                    </a>
                   </div>
 
-                  <!-- QR Code Render Canvas -->
-                  <div class="sticker-qr" id="qrcodeBox" title="Scan with mobile phone to open voice e-PIL"></div>
-                </div>
-
-                <!-- Caution Warning -->
-                <div id="labelCautionBox" style="font-size:0.72rem; color:#991b1b; background:#fef2f2; border-left:3px solid #dc2626; padding:4px 6px; border-radius:3px; margin-top:2px;">
-                  ⚠️ <span id="labelCautionText">Complete the entire prescribed course without stopping.</span>
-                </div>
-
-                <!-- Footer Footnote -->
-                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.65rem; color:#64748b; margin-top:2px; border-top:1px dotted #cbd5e1; padding-top:4px;">
-                  <span>Scan QR for Audio in Kannada/Hindi</span>
-                  <span>Rx Antibiotic</span>
+                  <div id="qrcodeBox" style="background:#ffffff; padding:4px; border:1px solid #e2e8f0; border-radius:4px;"></div>
                 </div>
               </div>
             </div>
 
             <!-- Print Actions -->
-            <div style="margin-top:20px; display:flex; gap:12px; justify-content:center;">
-              <button type="button" onclick="window.print()" class="btn-primary" style="background:#0284c7; border:none; padding:10px 20px; cursor:pointer;">
-                🖨️ Print Dispensing Sticker (70x45mm)
+            <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button type="button" class="btn-primary" onclick="window.print()" style="flex:1; border:none; cursor:pointer; padding:12px; display:flex; align-items:center; justify-content:center; gap:8px;">
+                🖨️ Print Dispensing Sticker Label
               </button>
-              <a id="stickerTestLink" href="#" target="_blank" class="btn-secondary" style="display:inline-block; text-decoration:none; padding:10px 16px;">
-                🔗 Test QR Link in Browser
-              </a>
             </div>
-
           </div>
         </div>
 
@@ -393,29 +413,39 @@
     </section>
   </main>
 
-  <!-- ===== FOOTER ===== -->
-  <footer class="footer" role="contentinfo">
-    <div class="container footer-inner">
-      <div class="footer-col">
-        <h3>AB|Info Academic Project</h3>
-        <p>A standardized digital stewardship &amp; dispensing advisory platform developed for Rajiv Gandhi University of Health Sciences (RGUHS) community pharmacy research.</p>
+  <!-- Standard 3-Column Footer -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💊 AB|<span>Info</span></h3>
+          <p class="footer-text" data-i18n="footerRights">AB|Info © 2026 — Evidence-Based Antibiotic Information &amp; Antimicrobial Resistance Portal.</p>
+          <div class="footer-share-btn">
+            <button class="btn-share" onclick="shareOnWhatsApp()" data-i18n="whatsappShareBtn">📲 Share on WhatsApp</button>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="drugs.html">Antibiotic Database</a></li>
+            <li><a href="classes.html">Drug Classes (24)</a></li>
+            <li><a href="dispense.html">QR Dispenser</a></li>
+            <li><a href="flowchart.html">Flowchart</a></li>
+            <li><a href="resistance.html">Resistance Tracker</a></li>
+            <li><a href="quiz.html">Safety Quiz</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Trust &amp; Science</h4>
+          <ul class="footer-links">
+            <li><a href="references.html" data-i18n="footerRefLink">Academic References</a></li>
+            <li><a href="about.html" data-i18n="footerDocsLink">Project Documentation</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="footer-col">
-        <h3>Clinical Navigation</h3>
-        <ul class="footer-links">
-          <li><a href="drugs.html">A–Z Antibiotic Catalog</a></li>
-          <li><a href="dispense.html">QR Sticker Dispenser</a></li>
-          <li><a href="calculator.html">Dosage Calculators</a></li>
-          <li><a href="interactions.html">Multi-Drug Interaction Matrix</a></li>
-        </ul>
+      <div class="footer-bottom">
+        <p data-i18n="disclaimerText">⚕️ Educational purposes only. Not medical advice. Always consult a registered medical practitioner.</p>
       </div>
-      <div class="footer-col">
-        <h3>Statutory Compliance</h3>
-        <p>Aligns with Drugs and Cosmetics Rules (Schedule H &amp; H1), MoHFW Red Line Campaign, ICMR AMRSN 2024 Guidelines, and WHO AWaRe 2023 Classification.</p>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <p>&copy; 2026 AB|Info Project. Educational, Non-Commercial Stewardship Resource.</p>
     </div>
   </footer>
 
@@ -430,23 +460,39 @@
 
     // Embedded Fallback Database (guarantees options populate 100% even if data.js delays)
     const fallbackDrugs = [
-      { id: "amox-clav", name: "Amoxicillin + Clavulanic Acid", brands: ["Augmentin 625", "Clavam 625"], schedule: "Schedule H" },
-      { id: "amoxicillin", name: "Amoxicillin", brands: ["Novamox 500", "Mox 500"], schedule: "Schedule H" },
-      { id: "azithromycin", name: "Azithromycin", brands: ["Azithral 500", "Azee 500"], schedule: "Schedule H1" },
-      { id: "cefixime", name: "Cefixime", brands: ["Taxim-O 200", "Zifi 200"], schedule: "Schedule H1" },
-      { id: "cefpodoxime", name: "Cefpodoxime Proxetil", brands: ["Monocef-O 200", "Doxcef 200"], schedule: "Schedule H1" },
-      { id: "cefuroxime", name: "Cefuroxime Axetil", brands: ["Ceftum 500", "Pulmocef 500"], schedule: "Schedule H1" },
-      { id: "cephalexin", name: "Cephalexin", brands: ["Sporidex 500", "Phexin 500"], schedule: "Schedule H" },
-      { id: "ciprofloxacin", name: "Ciprofloxacin", brands: ["Ciplox 500", "Cifran 500"], schedule: "Schedule H1" },
-      { id: "clarithromycin", name: "Clarithromycin", brands: ["Claribid 500", "Maclar 500"], schedule: "Schedule H1" },
-      { id: "cotrimoxazole", name: "Co-Trimoxazole (Trimethoprim + Sulfamethoxazole)", brands: ["Septran DS", "Bactrim DS"], schedule: "Schedule H" },
-      { id: "doxycycline", name: "Doxycycline", brands: ["Doxt-SL", "Doryx"], schedule: "Schedule H1" },
-      { id: "levofloxacin", name: "Levofloxacin", brands: ["Glevo 500", "Levaquin 500"], schedule: "Schedule H1" },
-      { id: "linezolid", name: "Linezolid", brands: ["Linospan 600", "Lizomac 600"], schedule: "Schedule H1" },
-      { id: "metronidazole", name: "Metronidazole", brands: ["Metrogyl 400", "Flagyl 400"], schedule: "Schedule H" },
-      { id: "nitrofurantoin", name: "Nitrofurantoin", brands: ["Martifur MR 100", "Furadantin 100"], schedule: "Schedule H" },
-      { id: "norfloxacin", name: "Norfloxacin", brands: ["Norflox 400", "Bacigyl 400"], schedule: "Schedule H1" },
-      { id: "ofloxacin", name: "Ofloxacin", brands: ["Zenflox 200", "Oflox 200"], schedule: "Schedule H1" }
+      {"id": "amoxicillin", "name": "Amoxicillin", "brands": ["Novamox", "Mox"], "schedule": "Schedule H"},
+      {"id": "amoxicillin-clavulanate", "name": "Amoxicillin + Clavulanate", "brands": ["Augmentin", "Clavam"], "schedule": "Schedule H"},
+      {"id": "ampicillin", "name": "Ampicillin", "brands": ["Ampilife", "Campicillin"], "schedule": "Schedule H"},
+      {"id": "benzylpenicillin", "name": "Benzylpenicillin (Penicillin G)", "brands": ["Benapen", "Crystapen"], "schedule": "Schedule H"},
+      {"id": "benzathine-penicillin", "name": "Benzathine Penicillin G", "brands": ["Penidure LA", "Extencilline"], "schedule": "Schedule H"},
+      {"id": "cloxacillin", "name": "Cloxacillin", "brands": ["Klox", "Cloxapen"], "schedule": "Schedule H"},
+      {"id": "piperacillin-tazobactam", "name": "Piperacillin + Tazobactam", "brands": ["Tazact", "Zosyn"], "schedule": "Schedule H1"},
+      {"id": "cephalexin", "name": "Cephalexin", "brands": ["Sporidex", "Keflex"], "schedule": "Schedule H"},
+      {"id": "cefazolin", "name": "Cefazolin", "brands": ["Cezolin", "Orizolin"], "schedule": "Schedule H"},
+      {"id": "cefuroxime", "name": "Cefuroxime Axetil", "brands": ["Ceftum", "Zeffu"], "schedule": "Schedule H1"},
+      {"id": "cefixime", "name": "Cefixime", "brands": ["Taxim-O", "Zifi"], "schedule": "Schedule H1"},
+      {"id": "ceftriaxone", "name": "Ceftriaxone", "brands": ["Monocef", "Cefaxone"], "schedule": "Schedule H1"},
+      {"id": "cefotaxime", "name": "Cefotaxime", "brands": ["Claforan", "Omnatax"], "schedule": "Schedule H1"},
+      {"id": "cefepime", "name": "Cefepime", "brands": ["Maxipime", "Kefage"], "schedule": "Schedule H1"},
+      {"id": "ceftaroline", "name": "Ceftaroline Fosamil", "brands": ["Zinforo", "Teflaro"], "schedule": "Schedule H1"},
+      {"id": "meropenem", "name": "Meropenem", "brands": ["Meronem", "Meromac"], "schedule": "Schedule H1"},
+      {"id": "imipenem-cilastatin", "name": "Imipenem + Cilastatin", "brands": ["Tienam", "Cilanem"], "schedule": "Schedule H1"},
+      {"id": "azithromycin", "name": "Azithromycin", "brands": ["Azithral", "Azee"], "schedule": "Schedule H"},
+      {"id": "clarithromycin", "name": "Clarithromycin", "brands": ["Claribid", "Crixan"], "schedule": "Schedule H"},
+      {"id": "doxycycline", "name": "Doxycycline", "brands": ["Doxt", "Microdox"], "schedule": "Schedule H"},
+      {"id": "minocycline", "name": "Minocycline", "brands": ["Cynomycin", "Minocin"], "schedule": "Schedule H"},
+      {"id": "ciprofloxacin", "name": "Ciprofloxacin", "brands": ["Ciplox", "Cifran"], "schedule": "Schedule H"},
+      {"id": "levofloxacin", "name": "Levofloxacin", "brands": ["Levoflox", "Glevo"], "schedule": "Schedule H1"},
+      {"id": "norfloxacin", "name": "Norfloxacin", "brands": ["Norflox", "Uriflox"], "schedule": "Schedule H"},
+      {"id": "cotrimoxazole", "name": "Trimethoprim / Sulfamethoxazole", "brands": ["Septran", "Bactrim DS"], "schedule": "Schedule H1"},
+      {"id": "clindamycin", "name": "Clindamycin", "brands": ["Dalacin C", "Clindac-A"], "schedule": "Schedule H"},
+      {"id": "metronidazole", "name": "Metronidazole", "brands": ["Metrogyl", "Flagyl"], "schedule": "Schedule H"},
+      {"id": "nitrofurantoin", "name": "Nitrofurantoin", "brands": ["Martifur", "Niftran"], "schedule": "Schedule H"},
+      {"id": "linezolid", "name": "Linezolid", "brands": ["Linospan", "Lizomac"], "schedule": "Schedule H"},
+      {"id": "vancomycin", "name": "Vancomycin", "brands": ["Vancocin", "Vanlid"], "schedule": "Schedule H1"},
+      {"id": "amikacin", "name": "Amikacin", "brands": ["Amicin", "Mikacin"], "schedule": "Schedule H"},
+      {"id": "gentamicin", "name": "Gentamicin", "brands": ["Garamycin", "Genticyn"], "schedule": "Schedule H"},
+      {"id": "colistin", "name": "Colistin (Colistimethate Sodium)", "brands": ["Xelistra", "Coly-Mycin"], "schedule": "Schedule H1"}
     ];
 
     function getDrugSource() {
@@ -471,9 +517,20 @@
       return fallbackDrugs.find(d => d.id === drugId) || fallbackDrugs[0];
     }
 
+    // Auto-clear stale Service Worker caches so updates show immediately
+    if ("serviceWorker" in navigator && window.caches) {
+      caches.keys().then(keys => {
+        keys.forEach(k => {
+          if (k !== "abinfo-pwa-v5") caches.delete(k);
+        });
+      });
+    }
+
     function populateDrugDropdown() {
       const select = document.getElementById("drugSelect");
       if (!select) return;
+      // Options are already hardcoded in HTML for instant zero-fail availability; only populate if empty
+      if (select.options.length > 5) return;
 
       select.innerHTML = "<option value=\"\">-- Choose Antibiotic Molecule --</option>";
       const drugs = getDrugSource();
@@ -482,6 +539,7 @@
         opt.value = d.id;
         const brandStr = (d.brands && d.brands.length) ? d.brands.slice(0, 2).join(", ") : "Generic";
         opt.textContent = `${d.name} (${brandStr}) — [${d.schedule || "Schedule H"}]`;
+        if (d.id === "amoxicillin-clavulanate") opt.selected = true;
         select.appendChild(opt);
       });
     }
@@ -636,7 +694,7 @@
       populateDrugDropdown();
       const drugSelect = document.getElementById("drugSelect");
       if (drugSelect && drugSelect.options.length > 1) {
-        drugSelect.selectedIndex = 1; // Default to first available antibiotic (Amox-Clav)
+        if (!drugSelect.value) drugSelect.value = "amoxicillin-clavulanate";
         autoFillDrugGuidance();
         generateSticker();
       }
